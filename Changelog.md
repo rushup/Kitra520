@@ -1,3 +1,8 @@
+## V1E2
+- Added mic recording
+- Baud rate change bugfix
+- Neopixel support (Serial RGB pin)
+- Other bugfix
 ## V1E1
 - Position full scale configuration didnt' work
 - Proximity managed event not set correctly if a configure command different from 1 is sent before
