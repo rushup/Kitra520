@@ -1,7 +1,39 @@
 diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-artik5.dts
 --- arch/arm/boot/dts/exynos3250-artik5.dts	2016-04-01 04:23:41.000000000 +0200
-+++ arch/arm/boot/dts/exynos3250-artik5.dts	2017-03-02 16:32:07.000000000 +0100
-@@ -523,10 +523,14 @@
++++ arch/arm/boot/dts/exynos3250-artik5.dts	2017-06-01 11:36:49.957378400 +0200
+@@ -387,30 +387,7 @@
+ 		status = "okay";
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-		ax88796c@0 {
+-			compatible = "asix,ax88796c";
+-			gpios = <&gpx2 0 1>;
+-			interrupt-parent = <&gpx2>;
+-			interrupts = <0 0 0>;
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&eint16>;
+-			spi-max-frequency = <40000000>;
+-			/* swap-mode; */
+-			/* spi-cpol; */
+-			/* spi-cpha; */
+-			reg = <0x0>;
+-			ax88796c,reset = <&gpe0 2 1>;
+-			clocks = <&clock CLK_FOUT_MPLL>,
+-				<&clock CLK_DIV_MPLL_PRE>,
+-				<&clock CLK_MOUT_SPI0>,
+-				<&clock CLK_SCLK_SPI0>;
+-			clock-names = "fout_mpll", "dout_mpll_pre", "mout_spi0", "sclk_spi0";
+-			controller-data {
+-				cs-gpio = <&gpx3 4 1>;
+-				samsung,spi-feedback-delay = <2>;
+-				samsung,spi-chip-select-mode;
+-			};
+-		};
++	
+ 	};
+ 
+ 	serial@13800000 {
+@@ -523,10 +500,14 @@
  		samsung,i2c-max-bus-freq = <400000>;
  		#size-cells = <0>;
  
@@ -20,7 +52,7 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  		};
  
  		bq24296_charger@6b {
-@@ -553,6 +557,9 @@
+@@ -553,6 +534,9 @@
  		clock-names = "mout_epll", "fout_epll",
  			      "mout_audio", "dout_audio",
  			      "dout_i2s", "sclk_i2s";
@@ -30,7 +62,7 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  		status = "okay";
  	};
  
-@@ -569,7 +576,41 @@
+@@ -569,7 +553,41 @@
  		samsung,i2c-sda-delay = <100>;
  		samsung,i2c-max-bus-freq = <400000>;
  		#size-cells = <0>;
@@ -73,7 +105,7 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  	};
  
  	regulators {
-@@ -592,42 +633,41 @@
+@@ -592,42 +610,41 @@
  		};
  	};
  
@@ -136,7 +168,7 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  
  			max_int = <134000>; /* L1 */
  			max_cam = <320000>; /* L0 */
-@@ -640,15 +680,17 @@
+@@ -640,15 +657,17 @@
  		scenario = <2>;
  		gpio_reset = <&gpm3 2 0x1>;
  		gpios_cam_en = <&gpm0 2 0x1>;
@@ -156,7 +188,7 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  };
  
  &pmic_irq {
-@@ -733,7 +775,7 @@
+@@ -733,7 +752,7 @@
  	};
  
  	panel@0 {
@@ -165,9 +197,12 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
  		reg = <0>;
  		vdd3-supply = <&vddext_28>;
  		vci-supply = <&vddext_18>;
-@@ -745,20 +787,20 @@
+@@ -743,22 +762,25 @@
+ 		power-off-delay= <120>;
+ 		reset-delay = <5>;
  		init-delay = <100>;
- 		flip-horizontal;
+-		flip-horizontal;
++		//flip-horizontal;
  		flip-vertical;
 -		panel-width-mm = <52>;
 -		panel-height-mm = <86>;
@@ -185,22 +220,833 @@ diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts arch/arm/boot/dts/exynos3250-
 -				vfront-porch = <28>;
 -				vback-porch = <28>;
 -				vsync-len = <2>;
-+				clock-frequency = <80674>;
++				clock-frequency = <130674>;
 +				hactive = <320>;
 +				vactive = <320>;
-+				hfront-porch = <0>;
-+				hback-porch = <164>;
++				hfront-porch = <10>;
++				hback-porch = <131>;
 +				hsync-len = <0>;
 +				vfront-porch = <0>;
-+				vback-porch = <100>;
++				vback-porch = <250>;
 +				vsync-len = <20>;
++				hsync-active = <1>;
++				vsync-active = <1>;
++
  			};
  		};
  
+diff -Naur arch/arm/boot/dts/exynos3250-artik5.dts.bak arch/arm/boot/dts/exynos3250-artik5.dts.bak
+--- arch/arm/boot/dts/exynos3250-artik5.dts.bak	1970-01-01 01:00:00.000000000 +0100
++++ arch/arm/boot/dts/exynos3250-artik5.dts.bak	2017-06-01 11:36:41.843960400 +0200
+@@ -0,0 +1,796 @@
++/*
++ * SAMSUNG ARTIK5 board device tree source
++ *
++ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
++ *		http://www.samsung.com
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++*/
++
++/dts-v1/;
++#include "exynos3250.dtsi"
++
++/ {
++	model = "Samsung ARTIK5 board based on EXYNOS3250";
++	compatible = "samsung,artik5", "samsung,exynos3250";
++
++	chosen {
++		bootargs = "console=ttySAC2,115200 vmalloc=256M ess_setup=0x46000000";
++	};
++
++	memory {
++		reg = <0x40000000 0x1F800000>;
++	};
++
++	aliases {
++		i2c8 = &i2c_gpio0;
++	};
++
++	fixed-rate-clocks {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		xrtcxti: clock@0 {
++			compatible = "fixed-clock";
++			reg = <0>;
++			clock-frequency = <32768>;
++			#clock-cells = <0>;
++			clock-output-names = "xrtcxti";
++		};
++
++		xusbxti: clock@1 {
++			compatible = "fixed-clock";
++			clock-frequency = <24000000>;
++			reg = <1>;
++			#clock-cells = <0>;
++			clock-output-names = "xusbxti";
++		};
++
++		xxti: clock@2 {
++			compatible = "fixed-clock";
++			reg = <2>;
++			clock-frequency = <0>;
++			#clock-cells = <0>;
++			clock-output-names = "xxti";
++			};
++
++		xtcxo: clock@3 {
++			compatible = "fixed-clock";
++			reg = <3>;
++			clock-frequency = <26000000>;
++			#clock-cells = <0>;
++			clock-output-names = "xtcxo";
++		};
++
++		audiocdclk: clock@4 {
++			compatible = "fixed-clock";
++			reg = <4>;
++			clock-frequency = <0>;
++			#clock-cells = <0>;
++			clock-output-names = "audiocdclk";
++		};
++	};
++
++	i2c@13860000 {
++		status = "okay";
++		samsung,i2c-sda-delay = <100>;
++		samsung,i2c-max-bus-freq = <400000>;
++		#size-cells = <0>;
++
++		s2mps14_pmic@66 {
++			compatible = "samsung,s2mps14-pmic";
++			reg = <0x66>;
++			interrupts = <5 0 0>;
++			interrupt-parent = <&gpx3>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pmic_irq &pm_wrsti>;
++			/* RTC: wtsr/smpl */
++                        wtsr_en = <1>; /* enable */
++                        smpl_en = <1>; /* enable */
++                        wtsr_timer_val = <3>;   /* 1000ms */
++                        smpl_timer_val = <4>;   /* 500ms */
++                        check_jigon = <0>; /* do not check jigon */
++                        /* RTC: If it's first boot, reset rtc to 1/1/2014 12:00:00(Wed) */
++                        init_time,sec = <0>;
++                        init_time,min = <0>;
++                        init_time,hour = <12>;
++                        init_time,mday = <1>;
++                        init_time,mon = <0>;
++                        init_time,year = <114>;
++                        init_time,wday = <3>;
++
++			regulators {
++				buck1_reg: BUCK1 {
++					regulator-name = "vdd_mif";
++					regulator-min-microvolt = <600000>;
++					regulator-max-microvolt = <1600000>;
++					regulator-always-on;
++					regulator-boot-on;
++					regulator-ramp-delay = <12000>;
++					regulator-initial-mode = <1>;
++				};
++
++				buck2_reg: BUCK2 {
++					regulator-name = "vdd_arm";
++					regulator-min-microvolt = <600000>;
++					regulator-max-microvolt = <1600000>;
++					regulator-always-on;
++					regulator-boot-on;
++					regulator-ramp-delay = <12000>;
++					regulator-initial-mode = <1>;
++				};
++
++				buck3_reg: BUCK3 {
++					regulator-name = "vdd_int";
++					regulator-min-microvolt = <600000>;
++					regulator-max-microvolt = <1600000>;
++					regulator-always-on;
++					regulator-boot-on;
++					regulator-ramp-delay = <12000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo13_reg: LDO13 {
++					regulator-name = "vdd_zb_2.8";
++					regulator-min-microvolt = <2400000>;
++					regulator-max-microvolt = <2400000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo16_reg: LDO16 {
++					regulator-name = "vdd_lcd_3.3";
++					regulator-min-microvolt = <1800000>;
++					regulator-max-microvolt = <3375000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo18_reg: LDO18 {
++					regulator-name = "vcc_peri_device_2.8";
++					regulator-min-microvolt = <1800000>;
++					regulator-max-microvolt = <3375000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo19_reg: LDO19 {
++					regulator-name = "vcc_avdd_1.8";
++					regulator-min-microvolt = <800000>;
++					regulator-max-microvolt = <2375000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo20_reg: LDO20 {
++					regulator-name = "vcc_peri_device_1.8";
++					regulator-min-microvolt = <800000>;
++					regulator-max-microvolt = <2375000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo21_reg: LDO21 {
++					regulator-name = "zbcore_1.25";
++					regulator-min-microvolt = <1250000>;
++					regulator-max-microvolt = <1250000>;
++					regulator-initial-mode = <1>;
++				};
++
++				ldo23_reg: LDO23 {
++					regulator-name = "vcc_peri_1.8";
++					regulator-min-microvolt = <800000>;
++					regulator-max-microvolt = <2375000>;
++					regulator-always-on;
++				};
++
++				ldo6_reg: LDO6 {
++                                        regulator-name = "VDD_USB_AP_1.0V";
++                                        regulator-min-microvolt = <1000000>;
++                                        regulator-max-microvolt = <1000000>;
++                                        regulator-always-on;
++					regulator-initial-mode = <1>;
++                                };
++
++				ldo8_reg: LDO8 {
++                                        regulator-name = "VDD_UOTG_AP_3.3V";
++                                        regulator-min-microvolt = <3000000>;
++                                        regulator-max-microvolt = <3000000>;
++                                };
++
++				ldo2_reg: LDO2 {
++					regulator-always-on;
++					regulator-initial-mode = <1>;
++                                };
++
++				ldo4_reg: LDO4 {
++					regulator-always-on;
++                                        regulator-initial-mode = <1>;
++                                };
++
++				ldo5_reg: LDO5 {
++					regulator-always-on;
++                                        regulator-initial-mode = <1>;
++                                };
++
++				ldo7_reg: LDO7 {
++					regulator-always-on;
++                                        regulator-initial-mode = <1>;
++                                };
++			};
++		};
++	};
++
++	dwmmc0@12510000 {
++		status = "okay";
++		num-slots = <1>;
++		broken-cd;
++		bypass-smu;
++		fixed_volt;
++		only_once_tune;
++		extra_tuning;
++		supports-highspeed;
++		enable-cache-control;
++		sw_data_timeout;
++		fifo-depth = <0x80>;
++		card-detect-delay = <200>;
++		samsung,dw-mshc-ciu-div = <3>;
++		samsung,dw-mshc-sdr-timing = <3 0 2 1>;
++		samsung,dw-mshc-ddr-timing = <3 0 4 2>;
++		samsung,dw-mshc-hs200-timing = <3 0 2 0>;
++		samsung,dw-mshc-ddr200-timing = <1 1 2 0>;
++		num-ref-clks = <8>;
++		gpios = <&gpk0 2 0x1>;
++		ciu_clkin = <25 50 50 100 200 100 200 200>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&sd0_clk &sd0_cmd &sd0_bus1 &sd0_bus4 &sd0_bus8>;
++
++		slot@0 {
++			reg = <0>;
++			bus-width = <8>;
++		};
++	};
++
++	dwmmc1@12520000 {
++		status = "okay";
++		num-slots = <1>;
++		channel = <1>;
++		caps-control;
++		bypass-smu;
++		clock-gate;
++		enable-cclk-on-suspend;
++		fixed_volt;
++		use-fine-tuning;
++		supports-highspeed;
++		sw_data_timeout;
++		keep-power-in-suspend;
++		pm-ignore-notify;
++		cd-type-external;
++		cd-type = <2>;
++		use-broken-voltage;
++		fifo-depth = <0x40>;
++		card-detect-delay = <200>;
++		qos_int_level = <222000>;
++		samsung,dw-mshc-ciu-div = <3>;
++		samsung,dw-mshc-sdr-timing = <3 0 3 0>;
++		samsung,dw-mshc-ddr-timing = <3 0 2 0>;
++		clk_pin = "gpk1-0";
++		clk_addr = "11000000.pinctrl";
++		clk_val = <0x3>;
++		clk_str_num = <4>;
++		num-ref-clks = <8>;
++		ciu_clkin = <25 50 50 100 200 100 200 400>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&sd1_clk &sd1_cmd &sd1_bus1 &sd1_bus4>;
++
++		slot@0 {
++			reg = <0>;
++			bus-width = <4>;
++			disable-wp;
++		};
++	};
++
++	dwmmc2@12530000 {
++		status = "okay";
++		num-slots = <1>;
++		bypass-smu;
++		supports-highspeed;
++		fixed_volt;
++		cd-type = <1>;
++		fifo-depth = <0x80>;
++		card-detect-delay = <200>;
++		samsung,dw-mshc-ciu-div = <3>;
++		samsung,dw-mshc-sdr-timing = <3 0 2 1>;
++		samsung,dw-mshc-ddr-timing = <3 0 4 2>;
++		num-ref-clks = <8>;
++		ciu_clkin = <25 50 50 100 200 100 200 200>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&sd2_clk &sd2_cmd &sd2_cd &sd2_bus1 &sd2_bus4>;
++
++		slot@0 {
++			reg = <0>;
++			bus-width = <4>;
++			disable-wp;
++		};
++	};
++
++        ion {
++                compatible = "samsung,exynos5430-ion";
++
++		contig-names = "mfc_sh",
++				"video",
++				"mfc_fw",
++				"mfc_nfw";
++
++		contig = <2 0x100000 0x0>,
++			<11 0xA00000 0x0>,
++			<8 0x100000 0x0>,
++			<12 0x100000 0x0>;
++
++                ion_noncontig_heap {
++                        id-type = <0 0>;
++                };
++
++		exynos_contig_heap {
++			id-type = <4 6>;
++		};
++
++        };
++
++	i2c@13870000 {
++	        samsung,i2c-sda-delay = <25>;
++	        samsung,i2c-max-bus-freq = <400000>;
++	        #address-cells = <1>;
++	        #size-cells = <0>;
++	        status = "okay";
++
++	        CW2015@62 {
++	                compatible = "cw201x";
++	                reg = <0x62>;
++	                /*      pinctrl-0 = <&cw_irq>; */
++	                bat_config_info = <0x17 0x67 0x6C 0x70 0x70 0x6F 0x6A 0x65 0x62 0x5B
++	                                   0x55 0x4F 0x4A 0x46 0x43 0x3D 0x35 0x2B 0x26 0x22
++	                                   0x21 0x2B 0x42 0x4D 0x49 0x49 0x0B 0x85 0x09 0x12
++	                                   0x1D 0x3A 0x47 0x44 0x43 0x4B 0x39 0x17 0x37 0x48
++	                                   0x04 0x16 0x52 0x87 0x8F 0x91 0x94 0x52 0x82 0x8C
++	                                   0x92 0x96 0x81 0x6B 0xC0 0xCB 0x2F 0x7D 0x72 0xA5
++	                                   0xB5 0xC1 0x6A 0x09>;
++	                /*
++	                 is_dc_charge = <1>;
++	                 dc_det_gpio = <1>;
++	                 is_usb_charge = <0>;
++	                */
++	        };
++	};
++
++	sysreg_localout: sysreg_localout@10010000 {
++		compatible = "samsung,exynos5-sysreg_localout";
++		reg = <0x10010000 0x2000>;
++	};
++
++	mdev_0: mdev_output {
++		compatible = "samsung,exynos5-mdev";
++	};
++
++	usb@12480000 {
++		vusb_d-supply = <&ldo6_reg>;
++		vusb_a-supply = <&ldo8_reg>;
++		status = "okay";
++	};
++
++	slp_multi: slp_multi {
++		compatible = "slp,slp_multi";
++		slp,slp_mult-nluns = <2>;
++		slp,slp_mult-swfi-latency = <1>;
++		slp,slp_mult-nfuncs = <4>;
++		slp,slp_mult-enable-funcs = "rndis", "sdb", "mtp", "acm";
++	};
++
++	spi@13920000 {
++		status = "okay";
++			#address-cells = <1>;
++			#size-cells = <0>;
++	};
++
++	serial@13800000 {
++		status = "okay";
++	};
++
++	pinctrl@11000000 {
++		cfg_wlanen: cfg-wlanen {
++			samsung,pins = "gpx2-3";
++			samsung,pin-function = <1>;
++			samsung,pin-pud = <0>;
++			samsung,pin-drv = <3>;
++			samsung,pin-con-pdn = <3>;
++			samsung,pin-pud-pdn = <0>;
++		};
++
++		cfg_wlanhostwake: cfg-wlanhostwake {
++			samsung,pins = "gpx3-2";
++			samsung,pin-function = <0>;
++			samsung,pin-pud = <1>;
++			samsung,pin-con-pdn = <2>;
++			samsung,pin-pud-pdn = <0>;
++		};
++
++		cfg_en: cfg-en {
++			samsung,pins ="gpx1-7";
++			samsung,pin-function = <1>;
++			samsung,pin-pud = <1>;
++			samsung,pin-con-pdn = <3>;
++			samsung,pin-pud-pdn = <1>;
++		};
++
++		cfg_btwake: cfg-btwake {
++			samsung,pins = "gpx3-7";
++			samsung,pin-function = <1>;
++			samsung,pin-pud = <1>;
++			samsung,pin-con-pdn = <0>;
++			samsung,pin-pud-pdn = <1>;
++		};
++
++		cfg_hostwake: cfg-hostwake {
++			samsung,pins = "gpx3-6";
++			samsung,pin-function = <0>;
++			samsung,pin-pud = <3>;
++			samsung,pin-con-pdn = <2>;
++			samsung,pin-pud-pdn = <0>;
++		};
++
++		zb_rstn: zb-rstn {
++			samsung,pins = "gpm0-1";
++			samsung,pin-function = <1>;
++			samsung,pin-pud = <0>;
++			samsung,pin-val = <1>;
++			samsung,pin-con-pdn = <2>;
++			samsung,pin-pud-pdn = <1>;
++		};
++
++		zb_bootloader: zb-bootloader {
++			samsung,pins = "gpe0-0";
++			samsung,pin-function = <1>;
++			samsung,pin-pud = <0>;
++			samsung,pin-val = <1>;
++			samsung,pin-con-pdn = <2>;
++			samsung,pin-pud-pdn = <1>;
++		};
++	};
++
++	wlan {
++		compatible = "samsung,brcm-wlan";
++		gpios = <&gpx2 3 0x1	/* WLAN_EN */
++			 &gpx3 2 0xF	/* WLAN_HOST_WAKE */
++			>;
++		pinctrl-names = "default";
++		pinctrl-0=<&cfg_wlanen &cfg_wlanhostwake>;
++		status = "okay";
++	};
++
++	serial@13800000 {
++		force-auto-flow-control;
++	};
++
++	bluetooth {
++		compatible = "broadcom,bcm4354bt";
++
++		gpios = <&gpx1 7 0	/* BT_EN */
++			 &gpx3 7 0	/* BT_WAKE */
++			 &gpx3 6 0xF	/* BT_HOST_WAKE */
++			 >;
++
++		pinctrl-names = "default";
++		pinctrl-0=<&cfg_hostwake &cfg_btwake &cfg_en>;
++		status = "okay";
++	};
++
++	gpio_keys {
++		compatible = "gpio-keys";
++
++		power_key {
++			label = "power key";
++			linux,code = <116>;
++			gpios = <&gpx2 7 0x1>;
++			gpio-key,wakeup = <1>;
++			debounce-interval = <0>;
++		};
++	};
++
++	i2c@13870000 {
++		status = "okay";
++		samsung,i2c-sda-delay = <100>;
++		samsung,i2c-max-bus-freq = <400000>;
++		#size-cells = <0>;
++
++		gaudio_codec: sgtl5000@0a {
++			compatible = "fsl,sgtl5000";
++			reg = <0x0a>;
++      VDDA-supply = <&vddext_18>;
++      VDDIO-supply = <&vddext_18>;
++      VDDD-supply = <&vddext_18>;
++      //ak4953,pdn-gpio = <&gpc0 3 0x1>;
++
++		};
++
++		bq24296_charger@6b {
++			compatible = "ti,bq24296";
++			reg = <0x6b>;
++			ti,chg_current = <1000 500 2000>;
++		};
++	};
++
++	i2s: i2s@13970000 {
++		status = "okay";
++	};
++
++	sound {
++		compatible = "samsung,artik-ak4953";
++		samsung,audio-cpu = <&i2s>;
++		samsung,audio-codec = <&gaudio_codec>;
++		clocks = <&clock CLK_MOUT_EPLL>,
++			 <&clock CLK_FOUT_EPLL>,
++			 <&clock CLK_MOUT_AUDIO>,
++			 <&clock CLK_DIV_AUDIO>,
++			 <&clock CLK_DIV_I2S>,
++			 <&clock CLK_SCLK_I2S>;
++		clock-names = "mout_epll", "fout_epll",
++			      "mout_audio", "dout_audio",
++			      "dout_i2s", "sclk_i2s";
++    VDDA-supply = <&vddext_18>;
++    VDDIO-supply = <&vddext_18>;
++    VDDD-supply = <&vddext_18>;
++		status = "okay";
++	};
++
++	artik_zb_power {
++		compatible = "samsung,artik_zb_power_v31";
++		pinctrl-names = "default";
++		pinctrl-0 = <&zb_rstn &zb_bootloader>;
++		vdd_zb-supply = <&ldo13_reg>;
++		vdd-supply = <&ldo18_reg>;
++		vdd_zbcore-supply = <&ldo21_reg>;
++	};
++
++	i2c@13890000 {
++		samsung,i2c-sda-delay = <100>;
++		samsung,i2c-max-bus-freq = <400000>;
++		#size-cells = <0>;
++
++	    status = "okay";
++
++        touchscreen@38 {
++             compatible = "focaltech,5x06";
++             reg = <0x38>;
++             interrupt-parent = <&gpx0>;
++             interrupts = <6 0 0>;
++             pinctrl-names = "default";
++             pinctrl-0 = <&touch_irq>;
++             focaltech,name = "ft5336";
++             focaltech,family-id = <0x14>;
++             focaltech,reset-gpio = <&gpx0 4 0x1>;
++             focaltech,irq-gpio = <&gpx0 6 0x1>;
++             focaltech,display-coords = <0 0 320 320>;
++             focaltech,panel-coords = <0 0 320 320>;
++             focaltech,button-map= <139 102 158>;
++             focaltech,no-force-update;
++             focaltech,i2c-pull-up;
++             focaltech,group-id = <1>;
++             focaltech,hard-reset-delay-ms = <20>;
++             focaltech,soft-reset-delay-ms = <200>;
++             focaltech,num-max-touches = <5>;
++             #focaltech,fw-name = "ft_8926_qrd_fw.bin";
++             focaltech,fw-delay-aa-ms = <30>;
++             focaltech,fw-delay-55-ms = <30>;
++             #focaltech,fw-upgrade-id1 = <0x79>;
++             #focaltech,fw-upgrade-id2 = <0x08>;
++             focaltech,fw-delay-readid-ms = <10>;
++             focaltech,fw-delay-era-flsh-ms = <2000>;
++             focaltech,fw-auto-cal;
++             focaltech,ignore-id-check;
++        };
++
++
++	};
++
++	regulators {
++                compatible = "simple-bus";
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++		vddext_18: voltage-regulator-1 {
++                        compatible = "regulator-fixed";
++			regulator-name = "VDDEXT_18";
++                        regulator-min-microvolt = <1800000>;
++                        regulator-max-microvolt = <1800000>;
++		};
++
++		vddext_28: voltage-regulator-2 {
++                        compatible = "regulator-fixed";
++			regulator-name = "VDDEXT_28";
++                        regulator-min-microvolt = <2800000>;
++                        regulator-max-microvolt = <2800000>;
++		};
++	};
++
++	i2c_gpio0: i2c@3c {
++		compatible = "i2c-gpio";
++		gpios = <&gpm4 1 0 &gpm4 0 0>;
++		i2c-gpio,delay-us = <2>;    /* ~100kHz */
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "okay";
++		ov5642@2d {
++			compatible = "samsung,exynos5-fimc-is-sensor-ov5640";
++			reg = <0x3c>;
++        };
++	};
++
++	fimc_is@14000000 {
++		fixed_sensor_id = <202>;
++		fimc_is_dvfs {
++			default_int = <134000>; /* L1 */
++			default_cam = <320000>; /* L0 */
++			default_mif = <400000>; /* L0 */
++			default_i2c = <0>;
++
++//			rear_preview_int = <134000>; /* L1 */
++//			rear_preview_cam = <320000>; /* L0 */
++//			rear_preview_mif = <400000>; /* L0 */
++//			rear_preview_i2c = <0>;
++//
++//			rear_capture_int = <134000>; /* L1 */
++//			rear_capture_cam = <320000>; /* L0 */
++//			rear_capture_mif = <400000>; /* L0 */
++//			rear_capture_i2c = <0>;
++//
++//			rear_camcording_int = <134000>; /* L1 */
++//			rear_camcording_cam = <320000>; /* L0 */
++//			rear_camcording_mif = <400000>; /* L0 */
++//			rear_camcording_i2c = <0>;
++
++			max_int = <134000>; /* L1 */
++			max_cam = <320000>; /* L0 */
++			max_mif = <400000>; /* L0 */
++			max_i2c = <0>;
++		};
++	};
++
++	fimc_is_sensor0: fimc_is_sensor@120A0000 {
++		scenario = <2>;
++		gpio_reset = <&gpm3 2 0x1>;
++		gpios_cam_en = <&gpm0 2 0x1>;
++		gpios_comp_en = <&gpx2 6 0x1>;
++		id = <0>;
++		mclk_ch = <0>;
++		csi_ch = <0>;
++		flite_ch = <0>;
++		i2c_ch = <0>;
++		i2c_addr = <0x3c>;
++		is_bns = <0>;
++		status = "okay";
++	};
++
++};
++
++&pmic_irq {
++	samsung,pins = "gpx3-5";
++	samsung,pin-function = <0xf>;
++	samsung,pin-pud = <3>;
++	samsung,pin-drv = <3>;
++};
++
++&pm_wrsti {
++	samsung,pins = "gpe2-0";
++	samsung,pin-pud = <3>;
++	samsung,pin-con-pdn = <3>;
++};
++
++&spi_1 {
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <0>;
++	num-cs = <2>;
++
++	spidev@0 {
++		compatible = "spidev";
++		reg = <0>;
++		spi-max-frequency = <20000000>;
++		controller-data {
++			cs-gpio = <&gpb 5 0>;
++			samsung,spi-feedback-delay = <2>;
++		};
++	};
++
++	s3fv5rp {
++		compatible = "samsung,s3fv5rp";
++		reg = <1>;
++		gpio-reset = <&gpc0 0 0x1>;
++		gpio-wakeup = <&gpc0 1 0x1>;
++		gpio-status = <&gpc0 2 0x0>;
++		spi-max-frequency = <10000000>;
++		controller-data {
++			cs-gpio = <&gpm3 3 0>;
++			samsung,spi-feedback-delay = <0>;
++		};
++	};
++};
++
++&adc {
++	status = "okay";
++	clock-names = "gate_adcif", "sclk";
++	clocks = <&clock CLK_TSADC>, <&clock CLK_SCLK_TSADC>;
++};
++
++&sec_pwm {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pwm0_out>, <&pwm1_out>;
++};
++
++&i2c_7 {
++	status = "okay";
++	samsung,sysreg-phandle = <&sys_reg>;
++};
++
++&dsi_0 {
++	vddcore-supply = <&ldo6_reg>;
++	vddio-supply = <&ldo6_reg>;
++	samsung,pll-clock-frequency = <24000000>;
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@1 {
++			reg = <1>;
++
++			dsi_out: endpoint {
++				remote-endpoint = <&dsi_in>;
++				samsung,burst-clock-frequency = <400000000>;
++				samsung,esc-clock-frequency = <7200000>;
++			};
++		};
++	};
++
++	panel@0 {
++		compatible = "auo,x163qln";
++		reg = <0>;
++		vdd3-supply = <&vddext_28>;
++		vci-supply = <&vddext_18>;
++		reset-gpio = <&gpe2 1 0>;
++		psr-te-gpio = <&gpm0 0 0>;
++		power-on-delay= <30>;
++		power-off-delay= <120>;
++		reset-delay = <5>;
++		init-delay = <100>;
++		//flip-horizontal;
++		flip-vertical;
++		panel-width-mm = <30>;
++		panel-height-mm = <30>;
++
++		display-timings {
++			timing-0 {
++				clock-frequency = <130674>;
++				hactive = <320>;
++				vactive = <320>;
++				hfront-porch = <10>;
++				hback-porch = <131>;
++				hsync-len = <0>;
++				vfront-porch = <0>;
++				vback-porch = <250>;
++				vsync-len = <20>;
++				hsync-active = <1>;
++				vsync-active = <1>;
++
++			};
++		};
++
++		port {
++			dsi_in: endpoint {
++				remote-endpoint = <&dsi_out>;
++			};
++		};
++	};
++};
++
++&fimd_drm {
++	status = "okay";
++};
 diff -Naur arch/arm/configs/artik5_defconfig arch/arm/configs/artik5_defconfig
 --- arch/arm/configs/artik5_defconfig	2016-04-01 04:23:41.000000000 +0200
-+++ arch/arm/configs/artik5_defconfig	2017-03-02 16:32:07.000000000 +0100
-@@ -308,6 +308,9 @@
++++ arch/arm/configs/artik5_defconfig	2017-06-01 11:35:57.801320400 +0200
+@@ -279,6 +279,7 @@
+ CONFIG_KEYBOARD_GPIO=y
+ CONFIG_KEYBOARD_SAMSUNG=y
+ CONFIG_INPUT_TOUCHSCREEN=y
++CONFIG_TOUCHSCREEN_KITRA_FT5X06=y
+ CONFIG_INPUT_MISC=y
+ CONFIG_INPUT_UINPUT=y
+ # CONFIG_LEGACY_PTYS is not set
+@@ -308,6 +309,9 @@
  CONFIG_REGULATOR_S2MPS14=y
  CONFIG_MEDIA_SUPPORT=y
  CONFIG_MEDIA_CAMERA_SUPPORT=y
@@ -210,7 +1056,7 @@ diff -Naur arch/arm/configs/artik5_defconfig arch/arm/configs/artik5_defconfig
  CONFIG_VIDEOBUF2_ION=y
  CONFIG_V4L_PLATFORM_DRIVERS=y
  CONFIG_VIDEO_EXYNOS_GSCALER=y
-@@ -321,7 +324,8 @@
+@@ -321,7 +325,8 @@
  CONFIG_DRM_EXYNOS_FIMD=y
  CONFIG_DRM_EXYNOS_DSI=y
  # CONFIG_DRM_EXYNOS_DP is not set
@@ -220,11 +1066,7 @@ diff -Naur arch/arm/configs/artik5_defconfig arch/arm/configs/artik5_defconfig
  CONFIG_ION=y
  CONFIG_ION_EXYNOS=y
  CONFIG_ION_EXYNOS_OF=y
-@@ -338,11 +342,13 @@
- CONFIG_LCD_CLASS_DEVICE=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_LOGO=y
-+CONFIG_LOGO_KITRA_KANKAN=y
+@@ -341,8 +346,9 @@
  CONFIG_SOUND=y
  CONFIG_SND=y
  CONFIG_SND_SOC=y
@@ -236,14 +1078,516 @@ diff -Naur arch/arm/configs/artik5_defconfig arch/arm/configs/artik5_defconfig
  CONFIG_UHID=y
  CONFIG_USB_PHY=y
  CONFIG_SAMSUNG_USB2PHY=y
-@@ -472,6 +478,7 @@
- CONFIG_FUNCTION_PROFILER=y
- # CONFIG_ARM_UNWIND is not set
- CONFIG_DEBUG_USER=y
-+CONFIG_DYNAMIC_DEBUG=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_SMACK=y
- CONFIG_SECURITY_SMACK_PERMISSIVE_MODE=y
+diff -Naur arch/arm/configs/artik5_defconfig.bak arch/arm/configs/artik5_defconfig.bak
+--- arch/arm/configs/artik5_defconfig.bak	1970-01-01 01:00:00.000000000 +0100
++++ arch/arm/configs/artik5_defconfig.bak	2017-05-31 15:12:47.365473200 +0200
+@@ -0,0 +1,506 @@
++CONFIG_SYSVIPC=y
++CONFIG_FHANDLE=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_CGROUPS=y
++CONFIG_CGROUP_DEBUG=y
++CONFIG_CGROUP_FREEZER=y
++CONFIG_CGROUP_CPUACCT=y
++CONFIG_RESOURCE_COUNTERS=y
++CONFIG_CGROUP_SCHED=y
++CONFIG_RT_GROUP_SCHED=y
++CONFIG_NAMESPACES=y
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_RD_BZIP2=y
++CONFIG_RD_LZMA=y
++CONFIG_RD_XZ=y
++CONFIG_RD_LZO=y
++CONFIG_PANIC_TIMEOUT=5
++CONFIG_KALLSYMS_ALL=y
++CONFIG_EMBEDDED=y
++CONFIG_PERF_EVENTS=y
++CONFIG_MODULES=y
++CONFIG_MODULE_FORCE_LOAD=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_BLK_DEV_BSGLIB=y
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_ARCH_EXYNOS=y
++CONFIG_S3C_LOWLEVEL_UART_PORT=2
++# CONFIG_ARCH_EXYNOS4 is not set
++# CONFIG_EXYNOS_SNAPSHOT is not set
++CONFIG_SMP=y
++CONFIG_NR_CPUS=2
++CONFIG_PREEMPT=y
++CONFIG_AEABI=y
++# CONFIG_OABI_COMPAT is not set
++# CONFIG_ATAGS is not set
++CONFIG_BUILD_ARM_APPENDED_DTB_IMAGE=y
++CONFIG_BUILD_ARM_APPENDED_DTB_IMAGE_NAMES="exynos3250-artik5"
++CONFIG_ZBOOT_ROM_TEXT=0x0
++CONFIG_ZBOOT_ROM_BSS=0x0
++CONFIG_ARM_APPENDED_DTB=y
++CONFIG_ARM_ATAG_DTB_COMPAT=y
++CONFIG_CMDLINE="console=ttySAC2,115200 vmalloc=256M ess_setup=0x46000000"
++CONFIG_AUTO_ZRELADDR=y
++CONFIG_CPU_FREQ=y
++CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE=y
++CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
++CONFIG_CPU_FREQ_GOV_POWERSAVE=y
++CONFIG_CPU_FREQ_GOV_USERSPACE=y
++CONFIG_CPU_FREQ_GOV_ONDEMAND=y
++CONFIG_ARM_EXYNOS_CPUFREQ=y
++CONFIG_CPU_IDLE=y
++# CONFIG_EXYNOS_CPUIDLE_C2 is not set
++CONFIG_VFP=y
++CONFIG_NEON=y
++CONFIG_PM_AUTOSLEEP=y
++CONFIG_PM_WAKELOCKS=y
++CONFIG_PM_WAKELOCKS_LIMIT=0
++# CONFIG_PM_WAKELOCKS_GC is not set
++CONFIG_PM_RUNTIME=y
++CONFIG_SUSPEND_TIME=y
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=y
++CONFIG_XFRM_MIGRATE=y
++CONFIG_NET_KEY=y
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++CONFIG_IP_PNP=y
++CONFIG_NET_IPIP=m
++CONFIG_NET_IPGRE_DEMUX=m
++CONFIG_NET_IPGRE=m
++CONFIG_ARPD=y
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=y
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=m
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_TCP_MD5SIG=y
++CONFIG_IPV6=y
++CONFIG_IPV6_PRIVACY=y
++CONFIG_IPV6_ROUTER_PREF=y
++CONFIG_IPV6_OPTIMISTIC_DAD=y
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_MIP6=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++CONFIG_IPV6_TUNNEL=y
++CONFIG_IPV6_MULTIPLE_TABLES=y
++# CONFIG_ANDROID_PARANOID_NETWORK is not set
++CONFIG_NETFILTER=y
++CONFIG_NF_CONNTRACK=y
++CONFIG_NF_CONNTRACK_EVENTS=y
++CONFIG_NF_CT_PROTO_DCCP=y
++CONFIG_NF_CT_PROTO_SCTP=y
++CONFIG_NF_CT_PROTO_UDPLITE=y
++CONFIG_NF_CONNTRACK_AMANDA=y
++CONFIG_NF_CONNTRACK_FTP=y
++CONFIG_NF_CONNTRACK_H323=y
++CONFIG_NF_CONNTRACK_IRC=y
++CONFIG_NF_CONNTRACK_NETBIOS_NS=y
++CONFIG_NF_CONNTRACK_PPTP=y
++CONFIG_NF_CONNTRACK_SANE=y
++CONFIG_NF_CONNTRACK_TFTP=y
++CONFIG_NF_CT_NETLINK=y
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=y
++CONFIG_NETFILTER_XT_TARGET_CONNMARK=y
++CONFIG_NETFILTER_XT_TARGET_MARK=y
++CONFIG_NETFILTER_XT_TARGET_NFLOG=y
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=y
++CONFIG_NETFILTER_XT_MATCH_COMMENT=y
++CONFIG_NETFILTER_XT_MATCH_CONNBYTES=y
++CONFIG_NETFILTER_XT_MATCH_CONNLABEL=y
++CONFIG_NETFILTER_XT_MATCH_CONNLIMIT=y
++CONFIG_NETFILTER_XT_MATCH_CONNMARK=y
++CONFIG_NETFILTER_XT_MATCH_CONNTRACK=y
++CONFIG_NETFILTER_XT_MATCH_ECN=y
++CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
++CONFIG_NETFILTER_XT_MATCH_HELPER=y
++CONFIG_NETFILTER_XT_MATCH_HL=y
++CONFIG_NETFILTER_XT_MATCH_IPRANGE=y
++CONFIG_NETFILTER_XT_MATCH_LENGTH=y
++CONFIG_NETFILTER_XT_MATCH_LIMIT=y
++CONFIG_NETFILTER_XT_MATCH_MAC=y
++CONFIG_NETFILTER_XT_MATCH_MARK=y
++CONFIG_NETFILTER_XT_MATCH_POLICY=y
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=y
++CONFIG_NETFILTER_XT_MATCH_QUOTA=y
++CONFIG_NETFILTER_XT_MATCH_QUOTA2=y
++CONFIG_NETFILTER_XT_MATCH_SCTP=y
++CONFIG_NETFILTER_XT_MATCH_STATE=y
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=y
++CONFIG_NETFILTER_XT_MATCH_STRING=y
++CONFIG_NETFILTER_XT_MATCH_TIME=y
++CONFIG_NETFILTER_XT_MATCH_U32=y
++CONFIG_IP_SET=m
++CONFIG_IP_VS=m
++CONFIG_NF_CONNTRACK_IPV4=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_REJECT_SKERR=y
++CONFIG_IP_NF_TARGET_ULOG=m
++CONFIG_NF_NAT_IPV4=m
++CONFIG_IP_NF_TARGET_MASQUERADE=m
++CONFIG_IP_NF_TARGET_NETMAP=m
++CONFIG_IP_NF_TARGET_REDIRECT=m
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_CLUSTERIP=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_ARPTABLES=y
++CONFIG_IP_NF_ARPFILTER=y
++CONFIG_IP_NF_ARP_MANGLE=y
++CONFIG_NF_CONNTRACK_IPV6=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_AH=m
++CONFIG_IP6_NF_MATCH_EUI64=m
++CONFIG_IP6_NF_MATCH_FRAG=m
++CONFIG_IP6_NF_MATCH_OPTS=m
++CONFIG_IP6_NF_MATCH_HL=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++CONFIG_IP6_NF_MATCH_MH=m
++CONFIG_IP6_NF_MATCH_RPFILTER=m
++CONFIG_IP6_NF_MATCH_RT=m
++CONFIG_IP6_NF_TARGET_HL=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_TARGET_REJECT_SKERR=y
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_IP6_NF_RAW=m
++CONFIG_NF_NAT_IPV6=m
++CONFIG_IP6_NF_TARGET_MASQUERADE=m
++CONFIG_IP6_NF_TARGET_NPT=m
++CONFIG_BRIDGE=y
++CONFIG_BRIDGE_VLAN_FILTERING=y
++CONFIG_VLAN_8021Q=y
++CONFIG_VLAN_8021Q_GVRP=y
++CONFIG_VLAN_8021Q_MVRP=y
++CONFIG_PHONET=y
++CONFIG_NET_SCHED=y
++CONFIG_NET_SCH_HTB=y
++CONFIG_NET_CLS_U32=y
++CONFIG_NET_EMATCH=y
++CONFIG_NET_EMATCH_U32=y
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=y
++CONFIG_NET_ACT_GACT=y
++CONFIG_NET_ACT_MIRRED=y
++CONFIG_BT=m
++CONFIG_BT_RFCOMM=m
++CONFIG_BT_RFCOMM_TTY=y
++CONFIG_BT_BNEP=m
++CONFIG_BT_BNEP_MC_FILTER=y
++CONFIG_BT_BNEP_PROTO_FILTER=y
++CONFIG_BT_HIDP=m
++CONFIG_BT_HCIUART=m
++CONFIG_BT_HCIUART_H4=y
++CONFIG_BT_HCIUART_BCSP=y
++CONFIG_BT_HCIUART_ATH3K=y
++CONFIG_BT_HCIUART_LL=y
++CONFIG_BT_HCIUART_3WIRE=y
++CONFIG_BT_BCM4354=m
++CONFIG_CFG80211=m
++CONFIG_NL80211_TESTMODE=y
++CONFIG_CFG80211_WEXT=y
++CONFIG_CFG80211_ALLOW_RECONNECT=y
++CONFIG_MAC80211=m
++CONFIG_RFKILL=m
++CONFIG_RFKILL_INPUT=y
++CONFIG_RFKILL_REGULATOR=m
++CONFIG_RFKILL_GPIO=m
++CONFIG_NFC=m
++CONFIG_NFC_NCI=m
++CONFIG_NFC_HCI=m
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++CONFIG_EXTRA_FIRMWARE="mfc_fw_v7.8.bin"
++CONFIG_CMA_SIZE_MBYTES=64
++CONFIG_CMA_AREAS=10
++CONFIG_PROC_DEVICETREE=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_SIZE=16384
++CONFIG_SE_S3FV5RP=y
++CONFIG_UID_STAT=y
++CONFIG_TIZEN_GLOBAL_LOCK=y
++CONFIG_ARTIK_ZB_POWER=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_MD=y
++CONFIG_BLK_DEV_DM=y
++CONFIG_DM_CRYPT=y
++CONFIG_DM_UEVENT=y
++CONFIG_NETDEVICES=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_MII=y
++CONFIG_MACVLAN=m
++CONFIG_MACVTAP=m
++CONFIG_NETCONSOLE=m
++CONFIG_NETCONSOLE_DYNAMIC=y
++CONFIG_NETPOLL_TRAP=y
++CONFIG_TUN=y
++CONFIG_VETH=m
++CONFIG_NET_VENDOR_ASIX=y
++CONFIG_SPI_AX88796C=y
++CONFIG_PHYLIB=y
++CONFIG_PPP=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPP_MPPE=m
++CONFIG_PPPOLAC=m
++CONFIG_PPPOPNS=m
++CONFIG_BCM4354=m
++CONFIG_BCMDHD_FW_PATH="/etc/wifi/fw.bin"
++CONFIG_BCMDHD_NVRAM_PATH="/etc/wifi/nvram.txt"
++CONFIG_HOSTAP=y
++CONFIG_INPUT_EVDEV=y
++CONFIG_INPUT_KEYRESET=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_KEYBOARD_SAMSUNG=y
++CONFIG_INPUT_TOUCHSCREEN=y
++CONFIG_INPUT_MISC=y
++CONFIG_INPUT_UINPUT=y
++# CONFIG_LEGACY_PTYS is not set
++CONFIG_SERIAL_SAMSUNG=y
++CONFIG_SERIAL_SAMSUNG_CONSOLE=y
++CONFIG_HW_RANDOM=y
++CONFIG_I2C_CHARDEV=y
++CONFIG_I2C_GPIO=y
++CONFIG_I2C_S3C2410=y
++CONFIG_SPI=y
++CONFIG_SPI_S3C64XX=y
++CONFIG_SPI_SPIDEV=y
++CONFIG_DEBUG_GPIO=y
++CONFIG_GPIO_SYSFS=y
++CONFIG_POWER_SUPPLY=y
++CONFIG_CW2015_BATTERY=y
++CONFIG_CHARGER_BQ2429X=y
++# CONFIG_HWMON is not set
++CONFIG_THERMAL=y
++CONFIG_CPU_THERMAL=y
++CONFIG_EXYNOS_THERMAL=y
++CONFIG_WATCHDOG=y
++CONFIG_S3C2410_WATCHDOG=y
++CONFIG_MFD_SEC_CORE=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED_VOLTAGE=y
++CONFIG_REGULATOR_S2MPS14=y
++CONFIG_MEDIA_SUPPORT=y
++CONFIG_MEDIA_CAMERA_SUPPORT=y
++#CONFIG_SOC_CAMERA=y
++#CONFIG_SOC_CAMERA_PLATFORM=y
++#CONFIG_SOC_CAMERA_OV5642=m
++CONFIG_VIDEOBUF2_ION=y
++CONFIG_V4L_PLATFORM_DRIVERS=y
++CONFIG_VIDEO_EXYNOS_GSCALER=y
++CONFIG_EXYNOS_MFC_FW_NAME="mfc_fw_v7.8.bin"
++# CONFIG_VIDEO_EXYNOS_HEVC is not set
++CONFIG_VIDEO_EXYNOS_FIMC_IS=y
++CONFIG_FIMC_IS_SUPPORT_V4L2_CAMERA=y
++CONFIG_VIDEO_EXYNOS_HX_JPEG=y
++CONFIG_DRM=y
++CONFIG_DRM_EXYNOS=y
++CONFIG_DRM_EXYNOS_FIMD=y
++CONFIG_DRM_EXYNOS_DSI=y
++# CONFIG_DRM_EXYNOS_DP is not set
++CONFIG_DRM_PANEL_SPARKLING_EW400WV=n
++CONFIG_DRM_PANEL_AUO_X163QLN=y
++CONFIG_ION=y
++CONFIG_ION_EXYNOS=y
++CONFIG_ION_EXYNOS_OF=y
++CONFIG_MALI400=y
++CONFIG_DECON=y
++CONFIG_FB_I80_COMMAND_MODE=y
++CONFIG_FB_I80_SW_TRIGGER=y
++CONFIG_FB_HIBERNATION_DISPLAY=y
++CONFIG_FB_HIBERNATION_DISPLAY_POWER_GATING=y
++CONFIG_DECON_MIPI_DSI=y
++CONFIG_FB_SMIES=y
++CONFIG_DECON_LCD=y
++CONFIG_LCD_MIPI_SHIRI=y
++CONFIG_LCD_CLASS_DEVICE=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_LOGO=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SOC=y
++CONFIG_SND_SOC_SAMSUNG=y
++CONFIG_SND_SOC_SAMSUNG_ARTIK_AK4953=y
++CONFIG_SND_SOC_SGTL5000=y
++CONFIG_UHID=y
++CONFIG_USB_PHY=y
++CONFIG_SAMSUNG_USB2PHY=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_S3C_HSOTG=y
++CONFIG_USB_S3C_HSOTG_ENABLE_WAKELOCK=y
++CONFIG_USB_G_ANDROID=y
++CONFIG_USB_ANDROID_RNDIS_DWORD_ALIGNED=y
++CONFIG_MMC=y
++CONFIG_MMC_UNSAFE_RESUME=y
++CONFIG_MMC_CLKGATE=y
++CONFIG_MMC_EMBEDDED_SDIO=y
++CONFIG_MMC_PARANOID_SD_INIT=y
++CONFIG_SDIO_UART=y
++CONFIG_MMC_DW=y
++CONFIG_MMC_DW_IDMAC=y
++CONFIG_MMC_DW_EXYNOS=y
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_SWITCH=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_SEC=y
++CONFIG_STAGING=y
++CONFIG_ANDROID=y
++CONFIG_SYNC=y
++CONFIG_SW_SYNC=y
++CONFIG_SW_SYNC_USER=y
++CONFIG_SAMSUNG=y
++CONFIG_SEC_SYSFS=y
++CONFIG_FB_TFT=m
++CONFIG_FB_TFT_AGM1264K_FL=m
++CONFIG_FB_TFT_BD663474=m
++CONFIG_FB_TFT_HX8340BN=m
++CONFIG_FB_TFT_HX8347D=m
++CONFIG_FB_TFT_HX8353D=m
++CONFIG_FB_TFT_HX8357D=m
++CONFIG_FB_TFT_ILI9163=m
++CONFIG_FB_TFT_ILI9320=m
++CONFIG_FB_TFT_ILI9325=m
++CONFIG_FB_TFT_ILI9340=m
++CONFIG_FB_TFT_ILI9341=m
++CONFIG_FB_TFT_ILI9481=m
++CONFIG_FB_TFT_ILI9486=m
++CONFIG_FB_TFT_PCD8544=m
++CONFIG_FB_TFT_RA8875=m
++CONFIG_FB_TFT_S6D02A1=m
++CONFIG_FB_TFT_S6D1121=m
++CONFIG_FB_TFT_SSD1289=m
++CONFIG_FB_TFT_SSD1306=m
++CONFIG_FB_TFT_SSD1331=m
++CONFIG_FB_TFT_SSD1351=m
++CONFIG_FB_TFT_ST7735R=m
++CONFIG_FB_TFT_ST7789V=m
++CONFIG_FB_TFT_TINYLCD=m
++CONFIG_FB_TFT_TLS8204=m
++CONFIG_FB_TFT_UC1611=m
++CONFIG_FB_TFT_UC1701=m
++CONFIG_FB_TFT_UPD161704=m
++CONFIG_FB_TFT_WATTEROTT=m
++CONFIG_FB_FLEX=m
++CONFIG_FB_TFT_FBTFT_DEVICE=m
++CONFIG_COMMON_CLK_DEBUG=y
++CONFIG_EXYNOS_IOMMU=y
++CONFIG_EXYNOS5_IOMMU=y
++# CONFIG_EXYNOS_IOMMU_NO_MASTER_CLKGATE is not set
++# CONFIG_EXYNOS_IOMMU_EVENT_LOG is not set
++CONFIG_PM_DEVFREQ=y
++CONFIG_ARM_EXYNOS3250_BUS_DEVFREQ=y
++CONFIG_IIO=y
++CONFIG_EXYNOS_ADC=y
++CONFIG_PWM=y
++CONFIG_PWM_SAMSUNG=y
++CONFIG_EXT4_FS=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++CONFIG_REISERFS_FS=m
++CONFIG_BTRFS_FS=m
++CONFIG_BTRFS_FS_POSIX_ACL=y
++CONFIG_BTRFS_FS_CHECK_INTEGRITY=y
++CONFIG_FANOTIFY=y
++CONFIG_AUTOFS4_FS=y
++CONFIG_FUSE_FS=m
++CONFIG_CUSE=m
++CONFIG_MSDOS_FS=y
++CONFIG_VFAT_FS=y
++CONFIG_NTFS_FS=m
++CONFIG_NTFS_RW=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++CONFIG_HFS_FS=m
++CONFIG_HFSPLUS_FS=m
++CONFIG_CRAMFS=y
++CONFIG_SQUASHFS=m
++CONFIG_SQUASHFS_XATTR=y
++CONFIG_SQUASHFS_LZO=y
++CONFIG_SQUASHFS_XZ=y
++CONFIG_ROMFS_FS=y
++CONFIG_F2FS_FS=m
++CONFIG_NFS_FS=y
++CONFIG_NFS_V4=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V4=y
++CONFIG_CIFS=m
++CONFIG_CIFS_STATS=y
++CONFIG_CIFS_STATS2=y
++CONFIG_CIFS_WEAK_PW_HASH=y
++CONFIG_CIFS_UPCALL=y
++CONFIG_CIFS_XATTR=y
++CONFIG_CIFS_POSIX=y
++CONFIG_CIFS_ACL=y
++CONFIG_CIFS_DFS_UPCALL=y
++CONFIG_CIFS_SMB2=y
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_PRINTK_TIME=y
++CONFIG_FRAME_WARN=2048
++CONFIG_LOCKUP_DETECTOR=y
++CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
++# CONFIG_DEBUG_PREEMPT is not set
++CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_MEMORY_INIT=y
++CONFIG_DEBUG_LIST=y
++CONFIG_FUNCTION_TRACER=y
++CONFIG_BLK_DEV_IO_TRACE=y
++CONFIG_FUNCTION_PROFILER=y
++# CONFIG_ARM_UNWIND is not set
++CONFIG_DEBUG_USER=y
++CONFIG_SECURITY=y
++CONFIG_SECURITY_SMACK=y
++CONFIG_SECURITY_SMACK_PERMISSIVE_MODE=y
++CONFIG_CRYPTO_PCRYPT=m
++CONFIG_CRYPTO_CRYPTD=m
++CONFIG_CRYPTO_CCM=m
++CONFIG_CRYPTO_GCM=m
++CONFIG_CRYPTO_CTR=y
++CONFIG_CRYPTO_CTS=m
++CONFIG_CRYPTO_LRW=m
++CONFIG_CRYPTO_PCBC=m
++CONFIG_CRYPTO_XTS=y
++CONFIG_CRYPTO_CMAC=m
++CONFIG_CRYPTO_XCBC=m
++CONFIG_CRYPTO_VMAC=m
++CONFIG_CRYPTO_CRC32=m
++CONFIG_CRYPTO_SHA256=y
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_TWOFISH=y
++CONFIG_CRYPTO_DEFLATE=y
++CONFIG_CRYPTO_ZLIB=m
++CONFIG_CRYPTO_LZO=m
++CONFIG_CRYPTO_ANSI_CPRNG=y
++CONFIG_CRYPTO_USER_API_HASH=m
++CONFIG_CRYPTO_USER_API_SKCIPHER=m
++CONFIG_CRC_CCITT=y
++CONFIG_LIBCRC32C=y
 diff -Naur drivers/gpu/drm/panel/Kconfig drivers/gpu/drm/panel/Kconfig
 --- drivers/gpu/drm/panel/Kconfig	2016-04-01 04:23:41.000000000 +0200
 +++ drivers/gpu/drm/panel/Kconfig	2017-03-02 16:32:07.000000000 +0100
@@ -270,7 +1614,561 @@ diff -Naur drivers/gpu/drm/panel/Makefile drivers/gpu/drm/panel/Makefile
 +obj-$(CONFIG_DRM_PANEL_AUO_X163QLN) += panel-auo-x163qln01.o
 diff -Naur drivers/gpu/drm/panel/panel-auo-x163qln01.c drivers/gpu/drm/panel/panel-auo-x163qln01.c
 --- drivers/gpu/drm/panel/panel-auo-x163qln01.c	1970-01-01 01:00:00.000000000 +0100
-+++ drivers/gpu/drm/panel/panel-auo-x163qln01.c	2017-03-02 16:32:07.000000000 +0100
++++ drivers/gpu/drm/panel/panel-auo-x163qln01.c	2017-06-01 11:34:24.669477100 +0200
+@@ -0,0 +1,550 @@
++/*
++ * MIPI-DSI based AUO x163qln01 TFT LCD 1.63 inch panel driver.
++ *
++ * Copyright (c) 2016 Kalpa srl
++ *
++ * Chanho Park <danilo.sia@kalpa.it>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++*/
++
++#include <drm/drmP.h>
++#include <drm/drm_mipi_dsi.h>
++#include <drm/drm_panel.h>
++
++#include <linux/of_gpio.h>
++#include <linux/regulator/consumer.h>
++
++#include <video/mipi_display.h>
++#include <video/of_videomode.h>
++#include <video/videomode.h>
++#include <linux/backlight.h>
++
++struct x163qln {
++	struct device *dev;
++	struct drm_panel panel;
++
++	struct regulator_bulk_data supplies[2];
++	int reset_gpio;
++	int psr_te_gpio;
++	u32 power_on_delay;
++	u32 reset_delay;
++	u32 init_delay;
++	bool flip_horizontal;
++	bool flip_vertical;
++	struct videomode vm;
++	u32 width_mm;
++	u32 height_mm;
++	bool is_power_on;
++
++	u8 id[3];
++	/* This field is tested by functions directly accessing DSI bus before
++	 * transfer, transfer is skipped if it is set. In case of transfer
++	 * failure or unexpected response the field is set to error value.
++	 * Such construct allows to eliminate many checks in higher level
++	 * functions.
++	 */
++	int error;
++};
++
++static inline struct x163qln *panel_to_x163qln(struct drm_panel *panel)
++{
++	return container_of(panel, struct x163qln, panel);
++}
++
++static int x163qln_clear_error(struct x163qln *ctx)
++{
++	int ret = ctx->error;
++
++	ctx->error = 0;
++	return ret;
++}
++
++static void x163qln_dcs_turn_on_peripheral(struct x163qln *ctx)
++{
++	ssize_t ret;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (ctx->error < 0)
++		return;
++
++	ret = 	mipi_dsi_turn_on_peripheral(dsi);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd turning on  dcs seq\n", ret);
++		ctx->error = ret;
++	}
++}
++
++
++static void x163qln_dcs_display_on(struct x163qln *ctx)
++{
++	ssize_t ret;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (ctx->error < 0)
++		return;
++
++	ret = 	mipi_dsi_dcs_set_display_on(dsi);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd turning on  dcs seq\n", ret);
++		ctx->error = ret;
++	}
++}
++
++
++static void x163qln_dcs_display_off(struct x163qln *ctx)
++{
++	ssize_t ret;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (ctx->error < 0)
++		return;
++
++	ret = 	mipi_dsi_dcs_set_display_off(dsi);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd turning on  dcs seq\n", ret);
++		ctx->error = ret;
++	}
++}
++
++static void x163qln_dcs_exit_sleep_mode(struct x163qln *ctx)
++{
++	ssize_t ret;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (ctx->error < 0)
++		return;
++
++	ret = 	mipi_dsi_dcs_exit_sleep_mode(dsi);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd turning on  dcs seq\n", ret);
++		ctx->error = ret;
++	}
++}
++
++static void x163qln_dcs_enter_sleep_mode(struct x163qln *ctx)
++{
++	ssize_t ret;
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++
++	if (ctx->error < 0)
++		return;
++
++	ret = 	mipi_dsi_dcs_enter_sleep_mode(dsi);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd turning on  dcs seq\n", ret);
++		ctx->error = ret;
++	}
++}
++
++
++static void x163qln_dcs_write(struct x163qln *ctx, const void *data,
++		size_t len)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	ssize_t ret;
++
++	if (ctx->error < 0)
++		return;
++
++	ret = mipi_dsi_dcs_write_buffer(dsi, data, len);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %zd writing dcs seq: %*ph\n", ret,
++			(int)len, data);
++		ctx->error = ret;
++	}
++}
++
++#define x163qln_dcs_write_seq(ctx, seq...) \
++({\
++	const u8 d[] = { seq };\
++	BUILD_BUG_ON_MSG(ARRAY_SIZE(d) > 64, "DCS sequence too big for stack");\
++	x163qln_dcs_write(ctx, d, ARRAY_SIZE(d));\
++})
++
++#define x163qln_dcs_write_seq_static(ctx, seq...) \
++({\
++	static const u8 d[] = { seq };\
++	x163qln_dcs_write(ctx, d, ARRAY_SIZE(d));\
++})
++
++static void x163qln_apply_power_cond(struct x163qln *ctx)
++{
++	x163qln_dcs_write_seq_static(ctx, 0xF0, 0x55, 0xAA, 0x52, 0x08, 0x00);
++	x163qln_dcs_write_seq_static(ctx,	0xBD, 0x01, 0x90, 0x14, 0x14, 0x00);
++	x163qln_dcs_write_seq_static(ctx,	0xBE, 0x01, 0x90, 0x14, 0x14, 0x01);
++	x163qln_dcs_write_seq_static(ctx,	0xBF, 0x01, 0x90, 0x14, 0x14, 0x00);
++	x163qln_dcs_write_seq_static(ctx,	0xBB, 0x07, 0x07, 0x07);
++	x163qln_dcs_write_seq_static(ctx,	0xC7, 0x40);
++	x163qln_dcs_write_seq_static(ctx, 0xF0, 0x55, 0xAA, 0x52, 0x08, 0x02);
++	x163qln_dcs_write_seq_static(ctx, 0xFE, 0x08, 0x50);
++	x163qln_dcs_write_seq_static(ctx, 0xC3, 0xF2, 0x85, 0x04);
++	x163qln_dcs_write_seq_static(ctx, 0xCA, 0x04);
++	x163qln_dcs_write_seq_static(ctx, 0xF0, 0x55, 0xAA, 0x52, 0x08, 0x01);
++	x163qln_dcs_write_seq_static(ctx, 0xB0, 0x03, 0x03, 0x03);
++	x163qln_dcs_write_seq_static(ctx, 0xB1, 0x05, 0x05, 0x05);
++	x163qln_dcs_write_seq_static(ctx, 0xB2, 0x01, 0x01, 0x01);
++	x163qln_dcs_write_seq_static(ctx, 0xB4, 0x07, 0x07, 0x07);
++	x163qln_dcs_write_seq_static(ctx, 0xB5, 0x05, 0x05, 0x05);
++	x163qln_dcs_write_seq_static(ctx, 0xB6, 0x53, 0x53, 0x53);
++	x163qln_dcs_write_seq_static(ctx, 0xB7, 0x33, 0x33, 0x33);
++	x163qln_dcs_write_seq_static(ctx, 0xB8, 0x23, 0x23, 0x23);
++	x163qln_dcs_write_seq_static(ctx, 0xB9, 0x03, 0x03, 0x03);
++	x163qln_dcs_write_seq_static(ctx, 0xBA, 0x13, 0x13, 0x13);
++	x163qln_dcs_write_seq_static(ctx, 0xBE, 0x22, 0x30, 0x70);
++	x163qln_dcs_write_seq_static(ctx, 0xCF, 0xFF, 0xD4, 0x95, 0xEF, 0x4F, 0x00, 0x04);
++
++
++	x163qln_dcs_write_seq_static(ctx, 0x35, 0x01);
++	x163qln_dcs_write_seq_static(ctx, 0x36, 0x00);
++	x163qln_dcs_write_seq_static(ctx, 0xC0, 0x20);
++	x163qln_dcs_write_seq_static(ctx, 0xC2, 0x17, 0x17, 0x17, 0x17, 0x17, 0x0B);
++	ctx->error =0;
++
++	x163qln_dcs_turn_on_peripheral(ctx);
++	x163qln_dcs_exit_sleep_mode(ctx);
++	msleep(300);
++	x163qln_dcs_display_on(ctx);
++
++}
++
++static void x163qln_gamma_setting(struct x163qln *ctx)
++{
++
++}
++
++static void x163qln_apply_display_parameter(struct x163qln *ctx)
++{
++
++}
++
++static void x163qln_set_maximum_return_packet_size(struct x163qln *ctx,
++						   u16 size)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	int ret;
++
++	if (ctx->error < 0)
++		return;
++
++	ret = mipi_dsi_set_maximum_return_packet_size(dsi, size);
++	if (ret < 0) {
++		dev_err(ctx->dev,
++			"error %d setting maximum return packet size to %d\n",
++			ret, size);
++		ctx->error = ret;
++	}
++}
++
++static int x163qln_dcs_read(struct x163qln *ctx, u8 cmd, void *data, size_t len)
++{
++	struct mipi_dsi_device *dsi = to_mipi_dsi_device(ctx->dev);
++	int ret;
++
++	if (ctx->error < 0)
++		return ctx->error;
++
++	ret = mipi_dsi_dcs_read(dsi, cmd, data, len);
++	if (ret < 0) {
++		dev_err(ctx->dev, "error %d reading dcs seq(%#x)\n", ret, cmd);
++		ctx->error = ret;
++	}
++
++	return ret;
++}
++
++static void x163qln_read_mtp_id(struct x163qln *ctx)
++{
++	int ret;
++	int id_len = ARRAY_SIZE(ctx->id);
++
++	ret = x163qln_dcs_read(ctx, 0x04, ctx->id, id_len);
++	if (ret < id_len || ctx->error < 0) {
++		dev_err(ctx->dev, "read id failed\n");
++		ctx->error = -EIO;
++		return;
++	}
++}
++
++static void x163qln_panel_init(struct x163qln *ctx)
++{
++	x163qln_apply_power_cond(ctx);
++/*
++	x163qln_set_maximum_return_packet_size(ctx, 3);
++
++	x163qln_read_mtp_id(ctx);
++	if (ctx->error != 0)
++		return;
++*/
++	x163qln_apply_display_parameter(ctx);
++}
++
++static int x163qln_power_on(struct x163qln *ctx)
++{
++	int ret;
++
++	if (ctx->is_power_on)
++		return 0;
++
++	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
++	if (ret < 0)
++		return ret;
++
++
++	msleep(ctx->power_on_delay);
++
++	gpio_direction_output(ctx->reset_gpio, 0);
++	usleep_range(5000, 6000);
++	gpio_set_value(ctx->reset_gpio, 1);
++
++	msleep(ctx->reset_delay);
++
++	ctx->is_power_on = true;
++
++	return 0;
++}
++
++static int x163qln_power_off(struct x163qln *ctx)
++{
++	if (!ctx->is_power_on)
++		return 0;
++	gpio_set_value(ctx->reset_gpio, 0);
++	usleep_range(5000, 6000);
++	regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
++	ctx->is_power_on = false;
++
++	return 0;
++}
++
++static int x163qln_disable(struct drm_panel *panel)
++{
++	struct x163qln *ctx = panel_to_x163qln(panel);
++	x163qln_dcs_display_off(ctx);
++	x163qln_dcs_enter_sleep_mode(ctx);
++	msleep(120);
++
++	return 0;
++}
++
++static int x163qln_unprepare(struct drm_panel *panel)
++{
++	struct x163qln *ctx = panel_to_x163qln(panel);
++	int ret;
++
++	ret = x163qln_power_off(ctx);
++	if (ret)
++		return ret;
++
++	x163qln_clear_error(ctx);
++
++	return 0;
++}
++
++static int x163qln_prepare(struct drm_panel *panel)
++{
++	struct x163qln *ctx = panel_to_x163qln(panel);
++	int ret;
++
++	ret = x163qln_power_on(ctx);
++	if (ret < 0)
++		return ret;
++
++	x163qln_panel_init(ctx);
++	ret = ctx->error;
++
++	if (ret < 0)
++		x163qln_unprepare(panel);
++
++	return ret;
++}
++
++static int x163qln_enable(struct drm_panel *panel)
++{
++	struct x163qln *ctx = panel_to_x163qln(panel);
++
++	x163qln_dcs_write_seq_static(ctx, MIPI_DCS_SET_DISPLAY_ON);
++	if (ctx->error != 0)
++		return ctx->error;
++
++	x163qln_dcs_write_seq_static(ctx, MIPI_DCS_WRITE_MEMORY_START);
++	if (ctx->error != 0)
++		return ctx->error;
++
++	return 0;
++}
++
++static int x163qln_get_modes(struct drm_panel *panel)
++{
++	struct drm_connector *connector = panel->connector;
++	struct x163qln *ctx = panel_to_x163qln(panel);
++	struct drm_display_mode *mode;
++
++	mode = drm_mode_create(connector->dev);
++	if (!mode) {
++		DRM_ERROR("failed to create a new display mode\n");
++		return 0;
++	}
++
++	drm_display_mode_from_videomode(&ctx->vm, mode);
++	mode->width_mm = ctx->width_mm;
++	mode->height_mm = ctx->height_mm;
++	connector->display_info.width_mm = mode->width_mm;
++	connector->display_info.height_mm = mode->height_mm;
++
++	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
++	drm_mode_probed_add(connector, mode);
++
++	return 1;
++}
++
++static const struct drm_panel_funcs x163qln_drm_funcs = {
++	.disable = x163qln_disable,
++	.unprepare = x163qln_unprepare,
++	.prepare = x163qln_prepare,
++	.enable = x163qln_enable,
++	.get_modes = x163qln_get_modes,
++};
++
++static int x163qln_parse_dt(struct x163qln *ctx)
++{
++	struct device *dev = ctx->dev;
++	struct device_node *np = dev->of_node;
++	int ret;
++
++	ret = of_get_videomode(np, &ctx->vm, 0);
++	if (ret < 0)
++		return ret;
++
++	of_property_read_u32(np, "power-on-delay", &ctx->power_on_delay);
++	of_property_read_u32(np, "reset-delay", &ctx->reset_delay);
++	of_property_read_u32(np, "init-delay", &ctx->init_delay);
++	of_property_read_u32(np, "panel-width-mm", &ctx->width_mm);
++	of_property_read_u32(np, "panel-height-mm", &ctx->height_mm);
++
++	ctx->flip_horizontal = of_property_read_bool(np, "flip-horizontal");
++	ctx->flip_vertical = of_property_read_bool(np, "flip-vertical");
++
++	return 0;
++}
++
++static int x163qln_probe(struct mipi_dsi_device *dsi)
++{
++	struct device *dev = &dsi->dev;
++	struct x163qln *ctx;
++	int ret;
++
++	ctx = devm_kzalloc(dev, sizeof(struct x163qln), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++
++	mipi_dsi_set_drvdata(dsi, ctx);
++
++	ctx->dev = dev;
++
++	ctx->is_power_on = false;
++	dsi->lanes = 1;
++	dsi->format = MIPI_DSI_FMT_RGB888;
++	/*
++    dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST
++		| MIPI_DSI_MODE_VIDEO_HFP | MIPI_DSI_MODE_VIDEO_HBP
++		| MIPI_DSI_MODE_VIDEO_HSA | MIPI_DSI_MODE_VSYNC_FLUSH
++		| MIPI_DSI_MODE_VIDEO_AUTO_VERT;
++    */
++    dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST
++                      | MIPI_DSI_MODE_VIDEO_HFP | MIPI_DSI_MODE_VIDEO_HBP
++                      | MIPI_DSI_MODE_VIDEO_HSA | MIPI_DSI_MODE_VSYNC_FLUSH
++                      | MIPI_DSI_MODE_VIDEO_AUTO_VERT;
++
++	ret = x163qln_parse_dt(ctx);
++	if (ret < 0)
++		return ret;
++
++	ctx->supplies[0].supply = "vdd3";
++	ctx->supplies[1].supply = "vci";
++	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
++				      ctx->supplies);
++	if (ret < 0)
++		dev_warn(dev, "failed to get regulators: %d\n", ret);
++
++	ctx->reset_gpio = of_get_named_gpio(dev->of_node, "reset-gpio", 0);
++	if (ctx->reset_gpio < 0) {
++		dev_err(dev, "cannot get reset-gpios %d\n",
++			ctx->reset_gpio);
++		return ctx->reset_gpio;
++	}
++
++	ret = devm_gpio_request(dev, ctx->reset_gpio, "reset-gpio");
++	if (ret) {
++		dev_err(dev, "failed to request reset-gpio\n");
++		return ret;
++	}
++
++	ctx->psr_te_gpio = of_get_named_gpio(dev->of_node, "psr-te-gpio", 0);
++	if (ctx->psr_te_gpio < 0) {
++		dev_err(dev, "cannot get psr te gpios %d\n",
++			ctx->psr_te_gpio);
++		return ctx->psr_te_gpio;
++	}
++
++	ret = devm_gpio_request(dev, ctx->psr_te_gpio, "psr-te-gpio");
++	if (ret) {
++		dev_err(dev, "failed to request psr te gpio\n");
++		return ret;
++	}
++
++	drm_panel_init(&ctx->panel);
++	ctx->panel.dev = dev;
++	ctx->panel.funcs = &x163qln_drm_funcs;
++
++	ret = drm_panel_add(&ctx->panel);
++	if (ret < 0)
++		return ret;
++
++	ret = mipi_dsi_attach(dsi);
++	if (ret < 0)
++		drm_panel_remove(&ctx->panel);
++
++	return ret;
++}
++
++static int x163qln_remove(struct mipi_dsi_device *dsi)
++{
++	struct x163qln *ctx = mipi_dsi_get_drvdata(dsi);
++
++	mipi_dsi_detach(dsi);
++	drm_panel_remove(&ctx->panel);
++	x163qln_power_off(ctx);
++
++	return 0;
++}
++
++static void x163qln_shutdown(struct mipi_dsi_device *dsi)
++{
++	struct x163qln *ctx = mipi_dsi_get_drvdata(dsi);
++
++	x163qln_power_off(ctx);
++}
++
++static const struct of_device_id x163qln_of_match[] = {
++	{ .compatible = "auo,x163qln" },
++	{ }
++};
++
++MODULE_DEVICE_TABLE(of, x163qln_of_match);
++
++static struct mipi_dsi_driver x163qln_driver = {
++	.probe = x163qln_probe,
++	.remove = x163qln_remove,
++	.shutdown = x163qln_shutdown,
++	.driver = {
++		.name = "panel-auo-x163qln",
++		.of_match_table = x163qln_of_match,
++	},
++};
++module_mipi_dsi_driver(x163qln_driver);
++
++MODULE_AUTHOR("Danilo Sia <danilo.sia@kalpa.it>");
++MODULE_DESCRIPTION("MIPI-DSI based x163qln TFT LCD Panel Driver");
++MODULE_LICENSE("GPL v2");
+diff -Naur drivers/gpu/drm/panel/panel-auo-x163qln01.c.bak drivers/gpu/drm/panel/panel-auo-x163qln01.c.bak
+--- drivers/gpu/drm/panel/panel-auo-x163qln01.c.bak	1970-01-01 01:00:00.000000000 +0100
++++ drivers/gpu/drm/panel/panel-auo-x163qln01.c.bak	2017-03-02 16:32:07.000000000 +0100
 @@ -0,0 +1,556 @@
 +/*
 + * MIPI-DSI based AUO x163qln01 TFT LCD 1.63 inch panel driver.
@@ -4856,28 +6754,317 @@ diff -Naur drivers/media/platform/exynos/fimc-is-w1/Makefile drivers/media/platf
  obj-$(CONFIG_VIDEO_EXYNOS_FIMC_IS) += fimc-is.o
 diff -Naur drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h
 --- drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h	2016-04-01 04:23:41.000000000 +0200
-+++ drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h	2017-03-02 16:32:07.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h	2017-06-01 11:34:51.541224900 +0200
 @@ -78,15 +78,15 @@
   * -----------------------------------------------------------------------------
   */
  
 -/* #define DEBUG */
-+#define DEBUG
- #define DBG_VIDEO
- #define DBG_DEVICE
+-#define DBG_VIDEO
+-#define DBG_DEVICE
 -/* #define DBG_STREAMING */
-+//#define DBG_STREAMING
- #define DEBUG_INSTANCE 0xF
+-#define DEBUG_INSTANCE 0xF
 -/* #define BUG_ON_ENABLE */
 -/* #define FIXED_FPS_DEBUG */
-+#define BUG_ON_ENABLE
-+#define FIXED_FPS_DEBUG
- #define FIXED_FPS_VALUE 10
+-#define FIXED_FPS_VALUE 10
 -/* #define DBG_FLITEISR */
-+#define DBG_FLITEISR
++//#define DEBUG
++//#define DBG_VIDEO
++//#define DBG_DEVICE
++//#define DBG_STREAMING
++//#define DEBUG_INSTANCE 0xF
++//#define BUG_ON_ENABLE
++//#define FIXED_FPS_DEBUG
++//#define FIXED_FPS_VALUE 10
++//#define DBG_FLITEISR
  #define FW_DEBUG
  #define RESERVED_MEM
  //#define SCALER_PARALLEL_MODE
+diff -Naur drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h.bak drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h.bak
+--- drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h.bak	1970-01-01 01:00:00.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/fimc-is-config.h.bak	2017-03-02 16:32:07.000000000 +0100
+@@ -0,0 +1,281 @@
++/*
++ * Samsung Exynos5 SoC series FIMC-IS driver
++ *
++ *
++ * Copyright (c) 2011 Samsung Electronics Co., Ltd
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#ifndef FIMC_IS_CONFIG_H
++#define FIMC_IS_CONFIG_H
++
++/* configuration - default post processing */
++#define ENABLE_SETFILE
++#define ENABLE_DRC
++/* #define ENABLE_ODC */
++/* #define ENABLE_VDIS */
++/* #define ENABLE_TDNR */
++#define ENABLE_FD
++#define ENABLE_CLOCK_GATE
++/* #define HAS_FW_CLOCK_GATE */
++/* #define ENABLE_CACHE */
++#define ENABLE_FULL_BYPASS
++#define ENABLE_FAST_SHOT
++#define USE_OWN_FAULT_HANDLER
++/* #define ENABLE_MIF_400 */
++/* #define ENABLE_DTP */
++
++#if defined(CONFIG_PM_DEVFREQ)
++#define ENABLE_DVFS
++#endif
++
++#if defined(CONFIG_SOC_EXYNOS5430)
++#undef ENABLE_SETFILE
++#define SUPPORTED_IS_CMD_VER	132
++#define TARGET_SPI_CH_FOR_PERI	1
++#endif
++
++#if defined(CONFIG_SOC_EXYNOS5422)
++#undef ENABLE_SETFILE
++#define SUPPORTED_IS_CMD_VER	132
++#define TARGET_SPI_CH_FOR_PERI	0
++#undef HAS_FW_CLOCK_GATE
++#endif
++
++#if defined(CONFIG_SOC_EXYNOS5260)
++#undef ENABLE_SETFILE
++#undef ENABLE_DRC
++#undef ENABLE_FULL_BYPASS
++#define SUPPORTED_EARLY_BUF_DONE
++#define SUPPORTED_IS_CMD_VER	131
++#define TARGET_SPI_CH_FOR_PERI	1
++#endif
++
++#if defined(CONFIG_SOC_EXYNOS3470)
++#undef ENABLE_SETFILE
++#undef ENABLE_DRC
++#undef ENABLE_DVFS
++#undef ENABLE_FULL_BYPASS
++#define SUPPORTED_IS_CMD_VER	131
++#define TARGET_SPI_CH_FOR_PERI	1
++#endif
++
++#if defined(CONFIG_SOC_EXYNOS3250)
++#undef ENABLE_SETFILE
++#undef ENABLE_DRC
++#undef ENABLE_CLOCK_GATE
++#undef ENABLE_DVFS
++#undef ENABLE_FULL_BYPASS
++#define SUPPORTED_IS_CMD_VER	131
++#define TARGET_SPI_CH_FOR_PERI	1
++#endif
++/*
++ * -----------------------------------------------------------------------------
++ * Debug Message Configuration
++ * -----------------------------------------------------------------------------
++ */
++
++#define DEBUG
++#define DBG_VIDEO
++#define DBG_DEVICE
++//#define DBG_STREAMING
++#define DEBUG_INSTANCE 0xF
++#define BUG_ON_ENABLE
++#define FIXED_FPS_DEBUG
++#define FIXED_FPS_VALUE 10
++#define DBG_FLITEISR
++#define FW_DEBUG
++#define RESERVED_MEM
++//#define SCALER_PARALLEL_MODE
++/* #define SCALER_CROP_DZOOM */
++/* #define USE_ADVANCED_DZOOM */
++/* #define TASKLET_MSG */
++/* #define PRINT_CAPABILITY */
++/* #define PRINT_BUFADDR */
++/* #define PRINT_DZOOM */
++#define ISDRV_VERSION 244
++
++#if (defined(BAYER_CROP_DZOOM) && defined(SCALER_CROP_DZOOM))
++#error BAYER_CROP_DZOOM and SCALER_CROP_DZOOM can''t be enable together
++#endif
++
++/*
++ * driver version extension
++ */
++#ifdef ENABLE_CLOCK_GATE
++#define get_drv_clock_gate() 0x1
++#else
++#define get_drv_clock_gate() 0x0
++#endif
++#ifdef ENABLE_DVFS
++#define get_drv_dvfs() 0x2
++#else
++#define get_drv_dvfs() 0x0
++#endif
++
++#define GET_3AA_ID(video) ((video->id < 14) ? 0 : 1)
++#define GET_3AAC_ID(video) ((video->id < FIMC_IS_VIDEO_3A1_NUM) ? 0 : 1)
++
++#ifdef err
++#undef err
++#endif
++#define err(fmt, args...) \
++	pr_err("[@][ERR]%s:%d: " fmt "\n", __func__, __LINE__, ##args)
++
++/* multi-stream */
++#define merr(fmt, object, args...) \
++	pr_err("[@][%d][ERR]%s:%d: " fmt "\n", object->instance, __func__, __LINE__, ##args)
++
++/* multi-stream & runtime error */
++#define mrerr(fmt, object, frame, args...) \
++	pr_err("[@][%d:F%d][ERR]%s:%d: " fmt "\n", object->instance, frame->fcount, __func__, __LINE__, ##args)
++
++#ifdef warn
++#undef warn
++#endif
++#define warn(fmt, args...) \
++	pr_warning("[@][WRN] " fmt "\n", ##args)
++
++#define mwarn(fmt, this, args...) \
++	pr_warning("[@][%d][WRN] " fmt "\n", this->instance, ##args)
++
++#define info(fmt, args...) \
++	pr_info("[@]" fmt, ##args)
++
++#define minfo(fmt, object, args...) \
++	pr_info("[@][%d]" fmt, object->instance, ##args)
++
++#define mrinfo(fmt, object, frame, args...) \
++	pr_info("[@][%d:F%d]" fmt, object->instance, frame->fcount,  ##args)
++
++#define mdbg_common(prefix, fmt, instance, args...)				\
++	do {									\
++		if ((1<<(instance)) & DEBUG_INSTANCE)				\
++			pr_info("[@]" prefix fmt, instance, ##args);		\
++	} while (0)
++
++#if (defined(DEBUG) && defined(DBG_VIDEO))
++#define dbg(fmt, args...)
++
++#define dbg_warning(fmt, args...) \
++	printk(KERN_INFO "%s[WAR] Warning! " fmt, __func__, ##args)
++
++/* debug message for video node */
++#define mdbgv_vid(fmt, args...) \
++	pr_info("[@][COM:V] " fmt, ##args)
++
++#define mdbgv_sensor(fmt, this, args...) \
++	mdbg_common("[%d][SS%d:V] ", fmt, this->video->id, this->instance, ##args)
++
++#define mdbgv_3aa(fmt, this, args...) \
++	mdbg_common("[%d][3A%d:V] ", fmt, GET_3AA_ID(this->video), this->instance, ##args)
++
++#define mdbgv_3aac(fmt, this, args...) \
++	mdbg_common("[%d][3A%dC:V] ", fmt, GET_3AAC_ID(this->video), this->instance, ##args)
++
++#define dbg_isp(fmt, args...) \
++	printk(KERN_INFO "[ISP] " fmt, ##args)
++
++#define mdbgv_isp(fmt, this, args...) \
++	mdbg_common("[%d][ISP:V] ", fmt, this->instance, ##args)
++
++#define dbg_scp(fmt, args...) \
++	printk(KERN_INFO "[SCP] " fmt, ##args)
++
++#define mdbgv_scp(fmt, this, args...) \
++	mdbg_common("[%d][SCP:V] ", fmt, this->instance, ##args)
++
++#define dbg_scc(fmt, args...) \
++	printk(KERN_INFO "[SCC] " fmt, ##args)
++
++#define mdbgv_scc(fmt, this, args...) \
++	mdbg_common("[%d][SCC:V] ", fmt, this->instance, ##args)
++
++#define dbg_vdisc(fmt, args...) \
++	printk(KERN_INFO "[VDC] " fmt, ##args)
++
++#define mdbgv_vdc(fmt, this, args...) \
++	mdbg_common("[%d][VDC:V] ", fmt, this->instance, ##args)
++
++#define dbg_vdiso(fmt, args...) \
++	printk(KERN_INFO "[VDO] " fmt, ##args)
++
++#define mdbgv_vdo(fmt, this, args...) \
++	mdbg_common("[%d][VDO:V] ", fmt, this->instance, ##args)
++#else
++#define dbg(fmt, args...)
++
++/* debug message for video node */
++#define mdbgv_vid(fmt, this, args...)
++#define dbg_sensor(fmt, args...)
++#define mdbgv_sensor(fmt, this, args...)
++#define mdbgv_3aa(fmt, this, args...)
++#define mdbgv_3aac(fmt, this, args...)
++#define dbg_isp(fmt, args...)
++#define mdbgv_isp(fmt, this, args...)
++#define dbg_scp(fmt, args...)
++#define mdbgv_scp(fmt, this, args...)
++#define dbg_scc(fmt, args...)
++#define mdbgv_scc(fmt, this, args...)
++#define dbg_vdisc(fmt, args...)
++#define mdbgv_vdc(fmt, this, args...)
++#define dbg_vdiso(fmt, args...)
++#define mdbgv_vdo(fmt, this, args...)
++#endif
++
++#if (defined(DEBUG) && defined(DBG_DEVICE))
++/* debug message for device */
++#define mdbgd_sensor(fmt, this, args...) \
++	mdbg_common("[%d][SEN:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_front(fmt, this, args...) \
++	mdbg_common("[%d][FRT:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_back(fmt, this, args...) \
++	mdbg_common("[%d][BAK:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_3a0(fmt, this, args...) \
++	mdbg_common("[%d][3A0:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_3a1(fmt, this, args...) \
++	mdbg_common("[%d][3A1:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_isp(fmt, this, args...) \
++	mdbg_common("[%d][ISP:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_ischain(fmt, this, args...) \
++	mdbg_common("[%d][ISC:D] ", fmt, this->instance, ##args)
++
++#define mdbgd_group(fmt, group, args...) \
++	mdbg_common("[%d][GP%d:D] ", fmt, group->device->instance, group->id, ##args)
++
++#define dbg_core(fmt, args...) \
++	pr_info("[@][COR] " fmt, ##args)
++#else
++/* debug message for device */
++#define mdbgd_sensor(fmt, this, args...)
++#define mdbgd_front(fmt, this, args...)
++#define mdbgd_back(fmt, this, args...)
++#define mdbgd_isp(fmt, this, args...)
++#define dbg_ischain(fmt, args...)
++#define mdbgd_ischain(fmt, this, args...)
++#define dbg_core(fmt, args...)
++#define dbg_interface(fmt, args...)
++#define dbg_frame(fmt, args...)
++#define mdbgd_group(fmt, group, args...)
++#endif
++
++#if (defined(DEBUG) && defined(DBG_STREAMING))
++#define dbg_interface(fmt, args...) \
++	pr_info("[@][ITF] " fmt, ##args)
++#define dbg_frame(fmt, args...) \
++	pr_info("[@][FRM] " fmt, ##args)
++#else
++#define dbg_interface(fmt, args...)
++#define dbg_frame(fmt, args...)
++#endif
++
++#endif
 diff -Naur drivers/media/platform/exynos/fimc-is-w1/fimc-is-device-csi.c drivers/media/platform/exynos/fimc-is-w1/fimc-is-device-csi.c
 --- drivers/media/platform/exynos/fimc-is-w1/fimc-is-device-csi.c	2016-04-01 04:23:41.000000000 +0200
 +++ drivers/media/platform/exynos/fimc-is-w1/fimc-is-device-csi.c	2017-03-02 16:32:07.000000000 +0100
@@ -5129,7 +7316,1383 @@ diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-5ea.c 
  	ext->from_con.product_name = FROMDRV_NAME_NOTHING;
 diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c
 --- drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c	1970-01-01 01:00:00.000000000 +0100
-+++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c	2017-03-02 16:32:07.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c	2017-06-01 11:35:18.899810600 +0200
+@@ -0,0 +1,1372 @@
++#include <linux/i2c.h>
++#include <linux/slab.h>
++#include <linux/irq.h>
++#include <linux/interrupt.h>
++#include <linux/delay.h>
++#include <linux/version.h>
++#include <linux/gpio.h>
++#include <linux/clk.h>
++#include <linux/regulator/consumer.h>
++#include <linux/videodev2.h>
++#include <linux/videodev2_exynos_camera.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/vmalloc.h>
++#include <linux/platform_device.h>
++#include <mach/regs-gpio.h>
++#include <mach/regs-clock.h>
++#include <plat/clock.h>
++#include <plat/gpio-cfg.h>
++#include <media/v4l2-ctrls.h>
++#include <media/v4l2-device.h>
++#include <media/v4l2-subdev.h>
++#include <mach/exynos-fimc-is-sensor.h>
++
++#include "../fimc-is-core.h"
++#include "../fimc-is-device-sensor.h"
++#include "../fimc-is-resourcemgr.h"
++#include "fimc-is-device-ov5640.h"
++
++static struct i2c_client *g_ov5640_i2c_client;
++
++
++/**
++ * ov5640_reg_read - Read a value from a register in an ov5640 sensor device
++ * @client: i2c driver client structure
++ * @reg: register address / offset
++ * @val: stores the value that gets read
++ *
++ * Read a value from a register in an ov5640 sensor device.
++ * The value is returned in 'val'.
++ * Returns zero if successful, or non-zero otherwise.
++ */
++static int ov5640_reg_read(struct i2c_client *client,  u16 reg, u8 *val)
++{
++    int ret;
++    u8 data[2] = {0};
++    struct i2c_msg msg = {
++            .addr	= client->addr,
++            .flags	= 0,
++            .len	= 2,
++            .buf	= data,
++    };
++
++    data[0] = (u8)(reg >> 8);
++    data[1] = (u8)(reg & 0xff);
++
++    ret = i2c_transfer(client->adapter, &msg, 1);
++    if (ret < 0)
++        goto err;
++
++    msg.flags = I2C_M_RD|I2C_CLIENT_SCCB;
++    msg.len = 1;
++    ret = i2c_transfer(client->adapter, &msg, 1);
++    if (ret < 0)
++        goto err;
++
++    *val = data[0];
++    return 0;
++
++    err:
++    dev_err(&client->dev, "Failed reading register 0x%02x!\n", reg);
++    return ret;
++}
++
++static int ov5640_i2c_read_twobyte(struct i2c_client *client,
++                                   u16 subaddr, u16 *data)
++{
++    int err;
++    unsigned char buf[2];
++    struct i2c_msg msg[2];
++    buf[0]=0;
++    buf[1]=0;
++
++    cpu_to_be16s(&subaddr);
++
++    msg[0].addr = client->addr;
++    msg[0].flags = I2C_CLIENT_SCCB;
++    msg[0].len = 2;
++    msg[0].buf = (u8 *)&subaddr;
++
++    msg[1].addr = client->addr;
++    msg[1].flags = I2C_M_RD|I2C_CLIENT_SCCB;
++    msg[1].len = 2;
++    msg[1].buf = buf;
++
++    err = i2c_transfer(client->adapter, msg, 2);
++    if (unlikely(err != 2)) {
++        dev_err(&client->dev,
++                "%s: register read fail (%d)\n", __func__,err);
++        return -EIO;
++    }
++
++    *data = ((buf[0] << 8) | buf[1]);
++
++    return 0;
++}
++
++
++/**
++ * Write a value to a register in ov5640 sensor device.
++ * @client: i2c driver client structure.
++ * @reg: Address of the register to read value from.
++ * @val: Value to be written to a specific register.
++ * Returns zero if successful, or non-zero otherwise.
++ */
++static int ov5640_reg_write(struct i2c_client *client, u16 reg, u8 val)
++{
++
++
++    return fimc_is_sensor_write(client,reg,val);
++}
++
++/**
++ * Initialize a list of ov5640 registers.
++ * The list of registers is terminated by the pair of values
++ * @client: i2c driver client structure.
++ * @reglist[]: List of address of the registers to write data.
++ * Returns zero if successful, or non-zero otherwise.
++ */
++static int ov5640_reg_writes(struct i2c_client *client,
++                             const struct ov5640_reg reglist[],
++                             int size)
++{
++    int err = 0, i;
++
++    for (i = 0; i < size; i++) {
++        if(reglist[i].reg == 0xFFFF){
++            if(reglist[i].val != 0xFF){
++                mdelay(reglist[i].val);
++            }else{
++                break;
++            }
++        }else{
++        err = ov5640_reg_write(client, reglist[i].reg,
++                         reglist[i].val);
++        }
++        if (err)
++            return err;
++    }
++    return 0;
++}
++
++static int ov5640_reg_set(struct i2c_client *client, u16 reg, u8 val)
++{
++    int ret;
++    u8 tmpval = 0;
++
++    ret = ov5640_reg_read(client, reg, &tmpval);
++    if (ret)
++        return ret;
++
++    return ov5640_reg_write(client, reg, tmpval | val);
++}
++
++static int ov5640_reg_clr(struct i2c_client *client, u16 reg, u8 val)
++{
++    int ret;
++    u8 tmpval = 0;
++
++    ret = ov5640_reg_read(client, reg, &tmpval);
++    if (ret)
++        return ret;
++
++    return ov5640_reg_write(client, reg, tmpval & ~val);
++}
++
++static unsigned long ov5640_get_pclk(struct v4l2_subdev *sd)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    unsigned long xvclk, vco, mipi_pclk;
++
++    xvclk = ov5640->xvclk;
++
++    vco = (xvclk / ov5640->clk_cfg.sc_pll_prediv) *
++          ov5640->clk_cfg.sc_pll_mult;
++
++    mipi_pclk = vco /
++                ov5640->clk_cfg.sysclk_div /
++                ov5640->clk_cfg.mipi_div;
++
++    return mipi_pclk;
++}
++
++static void ov5640_set_brightness(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_contrast(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_sharpness(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_saturation(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_iso(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_scenemode(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++static void ov5640_set_white_balance(struct v4l2_subdev *sd, int value)
++{
++
++}
++
++
++static void ov5640_set_effect(struct v4l2_subdev *sd, int value)
++{
++    cam_info("%s\n", __func__);
++
++}
++
++
++
++static void ov5640_set_window(struct v4l2_subdev *sd)
++{
++
++}
++
++static void ov5640_set_af(struct v4l2_subdev *sd)
++{
++    struct i2c_client *client = g_ov5640_i2c_client;
++
++    cam_info("%s\n", __func__);
++
++}
++
++static void ov5640_cancel_af(struct v4l2_subdev *sd)
++{
++    struct i2c_client *client = g_ov5640_i2c_client;
++
++    cam_info("%s\n", __func__);
++
++}
++
++
++
++static int ov5640_s_ctrl(struct v4l2_subdev *sd, struct v4l2_control *ctrl)
++{
++
++    struct ov5640_s *ov5640  = to_ov5640(sd);
++    int value = ctrl->value;
++
++    cam_info("%s\n", __func__);
++
++    switch (ctrl->id) {
++        case V4L2_CID_SCENEMODE:
++
++            break;
++        case V4L2_CID_CAM_BRIGHTNESS:
++
++            break;
++        case V4L2_CID_WHITE_BALANCE_PRESET:
++
++            break;
++        case V4L2_CID_CAMERA_EFFECT:
++
++            break;
++        case V4L2_CID_CAM_CONTRAST:
++
++            break;
++        case V4L2_CID_CAM_SATURATION:
++
++            break;
++        case V4L2_CID_CAM_SHARPNESS:
++
++            break;
++        case V4L2_CID_CAM_ISO:
++
++            break;
++        case V4L2_CID_CAPTURE:
++
++            break;
++        case V4L2_CID_CAM_OBJECT_POSITION_X:
++
++            break;
++        case V4L2_CID_CAM_OBJECT_POSITION_Y:
++
++            break;
++        case V4L2_CID_CAM_SINGLE_AUTO_FOCUS:
++        case V4L2_CID_CAM_SET_AUTO_FOCUS:
++
++            break;
++        case V4L2_CID_FOCUS_MODE:
++        case V4L2_CID_JPEG_QUALITY:
++        case V4L2_CID_CAM_FLASH_MODE:
++            break;
++        default:
++            cam_err("[%s] Unidentified ID (%X)\n", __func__, ctrl->id);
++            break;
++    }
++
++    return 0;
++}
++
++static int ov5640_get_af(struct v4l2_subdev *sd)
++{
++
++    return 0;
++}
++
++static int ov5640_g_ctrl(struct v4l2_subdev *sd, struct v4l2_control *ctrl)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    int err = 0;
++
++    cam_info("%s\n", __func__);
++
++    switch (ctrl->id) {
++        case V4L2_CID_CAMERA_WHITE_BALANCE:
++            break;
++        case V4L2_CID_CAMERA_CONTRAST:
++            break;
++        case V4L2_CID_CAMERA_SATURATION:
++            break;
++        case V4L2_CID_CAMERA_SHARPNESS:
++            break;
++        case V4L2_CID_CAM_AUTO_FOCUS_RESULT:
++            break;
++        case V4L2_CID_CAM_DATE_INFO_YEAR:
++        case V4L2_CID_CAM_DATE_INFO_MONTH:
++        case V4L2_CID_CAM_DATE_INFO_DATE:
++        case V4L2_CID_CAM_SENSOR_VER:
++        default:
++            break;
++    }
++
++    return err;
++}
++
++static void ov5640_init_setting(struct v4l2_subdev *sd)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    int value;
++
++    cam_info("%s\n", __func__);
++
++
++}
++
++
++
++
++static int ov5640_s_power(struct v4l2_subdev *sd, int on)
++{
++    int ret= 0;
++
++    return ret;
++}
++
++
++
++
++static int ov5640_init(struct v4l2_subdev *sd, u32 val)
++{
++    struct i2c_client *client = g_ov5640_i2c_client;
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    cam_info("%s\n", __func__);
++
++    int ret = 0;
++    u8 revision = 0;
++    u8 msb;
++    u8 lsb;
++
++    ret = ov5640_s_power(sd, 1);
++    if (ret < 0) {
++        dev_err(&client->dev, "OV5640 power up failed\n");
++        return ret;
++    }
++
++    ret = ov5640_reg_read(client, 0x302A, &revision);
++    if (ret) {
++        dev_err(&client->dev, "Failure to detect OV5640 chip\n");
++        goto out;
++    }
++
++    revision &= 0xF;
++
++    dev_info(&client->dev, "Detected a OV5640 chip, revision %x\n",
++             revision);
++
++    /* SW Reset */
++    ret = ov5640_reg_set(client, 0x3008, 0x80);
++    if (ret)
++        goto out;
++
++    msleep(2);
++
++    ret = ov5640_reg_clr(client, 0x3008, 0x80);
++    if (ret)
++        goto out;
++
++    /* SW Powerdown */
++    ret = ov5640_reg_set(client, 0x3008, 0x40);
++    if (ret)
++        goto out;
++
++    /* Check chip id */
++    ret = ov5640_reg_read(client, 0x300A, &msb);
++    if (!ret)
++        ret = ov5640_reg_read(client, 0x300B, &lsb);
++    if (!ret) {
++        ov5640->id = (msb << 8) | lsb;
++        if (ov5640->id == 0x5640)
++            dev_info(&client->dev, "Sensor ID: %04X\n", ov5640->id);
++        else
++            dev_err(&client->dev, "Sensor detection failed (%04X, %d)\n",
++                    ov5640->id, ret);
++    }
++
++   ret = ov5640_reg_writes(client, configscript_common1,
++                            ARRAY_SIZE(configscript_common1));
++    if (ret)
++        goto out;
++
++    ret = ov5640_reg_writes(client, configscript_common2,
++                        ARRAY_SIZE(configscript_common2));
++    if (ret)
++      goto out;
++
++    //ret = ov5640_reg_writes(client, configscript_common_XXX,
++    //                        ARRAY_SIZE(configscript_common_XXX));
++    //if (ret)
++    //    goto out;
++
++    cam_info("%s\n",__func__);
++    /* Init controls */
++    /*
++    ret = v4l2_ctrl_handler_init(&ov5640->ctrl_handler, 1);
++    if (ret)
++        goto out;
++
++    ov5640->pixel_rate = v4l2_ctrl_new_std(
++            &ov5640->ctrl_handler, NULL,
++            V4L2_CID_PIXEL_RATE,
++            0, 0, 1, 0);
++
++    sd->ctrl_handler = &ov5640->ctrl_handler;
++    */
++    out:
++    ov5640_s_power(sd, 0);
++    return ret;
++}
++
++static int ov5640_s_ext_ctrls(struct v4l2_subdev *sd,
++                              struct v4l2_ext_controls *ctrls)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++
++
++
++static int ov5640_queryctrl(struct v4l2_subdev *sd, struct v4l2_queryctrl *qc)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static int ov5640_querymenu(struct v4l2_subdev *sd, struct v4l2_querymenu *qm)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static int ov5640_g_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *fmt)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static int ov5640_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *fmt)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    ov5640->format.width = fmt->width;
++    ov5640->format.height = fmt->height;
++
++    //ov5640->format.code = fmt->code;
++
++    return 0;
++}
++
++
++static int ov5640_config_timing(struct v4l2_subdev *sd)
++{
++    struct i2c_client *client = g_ov5640_i2c_client;;
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    int ret, i;
++    u8 val;
++
++    i = ov5640_find_framesize(ov5640->format.width, ov5640->format.height);
++    ret = ov5640_reg_write(client,
++                           0x3800,
++                           (timing_cfg[i].x_addr_start & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3801,
++                           timing_cfg[i].x_addr_start & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3802,
++                           (timing_cfg[i].y_addr_start & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3803,
++                           timing_cfg[i].y_addr_start & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3804,
++                           (timing_cfg[i].x_addr_end & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3805,
++                           timing_cfg[i].x_addr_end & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3806,
++                           (timing_cfg[i].y_addr_end & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3807,
++                           timing_cfg[i].y_addr_end & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3808,
++                           (timing_cfg[i].h_output_size & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3809,
++                           timing_cfg[i].h_output_size & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380A,
++                           (timing_cfg[i].v_output_size & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380B,
++                           timing_cfg[i].v_output_size & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380C,
++                           (timing_cfg[i].h_total_size & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380D,
++                           timing_cfg[i].h_total_size & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380E,
++                           (timing_cfg[i].v_total_size & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x380F,
++                           timing_cfg[i].v_total_size & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3810,
++                           (timing_cfg[i].isp_h_offset & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3811,
++                           timing_cfg[i].isp_h_offset & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3812,
++                           (timing_cfg[i].isp_v_offset & 0xFF00) >> 8);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3813,
++                           timing_cfg[i].isp_v_offset & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3814,
++                           ((timing_cfg[i].h_odd_ss_inc & 0xF) << 4) |
++                           (timing_cfg[i].h_even_ss_inc & 0xF));
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client,
++                           0x3815,
++                           ((timing_cfg[i].v_odd_ss_inc & 0xF) << 4) |
++                           (timing_cfg[i].v_even_ss_inc & 0xF));
++
++    ov5640_reg_read(client, OV5640_TIMING_REG21, &val);
++    if (timing_cfg[i].out_mode_sel & OV5640_BINNING_MASK)
++        val |= OV5640_BINNING_MASK;
++    else
++        val &= ~(OV5640_BINNING_MASK);
++
++    if (0)
++        val |= OV5640_HFLIP_MASK;
++    else
++        val &= ~(OV5640_HFLIP_MASK);
++
++    ret = ov5640_reg_write(client, OV5640_TIMING_REG21, val);
++    if (ret)
++        return ret;
++
++
++    ret = ov5640_reg_write(client,
++                           0x3108, timing_cfg[i].sclk_dividers & 0xFF);
++    if (ret)
++        return ret;
++
++    ret = ov5640_reg_write(client, 0x3035, timing_cfg[i].sys_mipi_clk & 0xFF);
++    if (ret)
++        return ret;
++/*
++    ov5640_reg_writes(client, ov5640_fps_30,
++                      ARRAY_SIZE(ov5640_fps_30));
++*/
++    return ret;
++}
++
++
++static int ov5640_s_stream(struct v4l2_subdev *sd, int enable)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    struct i2c_client *client = g_ov5640_i2c_client;
++    int ret = 0;
++
++    if (enable) {
++        ov5640_s_power(&ov5640->sd, 1);
++        u8 fmtreg = 0, fmtmuxreg = 0;
++        int i;
++
++        switch ((u32)ov5640->format.code) {
++            case V4L2_MBUS_FMT_UYVY8_2X8:
++                fmtreg = 0x32;
++                fmtmuxreg = 0;
++                break;
++            case V4L2_MBUS_FMT_YUYV8_2X8:
++                fmtreg = 0x30;
++                fmtmuxreg = 0;
++                break;
++            case V4L2_PIX_FMT_RGB565:
++                fmtreg = 0x60;
++                fmtmuxreg = 1;
++            default:
++                /* This shouldn't happen */
++                ret = -EINVAL;
++                return ret;
++        }
++
++        ret = ov5640_reg_write(client, 0x4300, fmtreg);
++        if (ret)
++            return ret;
++
++        ret = ov5640_reg_write(client, 0x501F, fmtmuxreg);
++        if (ret)
++            return ret;
++
++        ret = ov5640_config_timing(sd);
++        if (ret)
++            return ret;
++       // ov5640_reg_write(client, 0x4202, 0x00);
++
++
++        i = ov5640_find_framesize(ov5640->format.width, ov5640->format.height);
++        cam_info("%s: %dx%d (%d)\n", __func__,ov5640->format.width, ov5640->format.height,i);
++        if ((i == OV5640_SIZE_QVGA) ||
++            (i == OV5640_SIZE_VGA) ||
++            (i == OV5640_SIZE_720P)) {
++            //ret = ov5640_reg_write(client, 0x3108,
++            //                       (i == OV5640_SIZE_720P) ? 0x1 : 0);
++            if (ret)
++                return ret;
++            //ret = ov5640_reg_set(client, 0x5001, 0x20);
++        } else {
++            //ret = ov5640_reg_clr(client, 0x5001, 0x20);
++            if (ret)
++                return ret;
++            //ret = ov5640_reg_write(client, 0x3108, 0x2);
++        }
++
++        ret = ov5640_reg_clr(client, 0x3008, 0x40);
++        if (ret)
++            goto out;
++
++    } else {
++
++        u8 tmpreg = 0;
++
++        ret = ov5640_reg_read(client, 0x3008, &tmpreg);
++        if (ret)
++            goto out;
++
++        ret = ov5640_reg_write(client, 0x3008, tmpreg | 0x40);
++        if (ret)
++            goto out;
++
++        //ov5640_reg_write(client, 0x4202, 0x0f);
++
++        ov5640_s_power(&ov5640->sd, 0);
++    }
++
++    out:
++    return ret;
++}
++
++static int ov5640_g_parm(struct v4l2_subdev *sd,
++                         struct v4l2_streamparm *param)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static int ov5640_s_parm(struct v4l2_subdev *sd,
++                         struct v4l2_streamparm *param)
++{
++    int ret = 0;
++    cam_info("%s\n", __func__);
++    struct fimc_is_module_enum *module;
++    struct v4l2_captureparm *cp;
++    struct v4l2_fract *tpf;
++    u64 framerate;
++
++    BUG_ON(!sd);
++    BUG_ON(!param);
++
++    cp = &param->parm.capture;
++    tpf = &cp->timeperframe;
++
++    if (!tpf->numerator) {
++        err("numerator is 0");
++        ret = -EINVAL;
++        goto p_err;
++    }
++
++    framerate = tpf->denominator;
++
++    module = (struct fimc_is_module_enum *)v4l2_get_subdevdata(sd);
++    if (!module) {
++        err("module is NULL");
++        ret = -EINVAL;
++        goto p_err;
++    }
++
++    ret = CALL_MOPS(module, s_duration, sd, framerate);
++    if (ret) {
++        err("s_duration is fail(%d)", ret);
++        goto p_err;
++    }
++    p_err:
++
++    return ret;
++}
++
++static int ov5640_enum_framesizes(struct v4l2_subdev *subdev,
++                                  struct v4l2_subdev_fh *fh,
++                                  struct v4l2_subdev_frame_size_enum *fse)
++{
++    cam_info("%s %d %d\n", __func__,fse->index,fse->code);
++    if ((fse->index >= OV5640_SIZE_LAST) ||
++        (fse->code != V4L2_MBUS_FMT_UYVY8_2X8 &&
++         fse->code != V4L2_MBUS_FMT_YUYV8_2X8))
++        return -EINVAL;
++    cam_info("%s\n", __func__);
++    fse->min_width = ov5640_frmsizes[fse->index].width;
++    fse->max_width = fse->min_width;
++    fse->min_height = ov5640_frmsizes[fse->index].height;
++    fse->max_height = fse->min_height;
++
++    return 0;
++}
++
++/*
++ * Clock configuration
++ * Configure expected MCLK from host and return EINVAL if not supported clock
++ * frequency is expected
++ *  freq : in Hz
++ *  flag : not supported for now
++ */
++static int ov5640_s_crystal_freq(struct v4l2_subdev *sd,
++                                 u32  freq, u32 flags)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++
++static int ov5640_enum_frameintervals(struct v4l2_subdev *sd,
++                                      struct v4l2_frmivalenum *interval)
++{
++    int size;
++
++    if (interval->index >= 1)
++        return -EINVAL;
++
++    interval->type = V4L2_FRMIVAL_TYPE_DISCRETE;
++
++    size = ov5640_find_framesize(interval->width, interval->height);
++
++    switch (size) {
++        case OV5640_SIZE_5MP:
++            interval->discrete.numerator	= 2;
++            interval->discrete.denominator	= 15;
++            break;
++        case OV5640_SIZE_720P:
++            interval->discrete.numerator	= 1;
++            interval->discrete.denominator	= 0;
++            break;
++        case OV5640_SIZE_VGA:
++        case OV5640_SIZE_QVGA:
++        default:
++            interval->discrete.numerator	= 1;
++            interval->discrete.denominator	= 24;
++            break;
++    }
++    return 0;
++}
++
++
++/* get format by flite video device command */
++static struct v4l2_mbus_framefmt *
++__ov5640_get_pad_format(struct ov5640_s *ov5640, struct v4l2_subdev_fh *fh,
++                        unsigned int pad, enum v4l2_subdev_format_whence which)
++{
++    switch (which) {
++        case V4L2_SUBDEV_FORMAT_TRY:
++            return v4l2_subdev_get_try_format(fh, pad);
++        case V4L2_SUBDEV_FORMAT_ACTIVE:
++            return &ov5640->format;
++        default:
++            return NULL;
++    }
++}
++
++static int ov5640_get_fmt(struct v4l2_subdev *sd,
++                        struct v4l2_subdev_fh *fh,
++                        struct v4l2_subdev_format *format)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    cam_info("%s\n", __func__);
++
++    format->format = *__ov5640_get_pad_format(ov5640, fh, format->pad,
++                                              format->which);
++
++    return 0;
++}
++
++
++/* set format by flite video device command */
++
++static int ov5640_set_fmt(struct v4l2_subdev *sd,
++                        struct v4l2_subdev_fh *fh,
++                        struct v4l2_subdev_format *format)
++{
++    struct ov5640_s *ov5640 = to_ov5640(sd);
++    struct v4l2_mbus_framefmt *__format;
++
++    __format = __ov5640_get_pad_format(ov5640, fh, format->pad,
++                                       format->which);
++
++    ov5640->pixel_rate->cur.val64 = ov5640_get_pclk(sd) / 16;
++
++    return 0;
++}
++
++
++static int ov5640_enum_mbus_code(struct v4l2_subdev *sd,
++                                 struct v4l2_subdev_fh *fh,
++                                 struct v4l2_subdev_mbus_code_enum *code)
++{
++    cam_info("%s\n", __func__);
++    if (code->index >= 2)
++        return -EINVAL;
++
++    switch (code->index) {
++        case 0:
++            code->code = V4L2_MBUS_FMT_UYVY8_2X8;
++            break;
++        case 1:
++            code->code = V4L2_MBUS_FMT_YUYV8_2X8;
++            break;
++    }
++
++    return 0;
++}
++
++
++static int ov5640_g_skip_frames(struct v4l2_subdev *sd, u32 *frames)
++{
++    /* Quantity of initial bad frames to skip. Revisit. */
++    *frames = 3;
++
++    return 0;
++}
++
++static const struct v4l2_subdev_video_ops ov5640_video_ops = {
++        .g_mbus_fmt         = ov5640_g_fmt,
++        .s_mbus_fmt         = ov5640_s_fmt,
++        .g_parm             = ov5640_g_parm,
++        .s_parm             = ov5640_s_parm,
++        .s_stream           = ov5640_s_stream,
++        .enum_framesizes    = ov5640_enum_framesizes,
++        .s_crystal_freq     = ov5640_s_crystal_freq,
++        .enum_frameintervals = ov5640_enum_frameintervals,
++};
++
++static const struct v4l2_subdev_core_ops ov5640_core_ops = {
++        .g_ctrl         = ov5640_g_ctrl,
++        .s_ctrl         = ov5640_s_ctrl,
++        .init           = ov5640_init,  /* initializing API */
++        .s_ext_ctrls    = ov5640_s_ext_ctrls,
++        .s_power        = ov5640_s_power,
++        .queryctrl      = ov5640_queryctrl,
++        .querymenu      = ov5640_querymenu,
++};
++
++
++static struct v4l2_subdev_pad_ops ov5640_pad_ops = {
++        .enum_mbus_code = ov5640_enum_mbus_code,
++        .enum_frame_size = ov5640_enum_framesizes,
++        .get_fmt        = ov5640_get_fmt,
++        .set_fmt        = ov5640_set_fmt,
++};
++
++static struct v4l2_subdev_sensor_ops ov5640_sensor_ops = {
++        .g_skip_frames	= ov5640_g_skip_frames,
++};
++
++static const struct v4l2_subdev_ops ov5640_ops = {
++        .core   = &ov5640_core_ops,
++        .pad    = &ov5640_pad_ops,
++        .video  = &ov5640_video_ops,
++        //.sensor	= &ov5640_sensor_ops,
++};
++
++
++
++/*
++ * @ brief
++ * frame duration time
++ * @ unit
++ * nano second
++ * @ remarks
++ */
++int sensor_ov5640_s_duration(struct v4l2_subdev *subdev, u64 framerate)
++{
++    int ret = 0;
++    u32 frametime;
++    struct i2c_client *client = g_ov5640_i2c_client;
++    struct ov5640_s *ov5640 = to_ov5640(subdev);
++    cam_info("%s\n", __func__);
++
++
++
++p_err:
++    return ret;
++}
++
++int sensor_ov5640_g_min_duration(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_max_duration(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_s_exposure(struct v4l2_subdev *subdev, u64 exposure)
++{
++    int ret = 0;
++
++    return ret;
++}
++
++int sensor_ov5640_g_min_exposure(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_max_exposure(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_s_again(struct v4l2_subdev *subdev, u64 sensitivity)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_min_again(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_max_again(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_s_dgain(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_min_dgain(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++int sensor_ov5640_g_max_dgain(struct v4l2_subdev *subdev)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++
++
++struct fimc_is_sensor_ops module_ov5640_ops = {
++/*    	.stream_on		= sensor_ov5640_stream_on,
++	    .stream_off		= sensor_ov5640_stream_off,
++	    */
++        .s_duration		= sensor_ov5640_s_duration,
++        .g_min_duration	= sensor_ov5640_g_min_duration,
++        .g_max_duration	= sensor_ov5640_g_max_duration,
++        .s_exposure		= sensor_ov5640_s_exposure,
++        .g_min_exposure	= sensor_ov5640_g_min_exposure,
++        .g_max_exposure	= sensor_ov5640_g_max_exposure,
++        .s_again		= sensor_ov5640_s_again,
++        .g_min_again	= sensor_ov5640_g_min_again,
++        .g_max_again	= sensor_ov5640_g_max_again,
++        .s_dgain		= sensor_ov5640_s_dgain,
++        .g_min_dgain	= sensor_ov5640_g_min_dgain,
++        .g_max_dgain	= sensor_ov5640_g_max_dgain
++};
++
++static int ov5640_link_setup(struct media_entity *entity,
++                             const struct media_pad *local,
++                             const struct media_pad *remote, u32 flags)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++
++static const struct media_entity_operations ov5640_media_ops = {
++        .link_setup = ov5640_link_setup,
++};
++
++static int ov5640_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
++{
++    cam_info("%s\n", __func__);
++    struct v4l2_mbus_framefmt *format;
++
++    format = v4l2_subdev_get_try_format(fh, 0);
++    format->code = V4L2_MBUS_FMT_UYVY8_2X8; //V4L2_MBUS_FMT_YUYV8_2X8;/*V4L2_MBUS_FMT_UYVY8_2X8;*/
++    format->width = ov5640_frmsizes[OV5640_SIZE_5MP].width;
++    format->height = ov5640_frmsizes[OV5640_SIZE_5MP].height;
++    format->field = V4L2_FIELD_NONE;
++    format->colorspace = V4L2_COLORSPACE_JPEG;
++
++    return 0;
++}
++
++static int ov5640_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static int ov5640_registered(struct v4l2_subdev *sd)
++{
++    cam_info("%s\n", __func__);
++
++    return 0;
++}
++
++static void ov5640_unregistered(struct v4l2_subdev *sd)
++{
++    cam_info("%s\n", __func__);
++}
++
++
++static const struct v4l2_subdev_internal_ops ov5640_subdev_internal_ops = {
++        .open           = ov5640_open,
++        .close          = ov5640_close,
++        .registered     = ov5640_registered,
++        .unregistered   = ov5640_unregistered,
++};
++
++
++int sensor_ov5640_probe(struct i2c_client *client,
++                        const struct i2c_device_id *id)
++{
++    int ret = 0;
++    struct fimc_is_core *core;
++    struct fimc_is_module_enum *module;
++    struct fimc_is_device_sensor *device;
++    struct sensor_open_extended *ext;
++    struct v4l2_subdev *sd;
++
++    struct ov5640_s *ov5640;
++
++    cam_info("%s\n", __func__);
++
++    BUG_ON(!fimc_is_dev);
++
++    core = (struct fimc_is_core *)dev_get_drvdata(fimc_is_dev);
++    if (!core) {
++        err("core device is not yet probed");
++        return -EPROBE_DEFER;
++    }
++
++    device = &core->sensor[SENSOR_OV5640_INSTANCE];
++
++    ov5640 = kzalloc(sizeof(struct ov5640_s), GFP_KERNEL);
++    if (ov5640 == NULL) {
++        dev_err(&client->dev, "OV5640 probe error : kzalloc\n");
++        return -ENOMEM;
++    }
++
++    /*
++    ret = ov5640_get_resources(ov5640, &client->dev);
++    if (ret) {
++        kfree(ov5640);
++        return ret;
++    }
++    */
++    ov5640->xvclk= 24000000;
++    ov5640->format.code = V4L2_MBUS_FMT_UYVY8_2X8;/*V4L2_MBUS_FMT_YUYV8_2X8;*/
++    ov5640->format.width = ov5640_frmsizes[OV5640_SIZE_5MP].width;
++    ov5640->format.height = ov5640_frmsizes[OV5640_SIZE_5MP].height;
++    ov5640->format.field = V4L2_FIELD_NONE;
++    ov5640->format.colorspace = V4L2_COLORSPACE_JPEG;
++
++    ov5640->clk_cfg.sc_pll_prediv = 2;
++    ov5640->clk_cfg.sc_pll_rdiv = 1;
++    ov5640->clk_cfg.sc_pll_mult = 0x40 ;
++    ov5640->clk_cfg.sysclk_div = 1;
++    ov5640->clk_cfg.mipi_div = 1;
++
++    sd = &ov5640->sd;
++    g_ov5640_i2c_client = client;
++    g_ov5640_i2c_client->flags |= I2C_CLIENT_SCCB;
++
++
++    /* OV5640 */
++    module = &device->module_enum[atomic_read
++            (&core->resourcemgr.rsccount_module)];
++    atomic_inc(&core->resourcemgr.rsccount_module);
++    module->id = SENSOR_OV5640_NAME;
++    module->subdev = sd;
++    module->device = SENSOR_OV5640_INSTANCE;
++    module->ops = &module_ov5640_ops;
++    module->client = client;
++
++    module->active_width = OV5640_SENSOR_SIZE_X;
++    module->active_height = OV5640_SENSOR_SIZE_Y;
++    module->pixel_width = module->active_width + BLANKING_EXTRA_WIDTH;
++    module->pixel_height = BLANKING_MIN_HEIGHT;
++
++    module->max_framerate = 120;
++
++    module->position = SENSOR_POSITION_FRONT;
++
++    module->setfile_name = "setfile_ov5640.bin";
++    module->cfgs = ARRAY_SIZE(config_ov5640);
++    module->cfg = config_ov5640;
++    module->private_data = kzalloc(sizeof(struct fimc_is_module_ov5640),
++                                   GFP_KERNEL);
++    if (!module->private_data) {
++        err("private_data is NULL");
++        ret = -ENOMEM;
++        goto p_err;
++    }
++
++    ext = &module->ext;
++    ext->mipi_lane_num = 2;
++    ext->I2CSclk = I2C_L1;
++    ext->sensor_con.product_name = SENSOR_NAME_OV5640;
++    ext->sensor_con.peri_type = SE_I2C;
++    ext->sensor_con.peri_setting.i2c.channel = SENSOR_CONTROL_I2C1;
++    ext->sensor_con.peri_setting.i2c.slave_address = 0x3c;
++    ext->sensor_con.peri_setting.i2c.speed = 400000;
++
++    ext->from_con.product_name = FROMDRV_NAME_NOTHING;
++    ext->companion_con.product_name = COMPANION_NAME_NOTHING;
++
++    v4l2_i2c_subdev_init(sd, client, &ov5640_ops);
++
++    /* Registering subdev */
++    ret = media_entity_init(&sd->entity, 1, &ov5640->pad, 0);
++    if (ret) {
++        dev_err(&client->dev, "OV5640 probe error : media entity\n");
++        return ret;
++    }
++    sd->entity.type = MEDIA_ENT_T_V4L2_SUBDEV_SENSOR;
++    sd->entity.ops = &ov5640_media_ops;
++    sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
++    sd->internal_ops = &ov5640_subdev_internal_ops;
++
++
++    v4l2_set_subdevdata(sd, module);
++    v4l2_set_subdev_hostdata(sd, device);
++
++
++    snprintf(sd->name, V4L2_SUBDEV_NAME_SIZE,
++             "sensor-subdev.%d", module->id);
++
++    p_err:
++    info("%s(%d)\n", __func__, ret);
++    return ret;
++}
++
++static int sensor_ov5640_remove(struct i2c_client *client)
++{
++    int ret = 0;
++
++    cam_info("%s\n", __func__);
++
++    return ret;
++}
++
++#ifdef CONFIG_OF
++static const struct of_device_id exynos_fimc_is_sensor_ov5640_match[] = {
++	{
++		.compatible = "samsung,exynos5-fimc-is-sensor-ov5640",
++	},
++	{},
++};
++#endif
++
++static const struct i2c_device_id sensor_ov5640_idt[] = {
++        { SENSOR_NAME, 0 },
++};
++
++static struct i2c_driver sensor_ov5640_driver = {
++        .driver = {
++                .name	= SENSOR_NAME,
++                .owner	= THIS_MODULE,
++#ifdef CONFIG_OF
++                .of_match_table = exynos_fimc_is_sensor_ov5640_match
++#endif
++        },
++        .probe	= sensor_ov5640_probe,
++        .remove	= sensor_ov5640_remove,
++        .id_table = sensor_ov5640_idt
++};
++
++static int __init sensor_ov5640_load(void)
++{
++    cam_info("%s\n", __func__);
++    return i2c_add_driver(&sensor_ov5640_driver);
++}
++
++static void __exit sensor_ov5640_unload(void)
++{
++    cam_info("%s\n", __func__);
++    i2c_del_driver(&sensor_ov5640_driver);
++}
++
++module_init(sensor_ov5640_load);
++module_exit(sensor_ov5640_unload);
++
++MODULE_AUTHOR("Danilo Sia");
++MODULE_DESCRIPTION("Sensor LI-OV5640 driver");
++MODULE_LICENSE("GPL v2");
+diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c.bak drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c.bak
+--- drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c.bak	1970-01-01 01:00:00.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.c.bak	2017-03-02 16:32:07.000000000 +0100
 @@ -0,0 +1,1368 @@
 +#include <linux/i2c.h>
 +#include <linux/slab.h>
@@ -6501,7 +10064,808 @@ diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640
 +MODULE_LICENSE("GPL v2");
 diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h
 --- drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h	1970-01-01 01:00:00.000000000 +0100
-+++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h	2017-03-02 16:32:07.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h	2017-06-01 11:35:27.308622700 +0200
+@@ -0,0 +1,797 @@
++#ifndef FIMC_IS_DEVICE_OV5640_H
++#define FIMC_IS_DEVICE_OV5640_H
++
++#define SENSOR_OV5640_INSTANCE	0
++#define SENSOR_NAME_OV5640      SENSOR_NAME_SR261 + 1
++#define SENSOR_OV5640_NAME		SENSOR_NAME_OV5640
++#define SENSOR_OV5640_DRIVING
++
++#define TAG_NAME	"[OV5640] "
++#define cam_err(fmt, ...)	\
++	pr_err(TAG_NAME fmt, ##__VA_ARGS__)
++#define cam_warn(fmt, ...)	\
++	pr_warn(TAG_NAME fmt, ##__VA_ARGS__)
++#define cam_info(fmt, ...)	\
++	pr_info(TAG_NAME fmt, ##__VA_ARGS__)
++#if defined(CONFIG_CAM_DEBUG)
++#define cam_dbg(fmt, ...)	\
++	pr_debug(TAG_NAME fmt, ##__VA_ARGS__)
++#else
++#define cam_dbg(fmt, ...)
++#endif
++
++#define SENSOR_NAME "OV5640"
++
++/* active pixel array size */
++#define OV5640_SENSOR_SIZE_X	2592
++#define OV5640_SENSOR_SIZE_Y	1944
++
++#define OV5640_MAX_WIDTH	2560
++#define OV5640_MAX_HEIGHT	1920
++
++/* default sizes */
++#define OV5640_DEFAULT_WIDTH	1280
++#define OV5640_DEFAULT_HEIGHT	760
++
++/* minimum extra blanking */
++#define BLANKING_EXTRA_WIDTH		16
++#define BLANKING_EXTRA_HEIGHT		4
++
++/*
++ * the sensor's autoexposure is buggy when setting total_height low.
++ * It tries to expose longer than 1 frame period without taking care of it
++ * and this leads to weird output. So we set 1000 lines as minimum.
++ */
++#define BLANKING_MIN_HEIGHT		1000
++
++
++#define DEFAULT_SENSOR_WIDTH						1280
++#define DEFAULT_SENSOR_HEIGHT						OV5640_MAX_HEIGHT
++
++#define DEFAULT_SENSOR_CODE		MEDIA_BUS_FMT_YUYV8_2X8
++#define SENSOR_MEMSIZE	(DEFAULT_SENSOR_WIDTH * DEFAULT_SENSOR_HEIGHT)
++
++
++/* OV5642 registers */
++#define REG_CHIP_ID_HIGH		0x300a
++#define REG_CHIP_ID_LOW			0x300b
++
++#define REG_WINDOW_START_X_HIGH		0x3800
++#define REG_WINDOW_START_X_LOW		0x3801
++#define REG_WINDOW_START_Y_HIGH		0x3802
++#define REG_WINDOW_START_Y_LOW		0x3803
++#define REG_WINDOW_WIDTH_HIGH		0x3804
++#define REG_WINDOW_WIDTH_LOW		0x3805
++#define REG_WINDOW_HEIGHT_HIGH		0x3806
++#define REG_WINDOW_HEIGHT_LOW		0x3807
++#define REG_OUT_WIDTH_HIGH		0x3808
++#define REG_OUT_WIDTH_LOW		0x3809
++#define REG_OUT_HEIGHT_HIGH		0x380a
++#define REG_OUT_HEIGHT_LOW		0x380b
++#define REG_OUT_TOTAL_WIDTH_HIGH	0x380c
++#define REG_OUT_TOTAL_WIDTH_LOW		0x380d
++#define REG_OUT_TOTAL_HEIGHT_HIGH	0x380e
++#define REG_OUT_TOTAL_HEIGHT_LOW	0x380f
++#define REG_OUTPUT_FORMAT		0x4300
++#define REG_ISP_CTRL_01			0x5001
++#define REG_AVG_WINDOW_END_X_HIGH	0x5682
++#define REG_AVG_WINDOW_END_X_LOW	0x5683
++#define REG_AVG_WINDOW_END_Y_HIGH	0x5686
++#define REG_AVG_WINDOW_END_Y_LOW	0x5687
++
++#define REG_DLY 0xffff
++
++#define OV5640_BINNING_MASK		0x01
++#define OV5640_TIMING_REG20		0x3820
++#define OV5640_TIMING_REG21		0x3821
++#define OV5640_HFLIP_MASK		0x06
++#define OV5640_VFLIP_MASK		0x06
++
++
++int sensor_ov5640_probe(struct i2c_client *client,
++						const struct i2c_device_id *id);
++
++
++
++/* OV5640 has only one fixed colorspace per pixelcode */
++struct ov5640_datafmt {
++    enum v4l2_mbus_pixelcode	code;
++    enum v4l2_colorspace		colorspace;
++};
++
++enum ov5640_frame_rate {
++    ov5640_default_fps,
++    ov5640_7_fps,
++    ov5640_15_fps,
++    ov5640_30_fps,
++    ov5640_60_fps,
++    ov5640_90_fps,
++    ov5640_120_fps,
++    ov5640_max_fps
++};
++
++
++struct ov5640_timing_cfg {
++    u16 x_addr_start;
++    u16 y_addr_start;
++    u16 x_addr_end;
++    u16 y_addr_end;
++    u16 h_output_size;
++    u16 v_output_size;
++    u16 h_total_size;
++    u16 v_total_size;
++    u16 isp_h_offset;
++    u16 isp_v_offset;
++    u8 h_odd_ss_inc;
++    u8 h_even_ss_inc;
++    u8 v_odd_ss_inc;
++    u8 v_even_ss_inc;
++    u8 out_mode_sel;
++    u8 sclk_dividers;
++    u8 sys_mipi_clk;
++    u8 framerate;
++};
++
++struct ov5640_clk_cfg {
++    u8 sc_pll_prediv;
++    u8 sc_pll_rdiv;
++    u8 sc_pll_mult;
++    u8 sysclk_div;
++    u8 mipi_div;
++};
++
++enum ov5640_size {
++    OV5640_SIZE_QVGA,
++    OV5640_SIZE_VGA,
++    OV5640_SIZE_720P,
++    OV5640_SIZE_1280x960,
++    OV5640_SIZE_UXGA,
++    OV5640_SIZE_1080P,
++    OV5640_SIZE_QXGA,
++    OV5640_SIZE_5MP,
++    OV5640_SIZE_LAST,
++};
++
++static const struct v4l2_frmsize_discrete ov5640_frmsizes[OV5640_SIZE_LAST] = {
++        {320, 240},
++        {640, 480},
++        {1280, 720},
++        {1280, 960},
++        {1600, 1200},
++        {1929, 1080},
++        {2048, 1536},
++        {2560, 1920},
++};
++
++
++struct fimc_is_sensor_cfg config_ov5640[] = {
++        FIMC_IS_SENSOR_CFG(320, 240, 120, 2, 0),
++        FIMC_IS_SENSOR_CFG(640, 480, 90, 2, 1),
++        FIMC_IS_SENSOR_CFG(1280, 720, 60, 2, 2),
++        FIMC_IS_SENSOR_CFG(1920, 1080, 30, 2, 3),
++        FIMC_IS_SENSOR_CFG(2560, 1920, 15, 2, 4),
++
++};
++
++/* Find a frame size in an array */
++static int ov5640_find_framesize(u32 width, u32 height)
++{
++    int i;
++
++    for (i = 0; i < OV5640_SIZE_LAST; i++) {
++        if ((ov5640_frmsizes[i].width >= width) &&
++            (ov5640_frmsizes[i].height >= height))
++            break;
++    }
++
++    /* If not found, select biggest */
++    if (i >= OV5640_SIZE_LAST)
++        i = OV5640_SIZE_LAST - 1;
++    return i;
++}
++
++struct fimc_is_module_ov5640 {
++    u16		vis_duration;
++    u16		frame_length_line;
++    u32		line_length_pck;
++    u32		system_clock;
++};
++
++struct ov5640_s {
++    unsigned short id;
++    struct v4l2_subdev *sd;
++    struct media_pad pad;
++    struct v4l2_mbus_framefmt format;
++    struct v4l2_ctrl_handler ctrl_handler;
++    struct v4l2_ctrl *pixel_rate;
++    /* HW control */
++    unsigned long xvclk;
++
++    /* System Clock config */
++    struct ov5640_clk_cfg clk_cfg;
++};
++
++static inline struct ov5640_s *to_ov5640(struct v4l2_subdev *sd)
++{
++    return container_of(sd, struct ov5640_s, sd);
++}
++
++/**
++ * struct ov5640_reg - ov5640 register format
++ * @reg: 16-bit offset to register
++ * @val: 8/16/32-bit register value
++ * @length: length of the register
++ *
++ * Define a structure for OV5640 register initialization values
++ */
++struct ov5640_reg {
++    u16	reg;
++    u8	val;
++};
++
++
++//#define ENABLE_COLOR_PATTERN
++static const struct ov5640_reg configscript_common1[] = {
++/* System Control */
++        {0x3103, 0x11},
++        {0x3008, 0x82},               /* Reset [7] PowerDn [6] */
++        {0xFFFF, 3},          /* Sleep 3ms */
++        {0x3103, 0x03},		/* PLL Clock Select */
++
++        /* IO Config */
++        {0x3017, 0x00},		/* IO [3:0] D9-D6 (MIPI MD1-D9:D8 MC-D7:D6) */
++        {0x3018, 0x00},		/* IO [7:2] D5-D0 (MIPI MD0-D5:D4)
++				   [1]GPIO1 [0]GPIO0 (MIPI MD2/MC/MD1) */
++
++        /* MIPI Control */
++        {0x4800, 0x20},
++        {0x3034, 0x18},
++        {0x300e, 0x45},		/* MIPI Control  Dual Lane */
++        /* CLKS = Src=13Mhz:  676Mbps 8-bit */
++        {0x3037, 0x12},		/* PLL Pre-Div [0:3], /2=6.5Mhz
++				   PLL Root Div [4] /1=676Mhz */
++        {0x3036, 0x58},		/* PLL Mult 4~252 0:7  0x68=104=676Mhz */
++        /* PLL ADCLK */
++        {0x303d, 0x30},		/*PreDivSp [5:4] /2=6.5Mhz */
++        {0x303b, 0x21},		/*DivCntsb [4:0] *30=195Mhz */
++        /*???? */
++        {0x302e, 0x08},		/*undocumented */
++        /*Format control */
++        {0x501f, 0x00},		/*ISP Format */
++        {0x3821, 0x00},
++        /*JPG Control */
++        //{0x4713, 0x02},		/*JPG Mode Select */
++        /*JPG Quality? */
++
++        {0x4407, 0x04},
++        {0x440e, 0x00},
++        /*VFIFO Control */
++        {0x460b, 0x35},		/*???? */
++        {0x460c, 0x22},		/*PCLK Divider Manual */
++        /*???? */
++        {0x3630, 0x2e},
++        {0x3632, 0xe2},
++        {0x3633, 0x23},
++        /*???? */
++        {0x3704, 0xa0},
++        {0x3703, 0x5a},
++        {0x3715, 0x78},
++        {0x3717, 0x01},
++        {0x370b, 0x60},
++        {0x3705, 0x1a},
++        {0x3905, 0x02},
++        {0x3906, 0x10},
++        {0x3901, 0x0a},
++        {0x3731, 0x12},
++        /*VCM Control */
++
++        {0x3600, 0x08},
++        {0x3601, 0x33},
++        {0x3604, 0x02},
++        {0x3605, 0x8a},
++
++         /*???? */
++        {0x302d, 0x60},
++        {0x3620, 0x52},
++        {0x371b, 0x20},
++        {0x471c, 0x50},
++        /*AEC Controls */
++        {0x3a13, 0x43},
++        {0x3a18, 0x00},
++        {0x3a19, 0xf8},
++        /*???? */
++        {0x3635, 0x1c},
++        {0x3634, 0x40},
++        {0x3622, 0x01},
++        /*50/60Hz Detector */
++        {0x3c01, 0x34},
++        {0x3c04, 0x28},
++        {0x3c05, 0x98},
++        {0x3c06, 0x00},
++
++        {0x3c07, 0x08},
++        {0x3c08, 0x00},
++        {0x3c09, 0x1c},
++        {0x3c0a, 0x9c},
++        {0x3c0b, 0x40},
++
++        {0x3814, 0x11},		/*X incr */
++        {0x3815, 0x11},		/*Y incr */
++        /* Sensor Timing control  2624 x 1952 --> 2560 x 1920 */
++        {0x3800, 0x00},		/*X start */
++        {0x3801, 0x20},
++        {0x3802, 0x00},		/*Y start */
++        {0x3803, 0x10},
++        {0x3804, 0x0a},		/*X end */
++        {0x3805, 0x1f},
++        {0x3806, 0x07},		/*Y end */
++        {0x3807, 0x8f},
++        /* Output size */
++        {0x3808, 0x0a},		/*output X  2592 */
++        {0x3809, 0x20},
++        {0x380a, 0x07},		/*output Y  1944 */
++        {0x380b, 0x98},
++        /* Total size (+blanking) */
++        {0x380c, 0x08},		/*Total X  2844 */
++        {0x380d, 0x98},
++        {0x380e, 0x05},		/*Total Y  1968 */
++        {0x380f, 0x00},
++        /* ISP Windowing size  2560 x 1920 --> 2560 x 1920 */
++        {0x3810, 0x00},		/*ISP X offset = 0 */
++        {0x3811, 0x00},
++        {0x3812, 0x00},		/*ISP Y offset = 0 */
++        {0x3813, 0x00},
++        /*???? */
++        {0x3618, 0x00},
++        {0x3612, 0x29},
++        {0x3708, 0x62},
++        {0x3709, 0x52},
++        {0x370c, 0x03},
++        /*AEC/AGC */
++        {0x3a02, 0x03},
++        {0x3a03, 0xd8},
++        {0x3a08, 0x01},
++        {0x3a09, 0x27},
++        {0x3a0a, 0x00},
++        {0x3a0b, 0xf6},
++        {0x3a0e, 0x03},
++        {0x3a0d, 0x04},
++        {0x3a14, 0x03},
++        {0x3a15, 0xd8},
++        /*BLC Control */
++        {0x4001, 0x01},
++        {0x4004, 0x02},
++
++        /*ISP Control */
++        {0x5000, 0xa7},
++        {0x5001, 0xE3}, //23		/*isp scale down  Special Effects */
++        /*AWB Control */
++        {0x5180, 0xff},
++        {0x5181, 0x56},
++        {0x5182, 0x00},
++        {0x5183, 0x14},
++        {0x5184, 0x25},
++        {0x5185, 0x24},
++        {0x5186, 0x10},
++        {0x5187, 0x14},
++        {0x5188, 0x10},
++        {0x5189, 0x81},
++        {0x518a, 0x5a},
++        {0x518b, 0xb6},
++        {0x518c, 0xa9},
++        {0x518d, 0x4c},
++        {0x518e, 0x34},
++        {0x518f, 0x60},
++        {0x5190, 0x48},
++        {0x5191, 0xf8},
++        {0x5192, 0x04},
++        {0x5193, 0x70},
++        {0x5194, 0xf0},
++        {0x5195, 0xf0},
++        {0x5196, 0x03},
++        {0x5197, 0x01},
++        {0x5198, 0x04},
++        {0x5199, 0x9b},
++        {0x519a, 0x04},
++        {0x519b, 0x00},
++        {0x519c, 0x09},
++        {0x519d, 0x1e},
++        {0x519e, 0x38},
++        /*CCM Control */
++#if 0
++        {0x5381, 0x26},
++        {0x5382, 0x4e},
++        {0x5383, 0x0c},
++        {0x5384, 0x12},
++        {0x5385, 0x70},
++        {0x5386, 0x82},
++        {0x5387, 0x6e},
++        {0x5388, 0x58},
++        {0x5389, 0x14},
++        {0x538b, 0x98},
++        {0x538a, 0x01},
++#else
++        {0x5381, 0x20},
++        {0x5382, 0x64},
++        {0x5383, 0x08},
++        {0x5384, 0x30},
++        {0x5385, 0x90},
++        {0x5386, 0xc0},
++        {0x5387, 0xa0},
++        {0x5388, 0x98},
++        {0x5389, 0x08},
++        {0x538b, 0x98},
++        {0x538a, 0x01},
++#endif
++        /*CIP Control */
++
++        {0x5300, 0x08},
++        {0x5301, 0x30},
++        {0x5302, 0x10},
++        {0x5303, 0x00},
++        {0x5304, 0x08},
++        {0x5305, 0x30},
++        {0x5306, 0x08},
++        {0x5307, 0x16},
++        {0x5309, 0x08},
++        {0x530a, 0x30},
++        {0x530b, 0x04},
++        {0x530c, 0x06},
++
++        /*Gamma Control */
++
++        {0x5480, 0x01},
++        {0x5481, 0x08},
++        {0x5482, 0x14},
++        {0x5483, 0x28},
++        {0x5484, 0x51},
++        {0x5485, 0x65},
++        {0x5486, 0x71},
++        {0x5487, 0x7d},
++        {0x5488, 0x87},
++        {0x5489, 0x91},
++        {0x548a, 0x9a},
++        {0x548b, 0xaa},
++        {0x548c, 0xb8},
++        {0x548d, 0xcd},
++        {0x548e, 0xdd},
++        {0x548f, 0xea},
++        {0x5490, 0x1d},
++
++        /*SDE Control */
++
++        {0x5580, 0x02},
++        {0x5583, 0x40},
++        {0x5584, 0x10},
++        {0x5589, 0x10},
++        {0x558a, 0x00},
++        {0x558b, 0xf8},
++
++        /* LSC OV5640LENCsetting */
++
++        {0x5800, 0x32},
++        {0x5801, 0x1d},
++        {0x5802, 0x19},
++        {0x5803, 0x18},
++        {0x5804, 0x1d},
++        {0x5805, 0x38},
++        {0x5806, 0x12},
++        {0x5807, 0x0a},
++        {0x5808, 0x07},
++        {0x5809, 0x07},
++        {0x580a, 0x0b},
++        {0x580b, 0x0f},
++        {0x580c, 0x0e},
++        {0x580d, 0x05},
++        {0x580e, 0x01},
++        {0x580f, 0x00},
++        {0x5810, 0x03},
++        {0x5811, 0x0a},
++        {0x5812, 0x0c},
++        {0x5813, 0x04},
++        {0x5814, 0x00},
++        {0x5815, 0x00},
++        {0x5816, 0x03},
++        {0x5817, 0x0a},
++        {0x5818, 0x12},
++        {0x5819, 0x09},
++        {0x581a, 0x06},
++        {0x581b, 0x05},
++        {0x581c, 0x09},
++        {0x581d, 0x12},
++        {0x581e, 0x32},
++        {0x581f, 0x18},
++        {0x5820, 0x14},
++        {0x5821, 0x13},
++        {0x5822, 0x17},
++        {0x5823, 0x2d},
++        {0x5824, 0x28},
++        {0x5825, 0x2a},
++        {0x5826, 0x28},
++        {0x5827, 0x28},
++        {0x5828, 0x2a},
++        {0x5829, 0x28},
++        {0x582a, 0x25},
++        {0x582b, 0x24},
++        {0x582c, 0x24},
++        {0x582d, 0x08},
++        {0x582e, 0x26},
++        {0x582f, 0x42},
++        {0x5830, 0x40},
++        {0x5831, 0x42},
++        {0x5832, 0x06},
++        {0x5833, 0x26},
++        {0x5834, 0x26},
++        {0x5835, 0x44},
++        {0x5836, 0x24},
++        {0x5837, 0x2a},
++        {0x5838, 0x4a},
++        {0x5839, 0x2a},
++        {0x583a, 0x0c},
++        {0x583b, 0x2c},
++        {0x583c, 0x28},
++        {0x583d, 0xce},
++
++        {0x5025, 0x00},
++
++        /*AEC Controls */
++
++        {0x3a0f, 0x30},
++        {0x3a10, 0x28},
++        {0x3a1b, 0x30},
++        {0x3a1e, 0x26},
++        {0x3a11, 0x60},
++        {0x3a1f, 0x14},
++
++#ifdef ENABLE_COLOR_PATTERN
++{0x503d, 0x80},		/* Solid Colour Bars */
++#if 0
++	{0x503d, 0x80},		/* Solid Colour Bars */
++	{0x503d, 0x81},		/* Gradual change @ vertical mode 1 */
++	{0x503d, 0x82},		/* Gradual change horizontal */
++	{0x503d, 0x83},		/* Gradual change @ vertical mode 2 */
++#endif
++#endif
++
++        {0xFFFF, 0x00},
++};
++
++static const struct ov5640_reg configscript_common2[] = {
++        /* System Clock Div */
++
++        {0x3035, 0x11},		/*SystemClkDiv 7:4, /1=728Mhz
++				   MIPI Sclk Div 3:0, /1=728Mhz */
++        /*System/IO pad Control */
++        {0x3000, 0x00},		/*Resets */
++        {0x3002, 0x1c},
++        {0x3004, 0xff},		/*Clocks */
++        {0x3006, 0xc3},
++        {0x3007, 0xff},		/*Clocks */
++
++        {0x3820, 0x40},
++        {0x3821, 0x06},
++
++        /*Format control */
++        {0x4300, 0x32},		/*Output Format[7:4] Sequence[3:0] (UVYV) */
++        /*MIPI Control */
++        {0x4837, 0x10},
++        {0x480a, 0x00},		/*mipi order */
++        {0x4740, 0x21},
++
++        /*PCLK Divider */
++        {0x3824, 0x00},		/*Scale Divider [4:0] */
++        {0x3008, 0x42},		/*stop sensor streaming */
++
++        {0xFFFF, 0x00}
++};
++
++
++static const struct ov5640_timing_cfg timing_cfg[OV5640_SIZE_LAST] = {
++        [OV5640_SIZE_QVGA] = {
++                .x_addr_start = 0,
++                .y_addr_start = 0,
++                .x_addr_end = 2623,
++                .y_addr_end = 1951,
++                .h_output_size = 320,
++                .v_output_size = 240,
++                .h_total_size = 2844,
++                .v_total_size = 1968,
++                .isp_h_offset = 16,
++                .isp_v_offset = 6,
++                .h_odd_ss_inc = 1,
++                .h_even_ss_inc = 1,
++                .v_odd_ss_inc = 1,
++                .v_even_ss_inc = 1,
++                .out_mode_sel	= 0x01,
++                .sclk_dividers	= 0x01,
++                .sys_mipi_clk	= 0x11,
++                .framerate = ov5640_default_fps,
++        },
++        [OV5640_SIZE_VGA] = {
++                .x_addr_start = 0,
++                .y_addr_start = 0,
++                .x_addr_end = 2623,
++                .y_addr_end = 1951,
++                .h_output_size = 640,
++                .v_output_size = 480,
++                .h_total_size = 2844,
++                .v_total_size = 1968,
++                .isp_h_offset = 16,
++                .isp_v_offset = 6,
++                .h_odd_ss_inc = 1,
++                .h_even_ss_inc = 1,
++                .v_odd_ss_inc = 1,
++                .v_even_ss_inc = 1,
++                .out_mode_sel	= 0x01,
++                .sclk_dividers	= 0x01,
++                .sys_mipi_clk	= 0x11,
++                .framerate = ov5640_default_fps,
++        },
++        [OV5640_SIZE_720P] = {
++                .x_addr_start = 336,
++                .y_addr_start = 434,
++                .x_addr_end = 2287,
++                .y_addr_end = 1522,
++                .h_output_size = 1280,
++                .v_output_size = 720,
++                .h_total_size = 2500,
++                .v_total_size = 1120,
++                .isp_h_offset = 16,
++                .isp_v_offset = 4,
++                .h_odd_ss_inc = 1,
++                .h_even_ss_inc = 1,
++                .v_odd_ss_inc = 1,
++                .v_even_ss_inc = 1,
++                .out_mode_sel	= 0x01,
++                .sclk_dividers	= 0x01,
++                .sys_mipi_clk	= 0x11,
++
++
++                .framerate = ov5640_default_fps,
++        },
++        [OV5640_SIZE_1080P] = {
++                .x_addr_start = 336,
++                .y_addr_start = 434,
++                .x_addr_end = 2287,
++                .y_addr_end = 1522,
++                .h_output_size = 1920,
++                .v_output_size = 1080,
++                .h_total_size = 2500,
++                .v_total_size = 1120,
++                .isp_h_offset = 16,
++                .isp_v_offset = 4,
++                .h_odd_ss_inc = 1,
++                .h_even_ss_inc = 1,
++                .v_odd_ss_inc = 1,
++                .v_even_ss_inc = 1,
++                .out_mode_sel    = 0x00,
++                .sclk_dividers    = 0x02,
++                .sys_mipi_clk    = 0x12,
++                .framerate = ov5640_default_fps,
++        },
++        [OV5640_SIZE_5MP] = {
++                .x_addr_start = 0,
++                .y_addr_start = 0,
++                .x_addr_end = 2623,
++                .y_addr_end = 1951,
++                .h_output_size = 2592,
++                .v_output_size = 1944,
++                .h_total_size = 2844,
++                .v_total_size = 1968,
++                .isp_h_offset = 16,
++                .isp_v_offset = 6,
++                .h_odd_ss_inc = 1,
++                .h_even_ss_inc = 1,
++                .v_odd_ss_inc = 1,
++                .v_even_ss_inc = 1,
++                .out_mode_sel	= 0x00,
++                .sclk_dividers	= 0x02,
++                .sys_mipi_clk	= 0x12,
++                .framerate = ov5640_default_fps,
++        },
++};
++
++
++
++
++#define V4L2_CID_CAM_CONTRAST           (V4L2_CID_CAMERA_CLASS_BASE+42)
++enum v4l2_contrast {
++    V4L2_CONTRAST_AUTO,
++    V4L2_CONTRAST_MINUS_4,
++    V4L2_CONTRAST_MINUS_3,
++    V4L2_CONTRAST_MINUS_2,
++    V4L2_CONTRAST_MINUS_1,
++    V4L2_CONTRAST_DEFAULT,
++    V4L2_CONTRAST_PLUS_1,
++    V4L2_CONTRAST_PLUS_2,
++    V4L2_CONTRAST_PLUS_3,
++    V4L2_CONTRAST_PLUS_4,
++    V4L2_CONTRAST_MAX
++};
++
++#define V4L2_CID_CAM_SATURATION         (V4L2_CID_CAMERA_CLASS_BASE+43)
++enum v4l2_saturation {
++    V4L2_SATURATION_MINUS_3,
++    V4L2_SATURATION_MINUS_2,
++    V4L2_SATURATION_MINUS_1,
++    V4L2_SATURATION_DEFAULT,
++    V4L2_SATURATION_PLUS_1,
++    V4L2_SATURATION_PLUS_2,
++    V4L2_SATURATION_PLUS_3,
++    V4L2_SATURATION_MAX
++};
++
++#define V4L2_CID_CAM_SHARPNESS          (V4L2_CID_CAMERA_CLASS_BASE+44)
++enum v4l2_sharpness {
++    V4L2_SHARPNESS_MINUS_2,
++    V4L2_SHARPNESS_MINUS_1,
++    V4L2_SHARPNESS_DEFAULT,
++    V4L2_SHARPNESS_PLUS_1,
++    V4L2_SHARPNESS_PLUS_2,
++    V4L2_SHARPNESS_MAX,
++};
++
++#define V4L2_CID_CAM_ISO    (V4L2_CID_CAMERA_CLASS_BASE+22)
++enum v4l2_iso {
++    V4L2_ISO_AUTO,
++    V4L2_ISO_50,
++    V4L2_ISO_100,
++    V4L2_ISO_200,
++    V4L2_ISO_400,
++    V4L2_ISO_800,
++    V4L2_ISO_1600,
++    V4L2_ISO_MAX
++};
++
++#define V4L2_CID_CAPTURE			(V4L2_CID_CAMERA_CLASS_BASE+46)
++
++#define V4L2_CID_CAM_FLASH_MODE			(V4L2_CID_CAMERA_CLASS_BASE+62)
++enum v4l2_cam_flash_mode {
++    V4L2_FLASH_MODE_BASE,
++    V4L2_FLASH_MODE_OFF,
++    V4L2_FLASH_MODE_AUTO,
++    V4L2_FLASH_MODE_ON,
++    V4L2_FLASH_MODE_TORCH,
++    V4L2_FLASH_MODE_MAX,
++};
++
++#define V4L2_CID_JPEG_QUALITY			(V4L2_CID_CAMERA_CLASS_BASE+55)
++
++#define V4L2_CID_CAM_OBJECT_POSITION_X		(V4L2_CID_CAMERA_CLASS_BASE+50)
++#define V4L2_CID_CAM_OBJECT_POSITION_Y		(V4L2_CID_CAMERA_CLASS_BASE+51)
++
++#define V4L2_CID_CAM_SET_AUTO_FOCUS		(V4L2_CID_CAMERA_CLASS_BASE+48)
++enum v4l2_cam_auto_focus {
++    V4L2_AUTO_FOCUS_OFF = 0,
++    V4L2_AUTO_FOCUS_ON,
++    V4L2_AUTO_FOCUS_MAX,
++};
++
++#define V4L2_CID_CAM_SINGLE_AUTO_FOCUS		(V4L2_CID_CAMERA_CLASS_BASE+63)
++
++#define V4L2_CID_CAM_AUTO_FOCUS_RESULT		(V4L2_CID_CAMERA_CLASS_BASE+54)
++enum v4l2_cam_af_status {
++    V4L2_CAMERA_AF_STATUS_IN_PROGRESS = 0,
++    V4L2_CAMERA_AF_STATUS_SUCCESS,
++    V4L2_CAMERA_AF_STATUS_FAIL,
++    V4L2_CAMERA_AF_STATUS_1ST_SUCCESS,
++    V4L2_CAMERA_AF_STATUS_MAX,
++};
++
++#define V4L2_CID_CAM_BRIGHTNESS			(V4L2_CID_CAMERA_CLASS_BASE+45)
++enum v4l2_brightness {
++    V4L2_BRIGHTNESS_MINUS_2,
++    V4L2_BRIGHTNESS_MINUS_1,
++    V4L2_BRIGHTNESS_DEFAULT,
++    V4L2_BRIGHTNESS_PLUS_1,
++    V4L2_BRIGHTNESS_PLUS_2,
++    V4L2_BRIGHTNESS_MAX,
++};
++
++
++
++
++
++
++
++#endif
+diff -Naur drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h.bak drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h.bak
+--- drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h.bak	1970-01-01 01:00:00.000000000 +0100
++++ drivers/media/platform/exynos/fimc-is-w1/sensor/fimc-is-device-ov5640.h.bak	2017-03-02 16:32:07.000000000 +0100
 @@ -0,0 +1,995 @@
 +#ifndef FIMC_IS_DEVICE_OV5640_H
 +#define FIMC_IS_DEVICE_OV5640_H
@@ -7614,7 +11978,7 @@ diff -Naur include/uapi/linux/v4l2-mediabus.h include/uapi/linux/v4l2-mediabus.h
  #endif
 diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 --- sound/soc/codecs/sgtl5000.c	2016-04-01 04:23:41.000000000 +0200
-+++ sound/soc/codecs/sgtl5000.c	2017-03-02 16:32:07.000000000 +0100
++++ sound/soc/codecs/sgtl5000.c	2017-06-01 11:33:48.051642200 +0200
 @@ -7,7 +7,7 @@
   * it under the terms of the GNU General Public License version 2 as
   * published by the Free Software Foundation.
@@ -7669,7 +12033,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 +        { SGTL5000_CHIP_ANA_CTRL,               0x0111 },
 +        { SGTL5000_CHIP_LINREG_CTRL,            0x0000 },
 +        { SGTL5000_CHIP_REF_CTRL,               0x0000 },
-+        { SGTL5000_CHIP_MIC_CTRL,               0x0000 },
++        { SGTL5000_CHIP_MIC_CTRL,               0x0100 },
 +        { SGTL5000_CHIP_LINE_OUT_CTRL,          0x0000 },
 +        { SGTL5000_CHIP_LINE_OUT_VOL,           0x0404 },
 +        { SGTL5000_CHIP_ANA_POWER,              0x7060 },
@@ -7732,7 +12096,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 +        [SGTL5000_CHIP_ANA_CTRL] = 0x0111,
 +        [SGTL5000_CHIP_LINREG_CTRL] = 0x0000,
 +        [SGTL5000_CHIP_REF_CTRL] = 0x0000,
-+        [SGTL5000_CHIP_MIC_CTRL] = 0x0000,
++        [SGTL5000_CHIP_MIC_CTRL] = 0x0100,
 +        [SGTL5000_CHIP_LINE_OUT_CTRL] = 0x0000,
 +        [SGTL5000_CHIP_LINE_OUT_VOL] = 0x0404,
 +        [SGTL5000_CHIP_ANA_POWER] = 0x7060,
@@ -7761,14 +12125,27 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  };
  
  /* regulator supplies for sgtl5000, VDDD is an optional external supply */
-@@ -253,11 +322,22 @@
- {
- 	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
+@@ -131,12 +200,12 @@
+ 		/* change mic bias resistor to 4Kohm */
+ 		snd_soc_update_bits(w->codec, SGTL5000_CHIP_MIC_CTRL,
+ 				SGTL5000_BIAS_R_MASK,
+-				SGTL5000_BIAS_R_4k << SGTL5000_BIAS_R_SHIFT);
++				SGTL5000_BIAS_R_2K << SGTL5000_BIAS_R_SHIFT);
+ 		break;
+ 
+ 	case SND_SOC_DAPM_PRE_PMD:
+ 		snd_soc_update_bits(w->codec, SGTL5000_CHIP_MIC_CTRL,
+-				SGTL5000_BIAS_R_MASK, 0);
++				SGTL5000_BIAS_R_MASK, SGTL5000_BIAS_R_2K << SGTL5000_BIAS_R_SHIFT);
+ 		break;
+ 	}
+ 	return 0;
+@@ -255,9 +324,22 @@
  	uinfo->count = 2;
--	uinfo->value.integer.min = 0;
--	uinfo->value.integer.max = 0xfc - 0x3c;
-+	uinfo->value.integer.min = 0x3c;
-+	uinfo->value.integer.max = 0xfc;
+ 	uinfo->value.integer.min = 0;
+ 	uinfo->value.integer.max = 0xfc - 0x3c;
++	//uinfo->value.integer.min = 0x3c;
++	//uinfo->value.integer.max = 0xfc;
  	return 0;
  }
  
@@ -7786,7 +12163,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  /*
   * custom function to get of PCM playback volume
   *
-@@ -362,6 +442,35 @@
+@@ -362,6 +444,78 @@
  	return 0;
  }
  
@@ -7818,14 +12195,58 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 +    return 0;
 +}
 +
++static const unsigned int bass_high_filter_freq[] = {
++        TLV_DB_RANGE_HEAD(7),
++        0, 0, TLV_DB_SCALE_ITEM(80, 0, 0),
++        1, 6, TLV_DB_SCALE_ITEM(100, 25, 0),
++};
++
++
++static int mixer_vol_get(struct snd_kcontrol *kcontrol,
++                         struct snd_ctl_elem_value *ucontrol)
++{
++    struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++    struct soc_mixer_control *control =
++            (struct soc_mixer_control *)kcontrol->private_value;
++    u16 reg = snd_soc_read(codec, control->reg);
++    int vol;
++
++    vol = (reg * 100) >> 15;
++
++    ucontrol->value.integer.value[0] = vol;
++    ucontrol->value.integer.value[1] = vol;
++    return 0;
++}
++
++static int mixer_vol_put(struct snd_kcontrol *kcontrol,
++                         struct snd_ctl_elem_value *ucontrol)
++{
++    struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++    struct soc_mixer_control *control =
++            (struct soc_mixer_control *)kcontrol->private_value;
++    u16 reg;
++    int vol;
++
++    vol = ucontrol->value.integer.value[0];
++    reg = (vol << 15) / 100;
++    snd_soc_write(codec, control->reg, reg);
++
++    return 0;
++}
++
++
++static const DECLARE_TLV_DB_SCALE(avc_max_gain, 0, 600, 0);
++static const DECLARE_TLV_DB_SCALE(avc_threshold, 0, 1, 0);
++static const DECLARE_TLV_DB_SCALE(mixer_volume, 0, 1, 0);
 +
  static const DECLARE_TLV_DB_SCALE(capture_6db_attenuate, -600, 600, 0);
  
  /* tlv for mic gain, 0db 20db 30db 40db */
-@@ -386,6 +495,17 @@
+@@ -386,10 +540,21 @@
  		.put = dac_put_volsw,
  	},
  
+-	SOC_DOUBLE("Capture Volume", SGTL5000_CHIP_ANA_ADC_CTRL, 0, 4, 0xf, 0),
 +
 +    {
 +            .iface = SNDRV_CTL_ELEM_IFACE_MIXER,
@@ -7837,10 +12258,55 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 +            .put = put_amp,
 +    },
 +
- 	SOC_DOUBLE("Capture Volume", SGTL5000_CHIP_ANA_ADC_CTRL, 0, 4, 0xf, 0),
++	SOC_DOUBLE("Capture", SGTL5000_CHIP_ANA_ADC_CTRL, 0, 4, 0xf, 0),
  	SOC_SINGLE_TLV("Capture Attenuate Switch (-6dB)",
  			SGTL5000_CHIP_ANA_ADC_CTRL,
-@@ -409,10 +529,20 @@
+-			8, 2, 0, capture_6db_attenuate),
++			8, 1, 0, capture_6db_attenuate),
+ 	SOC_SINGLE("Capture ZC Switch", SGTL5000_CHIP_ANA_CTRL, 1, 1, 0),
+ 
+ 	SOC_DOUBLE_TLV("Headphone Playback Volume",
+@@ -402,6 +567,39 @@
+ 
+ 	SOC_SINGLE_TLV("Mic Volume", SGTL5000_CHIP_MIC_CTRL,
+ 			0, 3, 0, mic_gain_tlv),
++
++    SOC_SINGLE("Bias Resistor", SGTL5000_CHIP_MIC_CTRL,
++                   8, 3, 0),
++#if 0
++        /* Bass Enhance enable */
++    SOC_SINGLE("Bass Enable", SGTL5000_DAP_BASS_ENHANCE,
++               0, 1, 0),
++    SOC_SINGLE_TLV("Bass Filter Feq", SGTL5000_DAP_BASS_ENHANCE,
++                   6, 7, 0, bass_high_filter_freq),
++    SOC_SINGLE("Bass Volume", SGTL5000_DAP_BASS_ENHANCE_CTRL,
++               8, 0x3f, 1),
++        /* Bass Harmonic Level Control */
++    SOC_SINGLE("Bass Level", SGTL5000_DAP_BASS_ENHANCE_CTRL,
++               0, 0x7f, 1),
++
++        /* DAP Surround */
++    SOC_SINGLE("Surround Width", SGTL5000_DAP_SURROUND,
++               4, 0x7, 0),
++
++        /* DAP MAIN Channel Voluem */
++    SOC_SINGLE_EXT_TLV("Main Channel Volume", SGTL5000_DAP_MAIN_CHAN,
++                       0, 200, 0, mixer_vol_get, mixer_vol_put, mixer_volume),
++    SOC_SINGLE_EXT_TLV("Mixer Channel Volume", SGTL5000_DAP_MIX_CHAN,
++                       0, 200, 0, mixer_vol_get, mixer_vol_put, mixer_volume),
++
++        /* DAP AVC */
++    SOC_SINGLE("AVC Enable", SGTL5000_DAP_AVC_CTRL,
++               0, 1, 0),
++    SOC_SINGLE("AVC Hard Limit", SGTL5000_DAP_AVC_CTRL,
++               5, 1, 0),
++    SOC_SINGLE_TLV("AVC Max Gain", SGTL5000_DAP_AVC_CTRL,
++                   12, 2, 0, avc_max_gain),
++#endif
+ };
+ 
+ /* mute the codec used by alsa core */
+@@ -409,10 +607,20 @@
  {
  	struct snd_soc_codec *codec = codec_dai->codec;
  	u16 adcdac_ctrl = SGTL5000_DAC_MUTE_LEFT | SGTL5000_DAC_MUTE_RIGHT;
@@ -7862,7 +12328,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return 0;
  }
  
-@@ -477,7 +607,7 @@
+@@ -477,7 +685,7 @@
  	default:
  		return -EINVAL;
  	}
@@ -7871,7 +12337,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	snd_soc_write(codec, SGTL5000_CHIP_I2S_CTRL, i2sctl);
  
  	return 0;
-@@ -495,7 +625,9 @@
+@@ -495,7 +703,9 @@
  		sgtl5000->sysclk = freq;
  		break;
  	default:
@@ -7882,7 +12348,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	}
  
  	return 0;
-@@ -539,6 +671,7 @@
+@@ -539,6 +749,7 @@
  		break;
  	}
  
@@ -7890,7 +12356,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	/* set divided factor of frame clock */
  	switch (sys_fs / frame_rate) {
  	case 4:
-@@ -578,7 +711,8 @@
+@@ -578,7 +789,8 @@
  	 * calculate the divider of mclk/sample_freq,
  	 * factor of freq =96k can only be 256, since mclk in range (12m,27m)
  	 */
@@ -7900,7 +12366,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	case 256:
  		clk_ctl |= SGTL5000_MCLK_FREQ_256FS <<
  			SGTL5000_MCLK_FREQ_SHIFT;
-@@ -609,7 +743,6 @@
+@@ -609,7 +821,6 @@
  		int div2;
  		int pll_ctl;
  		unsigned int in, int_div, frac_div;
@@ -7908,7 +12374,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		if (sgtl5000->sysclk > 17000000) {
  			div2 = 1;
  			in = sgtl5000->sysclk / 2;
-@@ -621,6 +754,7 @@
+@@ -621,6 +832,7 @@
  			out = 180633600;
  		else
  			out = 196608000;
@@ -7916,7 +12382,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		t = do_div(out, in);
  		int_div = out;
  		t *= 2048;
-@@ -628,7 +762,7 @@
+@@ -628,7 +840,7 @@
  		frac_div = t;
  		pll_ctl = int_div << SGTL5000_PLL_INT_DIV_SHIFT |
  		    frac_div << SGTL5000_PLL_FRAC_DIV_SHIFT;
@@ -7925,7 +12391,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		snd_soc_write(codec, SGTL5000_CHIP_PLL_CTRL, pll_ctl);
  		if (div2)
  			snd_soc_update_bits(codec,
-@@ -651,7 +785,7 @@
+@@ -651,7 +863,7 @@
  			SGTL5000_PLL_POWERUP | SGTL5000_VCOAMP_POWERUP,
  			0);
  	}
@@ -7934,17 +12400,13 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	/* if using pll, clk_ctrl must be set after pll power up */
  	snd_soc_write(codec, SGTL5000_CHIP_CLK_CTRL, clk_ctl);
  
-@@ -672,12 +806,42 @@
+@@ -672,12 +884,42 @@
  	int i2s_ctl = 0;
  	int stereo;
  	int ret;
 +	unsigned int sys_fs;
 +    unsigned int fs;
- 
--	/* sysclk should already set */
--	if (!sgtl5000->sysclk) {
--		dev_err(codec->dev, "%s: set sysclk first!\n", __func__);
--		return -EFAULT;
++
 +    if (boot_cnt > 0){
 +        boot_cnt--;
 +    }else{
@@ -7967,7 +12429,11 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 +            sys_fs = fs;
 +            break;
 +    }
-+
+ 
+-	/* sysclk should already set */
+-	if (!sgtl5000->sysclk) {
+-		dev_err(codec->dev, "%s: set sysclk first!\n", __func__);
+-		return -EFAULT;
 +	/* sgtl5000 does not support 512*rate when in 96000 fs */
 +	switch (fs) {
 +	case 96000:
@@ -7981,7 +12447,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
  		stereo = SGTL5000_DAC_STEREO;
-@@ -723,10 +887,12 @@
+@@ -723,10 +965,12 @@
  		return -EINVAL;
  	}
  
@@ -7994,7 +12460,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return 0;
  }
  
-@@ -734,7 +900,7 @@
+@@ -734,7 +978,7 @@
  static int ldo_regulator_is_enabled(struct regulator_dev *dev)
  {
  	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
@@ -8003,7 +12469,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return ldo->enabled;
  }
  
-@@ -743,6 +909,7 @@
+@@ -743,6 +987,7 @@
  	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
  	struct snd_soc_codec *codec = (struct snd_soc_codec *)ldo->codec_data;
  	int reg;
@@ -8011,7 +12477,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	if (ldo_regulator_is_enabled(dev))
  		return 0;
-@@ -766,7 +933,7 @@
+@@ -766,7 +1011,7 @@
  	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
  				SGTL5000_LINREG_SIMPLE_POWERUP,
  				0);
@@ -8020,7 +12486,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	ldo->enabled = 1;
  	return 0;
  }
-@@ -775,6 +942,7 @@
+@@ -775,6 +1020,7 @@
  {
  	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
  	struct snd_soc_codec *codec = (struct snd_soc_codec *)ldo->codec_data;
@@ -8028,7 +12494,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
  				SGTL5000_LINEREG_D_POWERUP,
-@@ -785,7 +953,7 @@
+@@ -785,7 +1031,7 @@
  				SGTL5000_LINREG_VDDD_MASK, 0);
  
  	ldo->enabled = 0;
@@ -8037,7 +12503,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return 0;
  }
  
-@@ -810,6 +978,7 @@
+@@ -810,6 +1056,7 @@
  	struct ldo_regulator *ldo;
  	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
  	struct regulator_config config = { };
@@ -8045,7 +12511,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	ldo = kzalloc(sizeof(struct ldo_regulator), GFP_KERNEL);
  
-@@ -856,6 +1025,7 @@
+@@ -856,6 +1103,7 @@
  {
  	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
  	struct ldo_regulator *ldo = sgtl5000->ldo;
@@ -8053,7 +12519,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	if (!ldo)
  		return 0;
-@@ -896,6 +1066,9 @@
+@@ -896,6 +1144,9 @@
  {
  	int ret;
  	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
@@ -8063,7 +12529,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	switch (level) {
  	case SND_SOC_BIAS_ON:
-@@ -903,19 +1076,16 @@
+@@ -903,19 +1154,16 @@
  		break;
  	case SND_SOC_BIAS_STANDBY:
  		if (codec->dapm.bias_level == SND_SOC_BIAS_OFF) {
@@ -8088,7 +12554,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	}
  
  	codec->dapm.bias_level = level;
-@@ -974,8 +1144,9 @@
+@@ -974,8 +1222,9 @@
  #ifdef CONFIG_SUSPEND
  static int sgtl5000_suspend(struct snd_soc_codec *codec)
  {
@@ -8100,7 +12566,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return 0;
  }
  
-@@ -988,7 +1159,7 @@
+@@ -988,7 +1237,7 @@
  {
  	u16 *cache = codec->reg_cache;
  	u16 reg;
@@ -8109,7 +12575,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	/* restore regular registers */
  	for (reg = 0; reg <= SGTL5000_CHIP_SHORT_CTRL; reg += 2) {
  
-@@ -1051,6 +1222,7 @@
+@@ -1051,6 +1300,7 @@
  #define sgtl5000_resume  NULL
  #endif	/* CONFIG_SUSPEND */
  
@@ -8117,7 +12583,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  /*
   * sgtl5000 has 3 internal power supplies:
   * 1. VAG, normally set to vdda/2
-@@ -1069,13 +1241,18 @@
+@@ -1069,13 +1319,18 @@
  	int vdda;
  	int vddio;
  	u16 ana_pwr;
@@ -8137,7 +12603,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	vdda  = vdda / 1000;
  	vddio = vddio / 1000;
-@@ -1098,6 +1275,7 @@
+@@ -1098,6 +1353,7 @@
  
  	/* reset value */
  	ana_pwr = snd_soc_read(codec, SGTL5000_CHIP_ANA_POWER);
@@ -8145,7 +12611,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	ana_pwr |= SGTL5000_DAC_STEREO |
  			SGTL5000_ADC_STEREO |
  			SGTL5000_REFTOP_POWERUP;
-@@ -1182,7 +1360,7 @@
+@@ -1182,7 +1438,7 @@
  {
  	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
  	int ret;
@@ -8154,7 +12620,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	/* set internal ldo to 1.2v */
  	ret = ldo_regulator_register(codec, &ldo_init_data, LDO_VOLTAGE);
  	if (ret) {
-@@ -1190,24 +1368,24 @@
+@@ -1190,24 +1446,24 @@
  			"Failed to register vddd internal supplies: %d\n", ret);
  		return ret;
  	}
@@ -8181,7 +12647,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	u16 reg;
  	int ret;
  	int rev;
-@@ -1215,12 +1393,16 @@
+@@ -1215,12 +1471,16 @@
  	int external_vddd = 0;
  	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
  
@@ -8200,7 +12666,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		external_vddd = 1;
  	else {
  		ret = sgtl5000_replace_vddd_with_ldo(codec);
-@@ -1228,9 +1410,13 @@
+@@ -1228,9 +1488,13 @@
  			return ret;
  	}
  
@@ -8215,7 +12681,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		goto err_regulator_free;
  
  	/* wait for all power rails bring up */
-@@ -1239,6 +1425,8 @@
+@@ -1239,6 +1503,8 @@
  	/* Need 8 clocks before I2C accesses */
  	udelay(1);
  
@@ -8224,7 +12690,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	/* read chip information */
  	reg = snd_soc_read(codec, SGTL5000_CHIP_ID);
  	if (((reg & SGTL5000_PARTID_MASK) >> SGTL5000_PARTID_SHIFT) !=
-@@ -1294,7 +1482,9 @@
+@@ -1294,7 +1560,9 @@
  static int sgtl5000_probe(struct snd_soc_codec *codec)
  {
  	int ret;
@@ -8234,7 +12700,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  
  	/* setup i2c data ops */
  	ret = snd_soc_codec_set_cache_io(codec, 16, 16, SND_SOC_I2C);
-@@ -1303,6 +1493,10 @@
+@@ -1303,6 +1571,10 @@
  		return ret;
  	}
  
@@ -8245,7 +12711,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	ret = sgtl5000_enable_regulators(codec);
  	if (ret)
  		return ret;
-@@ -1323,10 +1517,23 @@
+@@ -1323,10 +1595,24 @@
  	 * set i2s as default input of sound switch
  	 * TODO: add sound switch to control and dapm widge.
  	 */
@@ -8254,7 +12720,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 -	snd_soc_write(codec, SGTL5000_CHIP_DIG_POWER,
 -			SGTL5000_ADC_EN | SGTL5000_DAC_EN);
 +/*
-+  tmp_select = (SGTL5000_DAP_MIX_SEL_I2S_IN << SGTL5000_DAP_MIX_SEL_SHIFT)
++    tmp_select = (SGTL5000_DAP_MIX_SEL_I2S_IN << SGTL5000_DAP_MIX_SEL_SHIFT)
 +              |(SGTL5000_DAP_SEL_I2S_IN << SGTL5000_DAP_SEL_SHIFT)
 +              |(SGTL5000_DAC_SEL_DAP << SGTL5000_DAC_SEL_SHIFT);
 +	snd_soc_write(codec, SGTL5000_CHIP_SSS_CTRL,tmp_select);
@@ -8266,35 +12732,28 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
 + * set i2s as default input of sound switch
 + * TODO: add sound switch to control and dapm widge.
 + */
-+    snd_soc_write(codec, SGTL5000_CHIP_SSS_CTRL,
-+                  SGTL5000_DAC_SEL_I2S_IN << SGTL5000_DAC_SEL_SHIFT);
++
++    snd_soc_write(codec, SGTL5000_CHIP_SSS_CTRL, (SGTL5000_DAC_SEL_I2S_IN << SGTL5000_DAC_SEL_SHIFT));
++
 +    snd_soc_write(codec, SGTL5000_CHIP_DIG_POWER,
 +                  SGTL5000_ADC_EN | SGTL5000_DAC_EN);
  
  	/* enable dac volume ramp by default */
  	snd_soc_write(codec, SGTL5000_CHIP_ADCDAC_CTRL,
-@@ -1334,24 +1541,47 @@
- 			SGTL5000_DAC_MUTE_RIGHT |
- 			SGTL5000_DAC_MUTE_LEFT);
- 
--	snd_soc_write(codec, SGTL5000_CHIP_PAD_STRENGTH, 0x015f);
-+	snd_soc_write(codec, SGTL5000_CHIP_PAD_STRENGTH, 0x014f);
- 
- 	snd_soc_write(codec, SGTL5000_CHIP_ANA_CTRL,
+@@ -1340,7 +1626,11 @@
  			SGTL5000_HP_ZCD_EN |
  			SGTL5000_ADC_ZCD_EN);
  
 -	snd_soc_write(codec, SGTL5000_CHIP_MIC_CTRL, 2);
-+	snd_soc_write(codec, SGTL5000_CHIP_MIC_CTRL, 0);
++	snd_soc_write(codec, SGTL5000_CHIP_MIC_CTRL, ( SGTL5000_BIAS_R_2K << SGTL5000_BIAS_R_SHIFT)|(0 << SGTL5000_BIAS_VOLT_SHIFT)|(0));
++
++    snd_soc_write(codec, SGTL5000_CHIP_ANA_ADC_CTRL,
++                  (0xf << SGTL5000_ADC_VOL_LEFT_SHIFT) |\
++		(0xf << SGTL5000_ADC_VOL_RIGHT_SHIFT));
  
  	/*
  	 * disable DAP
- 	 * TODO:
- 	 * Enable DAP in kcontrol and dapm.
- 	 */
--	snd_soc_write(codec, SGTL5000_DAP_CTRL, 0);
-+  tmp_select =SGTL5000_DAP_EN | SGTL5000_DAP_MIX_EN;//(SGTL5000_DAP_EN);// | (SGTL5000_DAP_MIX_EN);
-+	snd_soc_write(codec, SGTL5000_DAP_CTRL, tmp_select);
+@@ -1351,7 +1641,29 @@
  
  	/* leading to standby state */
  	ret = sgtl5000_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
@@ -8325,7 +12784,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  		goto err;
  
  	return 0;
-@@ -1368,16 +1598,16 @@
+@@ -1368,16 +1680,16 @@
  
  static int sgtl5000_remove(struct snd_soc_codec *codec)
  {
@@ -8344,7 +12803,7 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  	return 0;
  }
  
-@@ -1400,6 +1630,10 @@
+@@ -1400,6 +1712,10 @@
  	.num_dapm_routes = ARRAY_SIZE(sgtl5000_dapm_routes),
  };
  
@@ -8355,6 +12814,1700 @@ diff -Naur sound/soc/codecs/sgtl5000.c sound/soc/codecs/sgtl5000.c
  static int sgtl5000_i2c_probe(struct i2c_client *client,
  			      const struct i2c_device_id *id)
  {
+diff -Naur sound/soc/codecs/sgtl5000.c.bak sound/soc/codecs/sgtl5000.c.bak
+--- sound/soc/codecs/sgtl5000.c.bak	1970-01-01 01:00:00.000000000 +0100
++++ sound/soc/codecs/sgtl5000.c.bak	2017-03-02 16:32:07.000000000 +0100
+@@ -0,0 +1,1690 @@
++/*
++ * sgtl5000.c  --  SGTL5000 ALSA SoC Audio driver
++ *
++ * Copyright 2010-2011 Freescale Semiconductor, Inc. All Rights Reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++ #define DEBUG
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/slab.h>
++#include <linux/pm.h>
++#include <linux/i2c.h>
++#include <linux/clk.h>
++#include <linux/regmap.h>
++#include <linux/regulator/driver.h>
++#include <linux/regulator/machine.h>
++#include <linux/regulator/consumer.h>
++#include <linux/of_device.h>
++#include <sound/core.h>
++#include <sound/tlv.h>
++#include <sound/pcm.h>
++#include <sound/pcm_params.h>
++#include <sound/soc.h>
++#include <sound/soc-dapm.h>
++#include <sound/initval.h>
++#include <linux/gpio.h>                 // Required for the GPIO functions
++
++#include "sgtl5000.h"
++
++
++static unsigned int gpioSPK_R =121;
++static unsigned int gpioSPK_L =122;
++
++static unsigned int gpioSPKAmp1 =123;
++static unsigned int gpioSPKAmp2 =124;
++static unsigned int ampVal = 0;
++
++static unsigned int boot_cnt = 7;
++
++
++
++#define SGTL5000_DAP_REG_OFFSET	0x0100
++#define SGTL5000_MAX_REG_OFFSET	0x013A
++
++/* default value of sgtl5000 registers */
++static const struct reg_default sgtl5000_reg_defaults[] = {
++        { SGTL5000_CHIP_DIG_POWER,              0x0000 },
++        { SGTL5000_CHIP_CLK_CTRL,               0x0008 },
++        { SGTL5000_CHIP_I2S_CTRL,               0x0010 },
++        { SGTL5000_CHIP_SSS_CTRL,               0x0010 },
++        { SGTL5000_CHIP_ADCDAC_CTRL,            0x020c },
++        { SGTL5000_CHIP_DAC_VOL,                0x3c3c },
++        { SGTL5000_CHIP_PAD_STRENGTH,           0x015f },
++        { SGTL5000_CHIP_ANA_ADC_CTRL,           0x0000 },
++        { SGTL5000_CHIP_ANA_HP_CTRL,            0x1818 },
++        { SGTL5000_CHIP_ANA_CTRL,               0x0111 },
++        { SGTL5000_CHIP_LINREG_CTRL,            0x0000 },
++        { SGTL5000_CHIP_REF_CTRL,               0x0000 },
++        { SGTL5000_CHIP_MIC_CTRL,               0x0000 },
++        { SGTL5000_CHIP_LINE_OUT_CTRL,          0x0000 },
++        { SGTL5000_CHIP_LINE_OUT_VOL,           0x0404 },
++        { SGTL5000_CHIP_ANA_POWER,              0x7060 },
++        { SGTL5000_CHIP_PLL_CTRL,               0x5000 },
++        { SGTL5000_CHIP_CLK_TOP_CTRL,           0x0000 },
++        { SGTL5000_CHIP_ANA_STATUS,             0x0000 },
++        { SGTL5000_CHIP_SHORT_CTRL,             0x0000 },
++        { SGTL5000_CHIP_ANA_TEST2,              0x0000 },
++        { SGTL5000_DAP_CTRL,                    0x0000 },
++        { SGTL5000_DAP_PEQ,                     0x0000 },
++        { SGTL5000_DAP_BASS_ENHANCE,            0x0040 },
++        { SGTL5000_DAP_BASS_ENHANCE_CTRL,       0x051f },
++        { SGTL5000_DAP_AUDIO_EQ,                0x0000 },
++        { SGTL5000_DAP_SURROUND,                0x0040 },
++        { SGTL5000_DAP_EQ_BASS_BAND0,           0x002f },
++        { SGTL5000_DAP_EQ_BASS_BAND1,           0x002f },
++        { SGTL5000_DAP_EQ_BASS_BAND2,           0x002f },
++        { SGTL5000_DAP_EQ_BASS_BAND3,           0x002f },
++        { SGTL5000_DAP_EQ_BASS_BAND4,           0x002f },
++        { SGTL5000_DAP_MAIN_CHAN,               0x8000 },
++        { SGTL5000_DAP_MIX_CHAN,                0x0000 },
++        { SGTL5000_DAP_AVC_CTRL,                0x0510 },
++        { SGTL5000_DAP_AVC_THRESHOLD,           0x1473 },
++        { SGTL5000_DAP_AVC_ATTACK,              0x0028 },
++        { SGTL5000_DAP_AVC_DECAY,               0x0050 },
++};
++
++/* default value of sgtl5000 registers */
++static const u16 sgtl5000_regs[SGTL5000_MAX_REG_OFFSET] =  {
++        [SGTL5000_CHIP_DIG_POWER] = 0x000,
++        [SGTL5000_CHIP_CLK_CTRL] = 0x0008,
++        [SGTL5000_CHIP_I2S_CTRL] = 0x0010,
++        [SGTL5000_CHIP_SSS_CTRL] = 0x0010,
++        [SGTL5000_CHIP_DAC_VOL] = 0x3c3c,
++        [SGTL5000_CHIP_PAD_STRENGTH] = 0x015f,
++        [SGTL5000_CHIP_ANA_HP_CTRL] = 0x1818,
++        [SGTL5000_CHIP_ANA_CTRL] = 0x0111,
++        [SGTL5000_CHIP_LINREG_CTRL] = 0x0000,
++        [SGTL5000_CHIP_REF_CTRL] = 0x0000,
++        [SGTL5000_CHIP_MIC_CTRL] = 0x0000,
++        [SGTL5000_CHIP_LINE_OUT_CTRL] = 0x0000,
++        [SGTL5000_CHIP_LINE_OUT_VOL] = 0x0404,
++        [SGTL5000_CHIP_ANA_POWER] = 0x7060,
++        [SGTL5000_CHIP_PLL_CTRL] = 0x5000,
++        [SGTL5000_CHIP_CLK_TOP_CTRL] = 0x0000,
++        [SGTL5000_CHIP_ANA_STATUS] = 0x0000,
++        [SGTL5000_CHIP_SHORT_CTRL] = 0x0000,
++        [SGTL5000_CHIP_ANA_TEST2] = 0x0000,
++        [SGTL5000_DAP_CTRL] = 0x0000,
++        [SGTL5000_DAP_PEQ] = 0x0000,
++        [SGTL5000_DAP_BASS_ENHANCE] = 0x0040,
++        [SGTL5000_DAP_BASS_ENHANCE_CTRL] = 0x051f,
++        [SGTL5000_DAP_AUDIO_EQ] = 0x0000,
++        [SGTL5000_DAP_SURROUND] = 0x0040,
++        [SGTL5000_DAP_EQ_BASS_BAND0] = 0x002f,
++        [SGTL5000_DAP_EQ_BASS_BAND1] = 0x002f,
++        [SGTL5000_DAP_EQ_BASS_BAND2] = 0x002f,
++        [SGTL5000_DAP_EQ_BASS_BAND3] = 0x002f,
++        [SGTL5000_DAP_EQ_BASS_BAND4] = 0x002f,
++        [SGTL5000_DAP_MAIN_CHAN] = 0x8000,
++        [SGTL5000_DAP_MIX_CHAN] = 0x0000,
++        [SGTL5000_DAP_AVC_CTRL] = 0x0510,
++        [SGTL5000_DAP_AVC_THRESHOLD] = 0x1473,
++        [SGTL5000_DAP_AVC_ATTACK] = 0x0028,
++        [SGTL5000_DAP_AVC_DECAY] = 0x0050,
++};
++
++/* regulator supplies for sgtl5000, VDDD is an optional external supply */
++enum sgtl5000_regulator_supplies {
++	VDDA,
++	VDDIO,
++	VDDD,
++	SGTL5000_SUPPLY_NUM
++};
++
++/* vddd is optional supply */
++static const char *supply_names[SGTL5000_SUPPLY_NUM] = {
++	"VDDA",
++	"VDDIO",
++	"VDDD"
++};
++
++#define LDO_CONSUMER_NAME	"VDDD_LDO"
++#define LDO_VOLTAGE		1200000
++
++static struct regulator_consumer_supply ldo_consumer[] = {
++	REGULATOR_SUPPLY(LDO_CONSUMER_NAME, NULL),
++};
++
++static struct regulator_init_data ldo_init_data = {
++	.constraints = {
++		.min_uV                 = 1200000,
++		.max_uV                 = 1200000,
++		.valid_modes_mask       = REGULATOR_MODE_NORMAL,
++		.valid_ops_mask         = REGULATOR_CHANGE_STATUS,
++	},
++	.num_consumer_supplies = 1,
++	.consumer_supplies = &ldo_consumer[0],
++};
++
++/*
++ * sgtl5000 internal ldo regulator,
++ * enabled when VDDD not provided
++ */
++struct ldo_regulator {
++	struct regulator_desc desc;
++	struct regulator_dev *dev;
++	int voltage;
++	void *codec_data;
++	bool enabled;
++};
++
++/* sgtl5000 private structure in codec */
++struct sgtl5000_priv {
++	int sysclk;	/* sysclk rate */
++	int master;	/* i2s master or not */
++	int fmt;	/* i2s data format */
++	struct regulator_bulk_data supplies[SGTL5000_SUPPLY_NUM];
++	struct ldo_regulator *ldo;
++};
++
++/*
++ * mic_bias power on/off share the same register bits with
++ * output impedance of mic bias, when power on mic bias, we
++ * need reclaim it to impedance value.
++ * 0x0 = Powered off
++ * 0x1 = 2Kohm
++ * 0x2 = 4Kohm
++ * 0x3 = 8Kohm
++ */
++static int mic_bias_event(struct snd_soc_dapm_widget *w,
++	struct snd_kcontrol *kcontrol, int event)
++{
++	switch (event) {
++	case SND_SOC_DAPM_POST_PMU:
++		/* change mic bias resistor to 4Kohm */
++		snd_soc_update_bits(w->codec, SGTL5000_CHIP_MIC_CTRL,
++				SGTL5000_BIAS_R_MASK,
++				SGTL5000_BIAS_R_4k << SGTL5000_BIAS_R_SHIFT);
++		break;
++
++	case SND_SOC_DAPM_PRE_PMD:
++		snd_soc_update_bits(w->codec, SGTL5000_CHIP_MIC_CTRL,
++				SGTL5000_BIAS_R_MASK, 0);
++		break;
++	}
++	return 0;
++}
++
++/*
++ * As manual described, ADC/DAC only works when VAG powerup,
++ * So enabled VAG before ADC/DAC up.
++ * In power down case, we need wait 400ms when vag fully ramped down.
++ */
++static int power_vag_event(struct snd_soc_dapm_widget *w,
++	struct snd_kcontrol *kcontrol, int event)
++{
++	switch (event) {
++	case SND_SOC_DAPM_PRE_PMU:
++		snd_soc_update_bits(w->codec, SGTL5000_CHIP_ANA_POWER,
++			SGTL5000_VAG_POWERUP, SGTL5000_VAG_POWERUP);
++		break;
++
++	case SND_SOC_DAPM_POST_PMD:
++		snd_soc_update_bits(w->codec, SGTL5000_CHIP_ANA_POWER,
++			SGTL5000_VAG_POWERUP, 0);
++		msleep(400);
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++
++/* input sources for ADC */
++static const char *adc_mux_text[] = {
++	"MIC_IN", "LINE_IN"
++};
++
++static const struct soc_enum adc_enum =
++SOC_ENUM_SINGLE(SGTL5000_CHIP_ANA_CTRL, 2, 2, adc_mux_text);
++
++static const struct snd_kcontrol_new adc_mux =
++SOC_DAPM_ENUM("Capture Mux", adc_enum);
++
++/* input sources for DAC */
++static const char *dac_mux_text[] = {
++	"DAC", "LINE_IN"
++};
++
++static const struct soc_enum dac_enum =
++SOC_ENUM_SINGLE(SGTL5000_CHIP_ANA_CTRL, 6, 2, dac_mux_text);
++
++static const struct snd_kcontrol_new dac_mux =
++SOC_DAPM_ENUM("Headphone Mux", dac_enum);
++
++static const struct snd_soc_dapm_widget sgtl5000_dapm_widgets[] = {
++	SND_SOC_DAPM_INPUT("LINE_IN"),
++	SND_SOC_DAPM_INPUT("MIC_IN"),
++
++	SND_SOC_DAPM_OUTPUT("HP_OUT"),
++	SND_SOC_DAPM_OUTPUT("LINE_OUT"),
++
++	SND_SOC_DAPM_SUPPLY("Mic Bias", SGTL5000_CHIP_MIC_CTRL, 8, 0,
++			    mic_bias_event,
++			    SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++
++	SND_SOC_DAPM_PGA("HP", SGTL5000_CHIP_ANA_POWER, 4, 0, NULL, 0),
++	SND_SOC_DAPM_PGA("LO", SGTL5000_CHIP_ANA_POWER, 0, 0, NULL, 0),
++
++	SND_SOC_DAPM_MUX("Capture Mux", SND_SOC_NOPM, 0, 0, &adc_mux),
++	SND_SOC_DAPM_MUX("Headphone Mux", SND_SOC_NOPM, 0, 0, &dac_mux),
++
++	/* aif for i2s input */
++	SND_SOC_DAPM_AIF_IN("AIFIN", "Playback",
++				0, SGTL5000_CHIP_DIG_POWER,
++				0, 0),
++
++	/* aif for i2s output */
++	SND_SOC_DAPM_AIF_OUT("AIFOUT", "Capture",
++				0, SGTL5000_CHIP_DIG_POWER,
++				1, 0),
++
++	SND_SOC_DAPM_SUPPLY("VAG_POWER", SGTL5000_CHIP_ANA_POWER, 7, 0,
++			    power_vag_event,
++			    SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMD),
++
++	SND_SOC_DAPM_ADC("ADC", "Capture", SGTL5000_CHIP_ANA_POWER, 1, 0),
++	SND_SOC_DAPM_DAC("DAC", "Playback", SGTL5000_CHIP_ANA_POWER, 3, 0),
++};
++
++/* routes for sgtl5000 */
++static const struct snd_soc_dapm_route sgtl5000_dapm_routes[] = {
++	{"Capture Mux", "LINE_IN", "LINE_IN"},	/* line_in --> adc_mux */
++	{"Capture Mux", "MIC_IN", "MIC_IN"},	/* mic_in --> adc_mux */
++
++	{"ADC", NULL, "VAG_POWER"},
++	{"ADC", NULL, "Capture Mux"},		/* adc_mux --> adc */
++	{"AIFOUT", NULL, "ADC"},		/* adc --> i2s_out */
++
++	{"DAC", NULL, "VAG_POWER"},
++	{"DAC", NULL, "AIFIN"},			/* i2s-->dac,skip audio mux */
++	{"Headphone Mux", "DAC", "DAC"},	/* dac --> hp_mux */
++	{"LO", NULL, "DAC"},			/* dac --> line_out */
++
++	{"LINE_IN", NULL, "VAG_POWER"},
++	{"Headphone Mux", "LINE_IN", "LINE_IN"},/* line_in --> hp_mux */
++	{"HP", NULL, "Headphone Mux"},		/* hp_mux --> hp */
++
++	{"LINE_OUT", NULL, "LO"},
++	{"HP_OUT", NULL, "HP"},
++};
++
++/* custom function to fetch info of PCM playback volume */
++static int dac_info_volsw(struct snd_kcontrol *kcontrol,
++			  struct snd_ctl_elem_info *uinfo)
++{
++	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
++	uinfo->count = 2;
++	uinfo->value.integer.min = 0x3c;
++	uinfo->value.integer.max = 0xfc;
++	return 0;
++}
++
++
++static int info_amp(struct snd_kcontrol *kcontrol,
++                          struct snd_ctl_elem_info *uinfo)
++{
++    uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
++    uinfo->count = 1;
++    uinfo->value.integer.min = 0;
++    uinfo->value.integer.max = 3;
++    return 0;
++}
++
++/*
++ * custom function to get of PCM playback volume
++ *
++ * dac volume register
++ * 15-------------8-7--------------0
++ * | R channel vol | L channel vol |
++ *  -------------------------------
++ *
++ * PCM volume with 0.5017 dB steps from 0 to -90 dB
++ *
++ * register values map to dB
++ * 0x3B and less = Reserved
++ * 0x3C = 0 dB
++ * 0x3D = -0.5 dB
++ * 0xF0 = -90 dB
++ * 0xFC and greater = Muted
++ *
++ * register value map to userspace value
++ *
++ * register value	0x3c(0dB)	  0xf0(-90dB)0xfc
++ *			------------------------------
++ * userspace value	0xc0			     0
++ */
++static int dac_get_volsw(struct snd_kcontrol *kcontrol,
++			 struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++	int reg;
++	int l;
++	int r;
++
++	reg = snd_soc_read(codec, SGTL5000_CHIP_DAC_VOL);
++
++	/* get left channel volume */
++	l = (reg & SGTL5000_DAC_VOL_LEFT_MASK) >> SGTL5000_DAC_VOL_LEFT_SHIFT;
++
++	/* get right channel volume */
++	r = (reg & SGTL5000_DAC_VOL_RIGHT_MASK) >> SGTL5000_DAC_VOL_RIGHT_SHIFT;
++
++	/* make sure value fall in (0x3c,0xfc) */
++	l = clamp(l, 0x3c, 0xfc);
++	r = clamp(r, 0x3c, 0xfc);
++
++	/* invert it and map to userspace value */
++	l = 0xfc - l;
++	r = 0xfc - r;
++
++	ucontrol->value.integer.value[0] = l;
++	ucontrol->value.integer.value[1] = r;
++
++	return 0;
++}
++
++/*
++ * custom function to put of PCM playback volume
++ *
++ * dac volume register
++ * 15-------------8-7--------------0
++ * | R channel vol | L channel vol |
++ *  -------------------------------
++ *
++ * PCM volume with 0.5017 dB steps from 0 to -90 dB
++ *
++ * register values map to dB
++ * 0x3B and less = Reserved
++ * 0x3C = 0 dB
++ * 0x3D = -0.5 dB
++ * 0xF0 = -90 dB
++ * 0xFC and greater = Muted
++ *
++ * userspace value map to register value
++ *
++ * userspace value	0xc0			     0
++ *			------------------------------
++ * register value	0x3c(0dB)	0xf0(-90dB)0xfc
++ */
++static int dac_put_volsw(struct snd_kcontrol *kcontrol,
++			 struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++	int reg;
++	int l;
++	int r;
++
++	l = ucontrol->value.integer.value[0];
++	r = ucontrol->value.integer.value[1];
++
++	/* make sure userspace volume fall in (0, 0xfc-0x3c) */
++	l = clamp(l, 0, 0xfc - 0x3c);
++	r = clamp(r, 0, 0xfc - 0x3c);
++
++	/* invert it, get the value can be set to register */
++	l = 0xfc - l;
++	r = 0xfc - r;
++
++	/* shift to get the register value */
++	reg = l << SGTL5000_DAC_VOL_LEFT_SHIFT |
++		r << SGTL5000_DAC_VOL_RIGHT_SHIFT;
++
++	snd_soc_write(codec, SGTL5000_CHIP_DAC_VOL, reg);
++
++	return 0;
++}
++
++
++static int get_amp(struct snd_kcontrol *kcontrol,
++                         struct snd_ctl_elem_value *ucontrol)
++{
++    struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++
++    ucontrol->value.integer.value[0] = ampVal;
++
++    return 0;
++}
++
++
++static int put_amp(struct snd_kcontrol *kcontrol,
++                         struct snd_ctl_elem_value *ucontrol)
++{
++    struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
++    int reg;
++    int l;
++
++
++    ampVal = ucontrol->value.integer.value[0];
++
++    gpio_set_value(gpioSPKAmp1, ampVal & 1);
++    gpio_set_value(gpioSPKAmp2, ampVal & 2);
++
++    return 0;
++}
++
++
++static const DECLARE_TLV_DB_SCALE(capture_6db_attenuate, -600, 600, 0);
++
++/* tlv for mic gain, 0db 20db 30db 40db */
++static const unsigned int mic_gain_tlv[] = {
++	TLV_DB_RANGE_HEAD(2),
++	0, 0, TLV_DB_SCALE_ITEM(0, 0, 0),
++	1, 3, TLV_DB_SCALE_ITEM(2000, 1000, 0),
++};
++
++/* tlv for hp volume, -51.5db to 12.0db, step .5db */
++static const DECLARE_TLV_DB_SCALE(headphone_volume, -5150, 50, 0);
++
++static const struct snd_kcontrol_new sgtl5000_snd_controls[] = {
++	/* SOC_DOUBLE_S8_TLV with invert */
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "PCM Playback Volume",
++		.access = SNDRV_CTL_ELEM_ACCESS_TLV_READ |
++			SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = dac_info_volsw,
++		.get = dac_get_volsw,
++		.put = dac_put_volsw,
++	},
++
++
++    {
++            .iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++            .name = "Playback AMP",
++            .access = SNDRV_CTL_ELEM_ACCESS_TLV_READ |
++                      SNDRV_CTL_ELEM_ACCESS_READWRITE,
++            .info = info_amp,
++            .get = get_amp,
++            .put = put_amp,
++    },
++
++	SOC_DOUBLE("Capture Volume", SGTL5000_CHIP_ANA_ADC_CTRL, 0, 4, 0xf, 0),
++	SOC_SINGLE_TLV("Capture Attenuate Switch (-6dB)",
++			SGTL5000_CHIP_ANA_ADC_CTRL,
++			8, 2, 0, capture_6db_attenuate),
++	SOC_SINGLE("Capture ZC Switch", SGTL5000_CHIP_ANA_CTRL, 1, 1, 0),
++
++	SOC_DOUBLE_TLV("Headphone Playback Volume",
++			SGTL5000_CHIP_ANA_HP_CTRL,
++			0, 8,
++			0x7f, 1,
++			headphone_volume),
++	SOC_SINGLE("Headphone Playback ZC Switch", SGTL5000_CHIP_ANA_CTRL,
++			5, 1, 0),
++
++	SOC_SINGLE_TLV("Mic Volume", SGTL5000_CHIP_MIC_CTRL,
++			0, 3, 0, mic_gain_tlv),
++};
++
++/* mute the codec used by alsa core */
++static int sgtl5000_digital_mute(struct snd_soc_dai *codec_dai, int mute)
++{
++	struct snd_soc_codec *codec = codec_dai->codec;
++	u16 adcdac_ctrl = SGTL5000_DAC_MUTE_LEFT | SGTL5000_DAC_MUTE_RIGHT;
++    if(mute){
++        gpio_set_value(gpioSPK_R, 0);
++        gpio_set_value(gpioSPK_L, 0);
++    }else{
++        if(boot_cnt == 0 ){
++            gpio_set_value(gpioSPK_R, 1);
++            gpio_set_value(gpioSPK_L, 1);
++        }
++    }
++	snd_soc_update_bits(codec, SGTL5000_CHIP_ADCDAC_CTRL,
++			adcdac_ctrl, mute ? adcdac_ctrl : 0);
++
++
++
++	return 0;
++}
++
++/* set codec format */
++static int sgtl5000_set_dai_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
++{
++	struct snd_soc_codec *codec = codec_dai->codec;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	u16 i2sctl = 0;
++
++	sgtl5000->master = 0;
++	/*
++	 * i2s clock and frame master setting.
++	 * ONLY support:
++	 *  - clock and frame slave,
++	 *  - clock and frame master
++	 */
++	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
++	case SND_SOC_DAIFMT_CBS_CFS:
++		break;
++	case SND_SOC_DAIFMT_CBM_CFM:
++		i2sctl |= SGTL5000_I2S_MASTER;
++		sgtl5000->master = 1;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/* setting i2s data format */
++	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
++	case SND_SOC_DAIFMT_DSP_A:
++		i2sctl |= SGTL5000_I2S_MODE_PCM;
++		break;
++	case SND_SOC_DAIFMT_DSP_B:
++		i2sctl |= SGTL5000_I2S_MODE_PCM;
++		i2sctl |= SGTL5000_I2S_LRALIGN;
++		break;
++	case SND_SOC_DAIFMT_I2S:
++		i2sctl |= SGTL5000_I2S_MODE_I2S_LJ;
++		break;
++	case SND_SOC_DAIFMT_RIGHT_J:
++		i2sctl |= SGTL5000_I2S_MODE_RJ;
++		i2sctl |= SGTL5000_I2S_LRPOL;
++		break;
++	case SND_SOC_DAIFMT_LEFT_J:
++		i2sctl |= SGTL5000_I2S_MODE_I2S_LJ;
++		i2sctl |= SGTL5000_I2S_LRALIGN;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	sgtl5000->fmt = fmt & SND_SOC_DAIFMT_FORMAT_MASK;
++
++	/* Clock inversion */
++	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
++	case SND_SOC_DAIFMT_NB_NF:
++		break;
++	case SND_SOC_DAIFMT_IB_NF:
++		i2sctl |= SGTL5000_I2S_SCLK_INV;
++		break;
++	default:
++		return -EINVAL;
++	}
++	//i2sctl |= SGTL5000_I2S_SCLK_INV;
++	snd_soc_write(codec, SGTL5000_CHIP_I2S_CTRL, i2sctl);
++
++	return 0;
++}
++
++/* set codec sysclk */
++static int sgtl5000_set_dai_sysclk(struct snd_soc_dai *codec_dai,
++				   int clk_id, unsigned int freq, int dir)
++{
++	struct snd_soc_codec *codec = codec_dai->codec;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++
++	switch (clk_id) {
++	case SGTL5000_SYSCLK:
++		sgtl5000->sysclk = freq;
++		break;
++	default:
++	    dev_err(codec->dev, "%s: setting clock_id (%d) invalid error default value setted.!\n", __func__,clk_id);
++        sgtl5000->sysclk = freq;
++        break;
++	}
++
++	return 0;
++}
++
++/*
++ * set clock according to i2s frame clock,
++ * sgtl5000 provide 2 clock sources.
++ * 1. sys_mclk. sample freq can only configure to
++ *	1/256, 1/384, 1/512 of sys_mclk.
++ * 2. pll. can derive any audio clocks.
++ *
++ * clock setting rules:
++ * 1. in slave mode, only sys_mclk can use.
++ * 2. as constraint by sys_mclk, sample freq should
++ *	set to 32k, 44.1k and above.
++ * 3. using sys_mclk prefer to pll to save power.
++ */
++static int sgtl5000_set_clock(struct snd_soc_codec *codec, int frame_rate)
++{
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	int clk_ctl = 0;
++	int sys_fs;	/* sample freq */
++
++	/*
++	 * sample freq should be divided by frame clock,
++	 * if frame clock lower than 44.1khz, sample feq should set to
++	 * 32khz or 44.1khz.
++	 */
++	switch (frame_rate) {
++	case 8000:
++	case 16000:
++		sys_fs = 32000;
++		break;
++	case 11025:
++	case 22050:
++		sys_fs = 44100;
++		break;
++	default:
++		sys_fs = frame_rate;
++		break;
++	}
++
++
++	/* set divided factor of frame clock */
++	switch (sys_fs / frame_rate) {
++	case 4:
++		clk_ctl |= SGTL5000_RATE_MODE_DIV_4 << SGTL5000_RATE_MODE_SHIFT;
++		break;
++	case 2:
++		clk_ctl |= SGTL5000_RATE_MODE_DIV_2 << SGTL5000_RATE_MODE_SHIFT;
++		break;
++	case 1:
++		clk_ctl |= SGTL5000_RATE_MODE_DIV_1 << SGTL5000_RATE_MODE_SHIFT;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	/* set the sys_fs according to frame rate */
++	switch (sys_fs) {
++	case 32000:
++		clk_ctl |= SGTL5000_SYS_FS_32k << SGTL5000_SYS_FS_SHIFT;
++		break;
++	case 44100:
++		clk_ctl |= SGTL5000_SYS_FS_44_1k << SGTL5000_SYS_FS_SHIFT;
++		break;
++	case 48000:
++		clk_ctl |= SGTL5000_SYS_FS_48k << SGTL5000_SYS_FS_SHIFT;
++		break;
++	case 96000:
++		clk_ctl |= SGTL5000_SYS_FS_96k << SGTL5000_SYS_FS_SHIFT;
++		break;
++	default:
++		dev_err(codec->dev, "frame rate %d not supported\n",
++			frame_rate);
++		return -EINVAL;
++	}
++
++	/*
++	 * calculate the divider of mclk/sample_freq,
++	 * factor of freq =96k can only be 256, since mclk in range (12m,27m)
++	 */
++
++  switch ((sgtl5000->sysclk) / sys_fs) {
++	case 256:
++		clk_ctl |= SGTL5000_MCLK_FREQ_256FS <<
++			SGTL5000_MCLK_FREQ_SHIFT;
++		break;
++	case 384:
++		clk_ctl |= SGTL5000_MCLK_FREQ_384FS <<
++			SGTL5000_MCLK_FREQ_SHIFT;
++		break;
++	case 512:
++		clk_ctl |= SGTL5000_MCLK_FREQ_512FS <<
++			SGTL5000_MCLK_FREQ_SHIFT;
++		break;
++	default:
++		/* if mclk not satisify the divider, use pll */
++		if (sgtl5000->master) {
++			clk_ctl |= SGTL5000_MCLK_FREQ_PLL <<
++				SGTL5000_MCLK_FREQ_SHIFT;
++		} else {
++			dev_err(codec->dev,
++				"PLL not supported in slave mode\n");
++			return -EINVAL;
++		}
++	}
++
++	/* if using pll, please check manual 6.4.2 for detail */
++	if ((clk_ctl & SGTL5000_MCLK_FREQ_MASK) == SGTL5000_MCLK_FREQ_PLL) {
++		u64 out, t;
++		int div2;
++		int pll_ctl;
++		unsigned int in, int_div, frac_div;
++		if (sgtl5000->sysclk > 17000000) {
++			div2 = 1;
++			in = sgtl5000->sysclk / 2;
++		} else {
++			div2 = 0;
++			in = sgtl5000->sysclk;
++		}
++		if (sys_fs == 44100)
++			out = 180633600;
++		else
++			out = 196608000;
++
++		t = do_div(out, in);
++		int_div = out;
++		t *= 2048;
++		do_div(t, in);
++		frac_div = t;
++		pll_ctl = int_div << SGTL5000_PLL_INT_DIV_SHIFT |
++		    frac_div << SGTL5000_PLL_FRAC_DIV_SHIFT;
++//	dev_err(codec->dev, "SGTL5000_CHIP_PLL_CTRL = 0x%X\n",pll_ctl);
++		snd_soc_write(codec, SGTL5000_CHIP_PLL_CTRL, pll_ctl);
++		if (div2)
++			snd_soc_update_bits(codec,
++				SGTL5000_CHIP_CLK_TOP_CTRL,
++				SGTL5000_INPUT_FREQ_DIV2,
++				SGTL5000_INPUT_FREQ_DIV2);
++		else
++			snd_soc_update_bits(codec,
++				SGTL5000_CHIP_CLK_TOP_CTRL,
++				SGTL5000_INPUT_FREQ_DIV2,
++				0);
++
++		/* power up pll */
++		snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++			SGTL5000_PLL_POWERUP | SGTL5000_VCOAMP_POWERUP,
++			SGTL5000_PLL_POWERUP | SGTL5000_VCOAMP_POWERUP);
++	} else {
++		/* power down pll */
++		snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++			SGTL5000_PLL_POWERUP | SGTL5000_VCOAMP_POWERUP,
++			0);
++	}
++//	dev_err(codec->dev, "clk_ctrl = 0x%X\n",clk_ctl);
++	/* if using pll, clk_ctrl must be set after pll power up */
++	snd_soc_write(codec, SGTL5000_CHIP_CLK_CTRL, clk_ctl);
++
++	return 0;
++}
++
++/*
++ * Set PCM DAI bit size and sample rate.
++ * input: params_rate, params_fmt
++ */
++static int sgtl5000_pcm_hw_params(struct snd_pcm_substream *substream,
++				  struct snd_pcm_hw_params *params,
++				  struct snd_soc_dai *dai)
++{
++	struct snd_soc_codec *codec = dai->codec;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	int channels = params_channels(params);
++	int i2s_ctl = 0;
++	int stereo;
++	int ret;
++	unsigned int sys_fs;
++    unsigned int fs;
++
++    if (boot_cnt > 0){
++        boot_cnt--;
++    }else{
++        gpio_set_value(gpioSPK_R, 1);
++        gpio_set_value(gpioSPK_L, 1);
++    }
++
++    fs = params_rate(params);
++
++    switch (fs) {
++        case 8000:
++        case 16000:
++            sys_fs = 32000;
++            break;
++        case 11025:
++        case 22050:
++            sys_fs = 44100;
++            break;
++        default:
++            sys_fs = fs;
++            break;
++    }
++
++	/* sgtl5000 does not support 512*rate when in 96000 fs */
++	switch (fs) {
++	case 96000:
++		sgtl5000->sysclk =  256*sys_fs;
++		break;
++	default:
++		sgtl5000->sysclk =  512*sys_fs;
++	}
++    sgtl5000->sysclk = 24000000;
++
++
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
++		stereo = SGTL5000_DAC_STEREO;
++	else
++		stereo = SGTL5000_ADC_STEREO;
++
++	/* set mono to save power */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER, stereo,
++			channels == 1 ? 0 : stereo);
++
++	/* set codec clock base on lrclk */
++	ret = sgtl5000_set_clock(codec, params_rate(params));
++	if (ret)
++		return ret;
++
++	/* set i2s data format */
++	switch (params_format(params)) {
++	case SNDRV_PCM_FORMAT_S16_LE:
++		if (sgtl5000->fmt == SND_SOC_DAIFMT_RIGHT_J)
++			return -EINVAL;
++		i2s_ctl |= SGTL5000_I2S_DLEN_16 << SGTL5000_I2S_DLEN_SHIFT;
++		i2s_ctl |= SGTL5000_I2S_SCLKFREQ_32FS <<
++		    SGTL5000_I2S_SCLKFREQ_SHIFT;
++		break;
++	case SNDRV_PCM_FORMAT_S20_3LE:
++		i2s_ctl |= SGTL5000_I2S_DLEN_20 << SGTL5000_I2S_DLEN_SHIFT;
++		i2s_ctl |= SGTL5000_I2S_SCLKFREQ_64FS <<
++		    SGTL5000_I2S_SCLKFREQ_SHIFT;
++		break;
++	case SNDRV_PCM_FORMAT_S24_LE:
++		i2s_ctl |= SGTL5000_I2S_DLEN_24 << SGTL5000_I2S_DLEN_SHIFT;
++		i2s_ctl |= SGTL5000_I2S_SCLKFREQ_64FS <<
++		    SGTL5000_I2S_SCLKFREQ_SHIFT;
++		break;
++	case SNDRV_PCM_FORMAT_S32_LE:
++		if (sgtl5000->fmt == SND_SOC_DAIFMT_RIGHT_J)
++			return -EINVAL;
++		i2s_ctl |= SGTL5000_I2S_DLEN_32 << SGTL5000_I2S_DLEN_SHIFT;
++		i2s_ctl |= SGTL5000_I2S_SCLKFREQ_64FS <<
++		    SGTL5000_I2S_SCLKFREQ_SHIFT;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++
++	snd_soc_update_bits(codec, SGTL5000_CHIP_I2S_CTRL,
++			    SGTL5000_I2S_DLEN_MASK | SGTL5000_I2S_SCLKFREQ_MASK,
++			    i2s_ctl);
++
++  //dev_err(codec->dev, "%s: SGTL5000_CHIP_I2S_CTRL 0x%x!\n", __func__, i2s_ctl);
++	return 0;
++}
++
++#ifdef CONFIG_REGULATOR
++static int ldo_regulator_is_enabled(struct regulator_dev *dev)
++{
++	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
++    dev_err(dev, "%s\n", __func__);
++	return ldo->enabled;
++}
++
++static int ldo_regulator_enable(struct regulator_dev *dev)
++{
++	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
++	struct snd_soc_codec *codec = (struct snd_soc_codec *)ldo->codec_data;
++	int reg;
++	return 0;
++
++	if (ldo_regulator_is_enabled(dev))
++		return 0;
++
++	/* set regulator value firstly */
++	reg = (1600 - ldo->voltage / 1000) / 50;
++	reg = clamp(reg, 0x0, 0xf);
++
++	/* amend the voltage value, unit: uV */
++	ldo->voltage = (1600 - reg * 50) * 1000;
++
++	/* set voltage to register */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_LINREG_CTRL,
++				SGTL5000_LINREG_VDDD_MASK, reg);
++
++	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++				SGTL5000_LINEREG_D_POWERUP,
++				SGTL5000_LINEREG_D_POWERUP);
++
++	/* when internal ldo enabled, simple digital power can be disabled */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++				SGTL5000_LINREG_SIMPLE_POWERUP,
++				0);
++    dev_err(dev, "%s\n", __func__);
++	ldo->enabled = 1;
++	return 0;
++}
++
++static int ldo_regulator_disable(struct regulator_dev *dev)
++{
++	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
++	struct snd_soc_codec *codec = (struct snd_soc_codec *)ldo->codec_data;
++	return 0;
++
++	snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++				SGTL5000_LINEREG_D_POWERUP,
++				0);
++
++	/* clear voltage info */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_LINREG_CTRL,
++				SGTL5000_LINREG_VDDD_MASK, 0);
++
++	ldo->enabled = 0;
++  dev_err(dev, "%s\n", __func__);
++	return 0;
++}
++
++static int ldo_regulator_get_voltage(struct regulator_dev *dev)
++{
++	struct ldo_regulator *ldo = rdev_get_drvdata(dev);
++
++	return ldo->voltage;
++}
++
++static struct regulator_ops ldo_regulator_ops = {
++	.is_enabled = ldo_regulator_is_enabled,
++	.enable = ldo_regulator_enable,
++	.disable = ldo_regulator_disable,
++	.get_voltage = ldo_regulator_get_voltage,
++};
++
++static int ldo_regulator_register(struct snd_soc_codec *codec,
++				struct regulator_init_data *init_data,
++				int voltage)
++{
++	struct ldo_regulator *ldo;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	struct regulator_config config = { };
++	return 0;
++
++	ldo = kzalloc(sizeof(struct ldo_regulator), GFP_KERNEL);
++
++	if (!ldo) {
++		dev_err(codec->dev, "failed to allocate ldo_regulator\n");
++		return -ENOMEM;
++	}
++
++	ldo->desc.name = kstrdup(dev_name(codec->dev), GFP_KERNEL);
++	if (!ldo->desc.name) {
++		kfree(ldo);
++		dev_err(codec->dev, "failed to allocate decs name memory\n");
++		return -ENOMEM;
++	}
++
++	ldo->desc.type  = REGULATOR_VOLTAGE;
++	ldo->desc.owner = THIS_MODULE;
++	ldo->desc.ops   = &ldo_regulator_ops;
++	ldo->desc.n_voltages = 1;
++
++	ldo->codec_data = codec;
++	ldo->voltage = voltage;
++
++	config.dev = codec->dev;
++	config.driver_data = ldo;
++	config.init_data = init_data;
++
++	ldo->dev = regulator_register(&ldo->desc, &config);
++	if (IS_ERR(ldo->dev)) {
++		int ret = PTR_ERR(ldo->dev);
++
++		dev_err(codec->dev, "failed to register regulator\n");
++		kfree(ldo->desc.name);
++		kfree(ldo);
++
++		return ret;
++	}
++	sgtl5000->ldo = ldo;
++
++	return 0;
++}
++
++static int ldo_regulator_remove(struct snd_soc_codec *codec)
++{
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	struct ldo_regulator *ldo = sgtl5000->ldo;
++	return 0;
++
++	if (!ldo)
++		return 0;
++
++	regulator_unregister(ldo->dev);
++	kfree(ldo->desc.name);
++	kfree(ldo);
++
++	return 0;
++}
++#else
++static int ldo_regulator_register(struct snd_soc_codec *codec,
++				struct regulator_init_data *init_data,
++				int voltage)
++{
++	dev_err(codec->dev, "this setup needs regulator support in the kernel\n");
++	return -EINVAL;
++}
++
++static int ldo_regulator_remove(struct snd_soc_codec *codec)
++{
++	return 0;
++}
++#endif
++
++/*
++ * set dac bias
++ * common state changes:
++ * startup:
++ * off --> standby --> prepare --> on
++ * standby --> prepare --> on
++ *
++ * stop:
++ * on --> prepare --> standby
++ */
++static int sgtl5000_set_bias_level(struct snd_soc_codec *codec,
++				   enum snd_soc_bias_level level)
++{
++	int ret;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++  codec->dapm.bias_level = level;
++
++	return 0;
++
++	switch (level) {
++	case SND_SOC_BIAS_ON:
++	case SND_SOC_BIAS_PREPARE:
++		break;
++	case SND_SOC_BIAS_STANDBY:
++		if (codec->dapm.bias_level == SND_SOC_BIAS_OFF) {
++      ret = regulator_bulk_enable(ARRAY_SIZE(sgtl5000->supplies),sgtl5000->supplies);
++			if (ret)
++				return ret;
++      udelay(10);
++		}
++
++	break;
++	case SND_SOC_BIAS_OFF:
++        regulator_bulk_disable(ARRAY_SIZE(sgtl5000->supplies),sgtl5000->supplies);
++  break;
++	}
++
++	codec->dapm.bias_level = level;
++	return 0;
++}
++
++#define SGTL5000_FORMATS (SNDRV_PCM_FMTBIT_S16_LE |\
++			SNDRV_PCM_FMTBIT_S20_3LE |\
++			SNDRV_PCM_FMTBIT_S24_LE |\
++			SNDRV_PCM_FMTBIT_S32_LE)
++
++static const struct snd_soc_dai_ops sgtl5000_ops = {
++	.hw_params = sgtl5000_pcm_hw_params,
++	.digital_mute = sgtl5000_digital_mute,
++	.set_fmt = sgtl5000_set_dai_fmt,
++	.set_sysclk = sgtl5000_set_dai_sysclk,
++};
++
++static struct snd_soc_dai_driver sgtl5000_dai = {
++	.name = "sgtl5000",
++	.playback = {
++		.stream_name = "Playback",
++		.channels_min = 1,
++		.channels_max = 2,
++		/*
++		 * only support 8~48K + 96K,
++		 * TODO modify hw_param to support more
++		 */
++		.rates = SNDRV_PCM_RATE_8000_48000 | SNDRV_PCM_RATE_96000,
++		.formats = SGTL5000_FORMATS,
++	},
++	.capture = {
++		.stream_name = "Capture",
++		.channels_min = 1,
++		.channels_max = 2,
++		.rates = SNDRV_PCM_RATE_8000_48000 | SNDRV_PCM_RATE_96000,
++		.formats = SGTL5000_FORMATS,
++	},
++	.ops = &sgtl5000_ops,
++	.symmetric_rates = 1,
++};
++
++static int sgtl5000_volatile_register(struct snd_soc_codec *codec,
++					unsigned int reg)
++{
++	switch (reg) {
++	case SGTL5000_CHIP_ID:
++	case SGTL5000_CHIP_ADCDAC_CTRL:
++	case SGTL5000_CHIP_ANA_STATUS:
++		return 1;
++	}
++
++	return 0;
++}
++
++#ifdef CONFIG_SUSPEND
++static int sgtl5000_suspend(struct snd_soc_codec *codec)
++{
++	//sgtl5000_set_bias_level(codec, SND_SOC_BIAS_OFF);
++        gpio_set_value(gpioSPK_R, 0);
++        gpio_set_value(gpioSPK_L, 0);
++	return 0;
++}
++
++/*
++ * restore all sgtl5000 registers,
++ * since a big hole between dap and regular registers,
++ * we will restore them respectively.
++ */
++static int sgtl5000_restore_regs(struct snd_soc_codec *codec)
++{
++	u16 *cache = codec->reg_cache;
++	u16 reg;
++    return 0;
++	/* restore regular registers */
++	for (reg = 0; reg <= SGTL5000_CHIP_SHORT_CTRL; reg += 2) {
++
++		/* These regs should restore in particular order */
++		if (reg == SGTL5000_CHIP_ANA_POWER ||
++			reg == SGTL5000_CHIP_CLK_CTRL ||
++			reg == SGTL5000_CHIP_LINREG_CTRL ||
++			reg == SGTL5000_CHIP_LINE_OUT_CTRL ||
++			reg == SGTL5000_CHIP_REF_CTRL)
++			continue;
++
++		snd_soc_write(codec, reg, cache[reg]);
++	}
++
++	/* restore dap registers */
++	for (reg = SGTL5000_DAP_REG_OFFSET; reg < SGTL5000_MAX_REG_OFFSET; reg += 2)
++		snd_soc_write(codec, reg, cache[reg]);
++
++	/*
++	 * restore these regs according to the power setting sequence in
++	 * sgtl5000_set_power_regs() and clock setting sequence in
++	 * sgtl5000_set_clock().
++	 *
++	 * The order of restore is:
++	 * 1. SGTL5000_CHIP_CLK_CTRL MCLK_FREQ bits (1:0) should be restore after
++	 *    SGTL5000_CHIP_ANA_POWER PLL bits set
++	 * 2. SGTL5000_CHIP_LINREG_CTRL should be set before
++	 *    SGTL5000_CHIP_ANA_POWER LINREG_D restored
++	 * 3. SGTL5000_CHIP_REF_CTRL controls Analog Ground Voltage,
++	 *    prefer to resotre it after SGTL5000_CHIP_ANA_POWER restored
++	 */
++	snd_soc_write(codec, SGTL5000_CHIP_LINREG_CTRL,
++			cache[SGTL5000_CHIP_LINREG_CTRL]);
++
++	snd_soc_write(codec, SGTL5000_CHIP_ANA_POWER,
++			cache[SGTL5000_CHIP_ANA_POWER]);
++
++	snd_soc_write(codec, SGTL5000_CHIP_CLK_CTRL,
++			cache[SGTL5000_CHIP_CLK_CTRL]);
++
++	snd_soc_write(codec, SGTL5000_CHIP_REF_CTRL,
++			cache[SGTL5000_CHIP_REF_CTRL]);
++
++	snd_soc_write(codec, SGTL5000_CHIP_LINE_OUT_CTRL,
++			cache[SGTL5000_CHIP_LINE_OUT_CTRL]);
++	return 0;
++}
++
++static int sgtl5000_resume(struct snd_soc_codec *codec)
++{
++	/* Bring the codec back up to standby to enable regulators */
++	sgtl5000_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
++
++	/* Restore registers by cached in memory */
++	sgtl5000_restore_regs(codec);
++	return 0;
++}
++#else
++#define sgtl5000_suspend NULL
++#define sgtl5000_resume  NULL
++#endif	/* CONFIG_SUSPEND */
++
++
++/*
++ * sgtl5000 has 3 internal power supplies:
++ * 1. VAG, normally set to vdda/2
++ * 2. chargepump, set to different value
++ *	according to voltage of vdda and vddio
++ * 3. line out VAG, normally set to vddio/2
++ *
++ * and should be set according to:
++ * 1. vddd provided by external or not
++ * 2. vdda and vddio voltage value. > 3.1v or not
++ * 3. chip revision >=0x11 or not. If >=0x11, not use external vddd.
++ */
++static int sgtl5000_set_power_regs(struct snd_soc_codec *codec)
++{
++	int vddd;
++	int vdda;
++	int vddio;
++	u16 ana_pwr;
++    u16 ana_off;
++	u16 lreg_ctrl;
++	int vag;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++  vdda = vddio = vddd = 1800000;
++  /*
++	vdda  = regulator_get_voltage(sgtl5000->supplies[VDDA].consumer);
++	vddio = regulator_get_voltage(sgtl5000->supplies[VDDIO].consumer);
++	vddd  = regulator_get_voltage(sgtl5000->supplies[VDDD].consumer);
++*/
++  //dev_err(codec->dev, "vdda = %d vddio=%d vddd=%d\n",vdda,vddio,vddd);
++
++
++	vdda  = vdda / 1000;
++	vddio = vddio / 1000;
++	vddd  = vddd / 1000;
++
++	if (vdda <= 0 || vddio <= 0 || vddd < 0) {
++		dev_err(codec->dev, "regulator voltage not set correctly\n");
++
++		return -EINVAL;
++	}
++
++	/* according to datasheet, maximum voltage of supplies */
++	if (vdda > 3600 || vddio > 3600 || vddd > 1980) {
++		dev_err(codec->dev,
++			"exceed max voltage vdda %dmV vddio %dmV vddd %dmV\n",
++			vdda, vddio, vddd);
++
++		return -EINVAL;
++	}
++
++	/* reset value */
++	ana_pwr = snd_soc_read(codec, SGTL5000_CHIP_ANA_POWER);
++
++	ana_pwr |= SGTL5000_DAC_STEREO |
++			SGTL5000_ADC_STEREO |
++			SGTL5000_REFTOP_POWERUP;
++	lreg_ctrl = snd_soc_read(codec, SGTL5000_CHIP_LINREG_CTRL);
++
++	if (vddio < 3100 && vdda < 3100) {
++		/* enable internal oscillator used for charge pump */
++		snd_soc_update_bits(codec, SGTL5000_CHIP_CLK_TOP_CTRL,
++					SGTL5000_INT_OSC_EN,
++					SGTL5000_INT_OSC_EN);
++		/* Enable VDDC charge pump */
++		ana_pwr |= SGTL5000_VDDC_CHRGPMP_POWERUP;
++	} else if (vddio >= 3100 && vdda >= 3100) {
++		ana_pwr &= ~SGTL5000_VDDC_CHRGPMP_POWERUP;
++		/* VDDC use VDDIO rail */
++		lreg_ctrl |= SGTL5000_VDDC_ASSN_OVRD;
++		lreg_ctrl |= SGTL5000_VDDC_MAN_ASSN_VDDIO <<
++			    SGTL5000_VDDC_MAN_ASSN_SHIFT;
++	}
++
++	snd_soc_write(codec, SGTL5000_CHIP_LINREG_CTRL, lreg_ctrl);
++
++	snd_soc_write(codec, SGTL5000_CHIP_ANA_POWER, ana_pwr);
++
++	/* set voltage to register */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_LINREG_CTRL,
++				SGTL5000_LINREG_VDDD_MASK, 0x8);
++
++	/*
++	 * if vddd linear reg has been enabled,
++	 * simple digital supply should be clear to get
++	 * proper VDDD voltage.
++	 */
++	if (ana_pwr & SGTL5000_LINEREG_D_POWERUP)
++		snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++				SGTL5000_LINREG_SIMPLE_POWERUP,
++				0);
++	else
++		snd_soc_update_bits(codec, SGTL5000_CHIP_ANA_POWER,
++				SGTL5000_LINREG_SIMPLE_POWERUP |
++				SGTL5000_STARTUP_POWERUP,
++				0);
++
++	/*
++	 * set ADC/DAC VAG to vdda / 2,
++	 * should stay in range (0.8v, 1.575v)
++	 */
++	vag = vdda / 2;
++	if (vag <= SGTL5000_ANA_GND_BASE)
++		vag = 0;
++	else if (vag >= SGTL5000_ANA_GND_BASE + SGTL5000_ANA_GND_STP *
++		 (SGTL5000_ANA_GND_MASK >> SGTL5000_ANA_GND_SHIFT))
++		vag = SGTL5000_ANA_GND_MASK >> SGTL5000_ANA_GND_SHIFT;
++	else
++		vag = (vag - SGTL5000_ANA_GND_BASE) / SGTL5000_ANA_GND_STP;
++
++	snd_soc_update_bits(codec, SGTL5000_CHIP_REF_CTRL,
++			SGTL5000_ANA_GND_MASK, vag << SGTL5000_ANA_GND_SHIFT);
++
++	/* set line out VAG to vddio / 2, in range (0.8v, 1.675v) */
++	vag = vddio / 2;
++	if (vag <= SGTL5000_LINE_OUT_GND_BASE)
++		vag = 0;
++	else if (vag >= SGTL5000_LINE_OUT_GND_BASE +
++		SGTL5000_LINE_OUT_GND_STP * SGTL5000_LINE_OUT_GND_MAX)
++		vag = SGTL5000_LINE_OUT_GND_MAX;
++	else
++		vag = (vag - SGTL5000_LINE_OUT_GND_BASE) /
++		    SGTL5000_LINE_OUT_GND_STP;
++
++	snd_soc_update_bits(codec, SGTL5000_CHIP_LINE_OUT_CTRL,
++			SGTL5000_LINE_OUT_CURRENT_MASK |
++			SGTL5000_LINE_OUT_GND_MASK,
++			vag << SGTL5000_LINE_OUT_GND_SHIFT |
++			SGTL5000_LINE_OUT_CURRENT_360u <<
++				SGTL5000_LINE_OUT_CURRENT_SHIFT);
++
++	return 0;
++}
++
++static int sgtl5000_replace_vddd_with_ldo(struct snd_soc_codec *codec)
++{
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++	int ret;
++	return 0;
++	/* set internal ldo to 1.2v */
++	ret = ldo_regulator_register(codec, &ldo_init_data, LDO_VOLTAGE);
++	if (ret) {
++		dev_err(codec->dev,
++			"Failed to register vddd internal supplies: %d\n", ret);
++		return ret;
++	}
++	sgtl5000->supplies[VDDD].supply = LDO_CONSUMER_NAME;
++
++	ret = regulator_bulk_get(codec->dev, ARRAY_SIZE(sgtl5000->supplies),
++			sgtl5000->supplies);
++	if (ret) {
++		ldo_regulator_remove(codec);
++		dev_err(codec->dev, "Failed to request supplies: %d\n", ret);
++		return ret;
++	}
++
++
++	dev_info(codec->dev, "Using internal LDO instead of VDDD\n");
++	return 0;
++}
++
++static int sgtl5000_enable_regulators(struct snd_soc_codec *codec)
++{
++    return 0;
++	u16 reg;
++	int ret;
++	int rev;
++	int i;
++	int external_vddd = 0;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++
++
++  for (i = 0; i < ARRAY_SIZE(sgtl5000->supplies); i++)
++		sgtl5000->supplies[i].supply = supply_names[i];
++
++	ret = regulator_bulk_get(codec->dev, ARRAY_SIZE(sgtl5000->supplies),
++				sgtl5000->supplies);
++
++  //dev_err(codec->dev, "%s %d \n", ret);
++
++  if (!ret)
++		external_vddd = 1;
++	else {
++		ret = sgtl5000_replace_vddd_with_ldo(codec);
++		if (ret)
++			return ret;
++	}
++
++  //dev_err(codec->dev, "%s %d \n", ret);
++
++	ret = regulator_bulk_enable(ARRAY_SIZE(sgtl5000->supplies),
++					sgtl5000->supplies);
++
++  //dev_err(codec->dev, "%s %d \n", ret);
++  if (ret)
++		goto err_regulator_free;
++
++	/* wait for all power rails bring up */
++	udelay(10);
++
++	/* Need 8 clocks before I2C accesses */
++	udelay(1);
++
++
++  return 0;
++	/* read chip information */
++	reg = snd_soc_read(codec, SGTL5000_CHIP_ID);
++	if (((reg & SGTL5000_PARTID_MASK) >> SGTL5000_PARTID_SHIFT) !=
++	    SGTL5000_PARTID_PART_ID) {
++		dev_err(codec->dev,
++			"Device with ID register %x is not a sgtl5000\n", reg);
++		ret = -ENODEV;
++		goto err_regulator_disable;
++	}
++
++	rev = (reg & SGTL5000_REVID_MASK) >> SGTL5000_REVID_SHIFT;
++	dev_info(codec->dev, "sgtl5000 revision 0x%x\n", rev);
++
++	/*
++	 * workaround for revision 0x11 and later,
++	 * roll back to use internal LDO
++	 */
++	if (external_vddd && rev >= 0x11) {
++		/* disable all regulator first */
++		regulator_bulk_disable(ARRAY_SIZE(sgtl5000->supplies),
++					sgtl5000->supplies);
++		/* free VDDD regulator */
++		regulator_bulk_free(ARRAY_SIZE(sgtl5000->supplies),
++					sgtl5000->supplies);
++
++		ret = sgtl5000_replace_vddd_with_ldo(codec);
++		if (ret)
++			return ret;
++
++		ret = regulator_bulk_enable(ARRAY_SIZE(sgtl5000->supplies),
++						sgtl5000->supplies);
++		if (ret)
++			goto err_regulator_free;
++
++		/* wait for all power rails bring up */
++		udelay(10);
++	}
++
++	return 0;
++
++err_regulator_disable:
++	regulator_bulk_disable(ARRAY_SIZE(sgtl5000->supplies),
++				sgtl5000->supplies);
++err_regulator_free:
++	regulator_bulk_free(ARRAY_SIZE(sgtl5000->supplies),
++				sgtl5000->supplies);
++	if (external_vddd)
++		ldo_regulator_remove(codec);
++	return ret;
++
++}
++
++static int sgtl5000_probe(struct snd_soc_codec *codec)
++{
++	int ret;
++  int tmp_select;
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++    int i;
++
++	/* setup i2c data ops */
++	ret = snd_soc_codec_set_cache_io(codec, 16, 16, SND_SOC_I2C);
++	if (ret < 0) {
++		dev_err(codec->dev, "Failed to set cache I/O: %d\n", ret);
++		return ret;
++	}
++
++    for (i = 0; i < ARRAY_SIZE(sgtl5000_reg_defaults); i++) {
++        ret = snd_soc_write(codec, sgtl5000_reg_defaults[i].reg, sgtl5000_reg_defaults[i].def);
++    }
++
++	ret = sgtl5000_enable_regulators(codec);
++	if (ret)
++		return ret;
++
++	/* power up sgtl5000 */
++	ret = sgtl5000_set_power_regs(codec);
++	if (ret)
++		goto err;
++
++	/* enable small pop, introduce 400ms delay in turning off */
++	snd_soc_update_bits(codec, SGTL5000_CHIP_REF_CTRL,
++				SGTL5000_SMALL_POP, 1);
++
++	/* disable short cut detector */
++	snd_soc_write(codec, SGTL5000_CHIP_SHORT_CTRL, 0);
++
++	/*
++	 * set i2s as default input of sound switch
++	 * TODO: add sound switch to control and dapm widge.
++	 */
++/*
++  tmp_select = (SGTL5000_DAP_MIX_SEL_I2S_IN << SGTL5000_DAP_MIX_SEL_SHIFT)
++              |(SGTL5000_DAP_SEL_I2S_IN << SGTL5000_DAP_SEL_SHIFT)
++              |(SGTL5000_DAC_SEL_DAP << SGTL5000_DAC_SEL_SHIFT);
++	snd_soc_write(codec, SGTL5000_CHIP_SSS_CTRL,tmp_select);
++
++    snd_soc_write(codec, SGTL5000_CHIP_DIG_POWER,SGTL5000_I2S_IN_POWERUP|SGTL5000_ADC_EN | SGTL5000_DAC_EN);
++*/
++
++    /*
++ * set i2s as default input of sound switch
++ * TODO: add sound switch to control and dapm widge.
++ */
++    snd_soc_write(codec, SGTL5000_CHIP_SSS_CTRL,
++                  SGTL5000_DAC_SEL_I2S_IN << SGTL5000_DAC_SEL_SHIFT);
++    snd_soc_write(codec, SGTL5000_CHIP_DIG_POWER,
++                  SGTL5000_ADC_EN | SGTL5000_DAC_EN);
++
++	/* enable dac volume ramp by default */
++	snd_soc_write(codec, SGTL5000_CHIP_ADCDAC_CTRL,
++			SGTL5000_DAC_VOL_RAMP_EN |
++			SGTL5000_DAC_MUTE_RIGHT |
++			SGTL5000_DAC_MUTE_LEFT);
++
++	snd_soc_write(codec, SGTL5000_CHIP_PAD_STRENGTH, 0x014f);
++
++	snd_soc_write(codec, SGTL5000_CHIP_ANA_CTRL,
++			SGTL5000_HP_ZCD_EN |
++			SGTL5000_ADC_ZCD_EN);
++
++	snd_soc_write(codec, SGTL5000_CHIP_MIC_CTRL, 0);
++
++	/*
++	 * disable DAP
++	 * TODO:
++	 * Enable DAP in kcontrol and dapm.
++	 */
++  tmp_select =SGTL5000_DAP_EN | SGTL5000_DAP_MIX_EN;//(SGTL5000_DAP_EN);// | (SGTL5000_DAP_MIX_EN);
++	snd_soc_write(codec, SGTL5000_DAP_CTRL, tmp_select);
++
++	/* leading to standby state */
++	ret = sgtl5000_set_bias_level(codec, SND_SOC_BIAS_STANDBY);
++
++
++    gpio_request(gpioSPK_R, "sysfs");          // gpioLED is hardcoded to 49, request it
++    gpio_direction_output(gpioSPK_R, 0);   // Set the gpio to be in output mode and on
++// gpio_set_value(gpioLED, ledOn);          // Not required as set by line above (here for reference)
++    gpio_export(gpioSPK_R, false);             // Causes g
++
++
++    gpio_request(gpioSPK_L, "sysfs");          // gpioLED is hardcoded to 49, request it
++    gpio_direction_output(gpioSPK_L, 0);   // Set the gpio to be in output mode and on
++// gpio_set_value(gpioLED, ledOn);          // Not required as set by line above (here for reference)
++    gpio_export(gpioSPK_L, false);
++
++    gpio_request(gpioSPKAmp1, "sysfs");          // gpioLED is hardcoded to 49, request it
++    gpio_direction_output(gpioSPKAmp1, 0);   // Set the gpio to be in output mode and on
++// gpio_set_value(gpioLED, ledOn);          // Not required as set by line above (here for reference)
++    gpio_export(gpioSPKAmp1, false);             // Causes g
++    gpio_request(gpioSPKAmp2, "sysfs");          // gpioLED is hardcoded to 49, request it
++    gpio_direction_output(gpioSPKAmp2, 0);   // Set the gpio to be in output mode and on
++// gpio_set_value(gpioLED, ledOn);          // Not required as set by line above (here for reference)
++    gpio_export(gpioSPKAmp2, false);             // Causes g
++
++    if (ret)
++		goto err;
++
++	return 0;
++
++err:
++	regulator_bulk_disable(ARRAY_SIZE(sgtl5000->supplies),
++						sgtl5000->supplies);
++	regulator_bulk_free(ARRAY_SIZE(sgtl5000->supplies),
++				sgtl5000->supplies);
++	ldo_regulator_remove(codec);
++
++	return ret;
++}
++
++static int sgtl5000_remove(struct snd_soc_codec *codec)
++{
++/*
++	struct sgtl5000_priv *sgtl5000 = snd_soc_codec_get_drvdata(codec);
++
++	sgtl5000_set_bias_level(codec, SND_SOC_BIAS_OFF);
++	regulator_bulk_disable(ARRAY_SIZE(sgtl5000->supplies),
++						sgtl5000->supplies);
++	regulator_bulk_free(ARRAY_SIZE(sgtl5000->supplies),
++				sgtl5000->supplies);
++	ldo_regulator_remove(codec);
++*/
++	return 0;
++}
++
++static struct snd_soc_codec_driver sgtl5000_driver = {
++	.probe = sgtl5000_probe,
++	.remove = sgtl5000_remove,
++	.suspend = sgtl5000_suspend,
++	.resume = sgtl5000_resume,
++	.set_bias_level = sgtl5000_set_bias_level,
++	.reg_cache_size = ARRAY_SIZE(sgtl5000_regs),
++	.reg_word_size = sizeof(u16),
++	.reg_cache_step = 2,
++	.reg_cache_default = sgtl5000_regs,
++	.volatile_register = sgtl5000_volatile_register,
++	.controls = sgtl5000_snd_controls,
++	.num_controls = ARRAY_SIZE(sgtl5000_snd_controls),
++	.dapm_widgets = sgtl5000_dapm_widgets,
++	.num_dapm_widgets = ARRAY_SIZE(sgtl5000_dapm_widgets),
++	.dapm_routes = sgtl5000_dapm_routes,
++	.num_dapm_routes = ARRAY_SIZE(sgtl5000_dapm_routes),
++};
++
++
++
++
++
++static int sgtl5000_i2c_probe(struct i2c_client *client,
++			      const struct i2c_device_id *id)
++{
++	struct sgtl5000_priv *sgtl5000;
++	int ret;
++
++	sgtl5000 = devm_kzalloc(&client->dev, sizeof(struct sgtl5000_priv),
++								GFP_KERNEL);
++	if (!sgtl5000)
++		return -ENOMEM;
++
++	i2c_set_clientdata(client, sgtl5000);
++
++	ret = snd_soc_register_codec(&client->dev,
++			&sgtl5000_driver, &sgtl5000_dai, 1);
++	return ret;
++}
++
++static int sgtl5000_i2c_remove(struct i2c_client *client)
++{
++	snd_soc_unregister_codec(&client->dev);
++
++	return 0;
++}
++
++static const struct i2c_device_id sgtl5000_id[] = {
++	{"sgtl5000", 0},
++	{},
++};
++
++MODULE_DEVICE_TABLE(i2c, sgtl5000_id);
++
++static const struct of_device_id sgtl5000_dt_ids[] = {
++	{ .compatible = "fsl,sgtl5000", },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, sgtl5000_dt_ids);
++
++static struct i2c_driver sgtl5000_i2c_driver = {
++	.driver = {
++		   .name = "sgtl5000",
++		   .owner = THIS_MODULE,
++		   .of_match_table = sgtl5000_dt_ids,
++		   },
++	.probe = sgtl5000_i2c_probe,
++	.remove = sgtl5000_i2c_remove,
++	.id_table = sgtl5000_id,
++};
++
++module_i2c_driver(sgtl5000_i2c_driver);
++
++MODULE_DESCRIPTION("Freescale SGTL5000 ALSA SoC Codec Driver");
++MODULE_AUTHOR("Zeng Zhaoming <zengzm.kernel@gmail.com>");
++MODULE_LICENSE("GPL");
 diff -Naur sound/soc/codecs/sgtl5000.h sound/soc/codecs/sgtl5000.h
 --- sound/soc/codecs/sgtl5000.h	2016-04-01 04:23:41.000000000 +0200
 +++ sound/soc/codecs/sgtl5000.h	2017-03-02 16:32:07.000000000 +0100
