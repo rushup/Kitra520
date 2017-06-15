@@ -19,7 +19,6 @@
 
 [artik.io](https://www.artik.io/partner/faeplusplus/)
 
-![https://catalog.azureiotsuite.com/details?title=Kitra-520](https://raw.githubusercontent.com/wiki/rushup/kitra/azure-res/Microsoft_Azure_Certified_RGB.png)
-
-
-
+<a href="https://catalog.azureiotsuite.com/details?title=Kitra-520">
+<img src="https://raw.githubusercontent.com/wiki/rushup/kitra/azure-res/Microsoft_Azure_Certified_RGB.png">
+</a>
