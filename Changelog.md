@@ -1,3 +1,6 @@
+## V1E3
+- Added MCU ID command
+- Added neopixel multiple set command
 ## V1E2
 - Added mic recording
 - Baud rate change bugfix
